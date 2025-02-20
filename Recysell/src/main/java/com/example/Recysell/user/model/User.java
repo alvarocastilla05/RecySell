@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name="user_entity")
 public class User implements UserDetails {
 
     @Id

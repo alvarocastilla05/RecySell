@@ -1,12 +1,10 @@
 package com.example.Recysell.security.exceptionhandling;
 
 import com.example.Recysell.user.error.ActivationExpiredException;
-import io.jsonwebtoken.JwtException;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
