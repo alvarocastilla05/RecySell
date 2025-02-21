@@ -22,5 +22,5 @@ public class Cliente extends User {
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
-    List<Producto> listProductos = new ArrayList<>();
+    List<Producto> listProductosEnVenta = new ArrayList<>();
 }
