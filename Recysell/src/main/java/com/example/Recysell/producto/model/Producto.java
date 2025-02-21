@@ -1,8 +1,7 @@
 package com.example.Recysell.producto.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.example.Recysell.cliente.model.Cliente;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -25,4 +24,12 @@ public class Producto {
     private String descripcion;
 
     private double precio;
+
+    //Asociación con Cliente.
+    @ManyToOne
+    @JoinColumn(
+            name = "cliente_id_vende",
+            foreignKey = @ForeignKey(name = "fk_producto_cliente_vende")
+    )
+    private Cliente cliente;
 }
