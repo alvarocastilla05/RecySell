@@ -1,10 +1,10 @@
-package com.example.Recysell.valora.model;
+package com.example.Recysell.donacion.model;
 
-import com.example.Recysell.trabajador.model.Trabajador;
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -12,23 +12,14 @@ import java.util.Objects;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-public class Valora {
+@Embeddable
+public class DonacionPK implements Serializable {
 
-    @EmbeddedId
-    private ValoraPK valoraPK = new ValoraPK();
+    private static final long serialVersionUID = 1L;
 
-    private int puntuacion;
+    private Long productoId;
 
-    private String comentario;
-
-    @ManyToOne
-    @JoinColumn(
-            name = "trabajador_valora_id",
-            foreignKey = @ForeignKey(name = "fk_valora_trabajador")
-    )
-    private Trabajador trabajadorValora;
+    private Long organizacionId;
 
     @Override
     public final boolean equals(Object o) {
@@ -37,12 +28,13 @@ public class Valora {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Valora valora = (Valora) o;
-        return getValoraPK() != null && Objects.equals(getValoraPK(), valora.getValoraPK());
+        DonacionPK that = (DonacionPK) o;
+        return getProductoId() != null && Objects.equals(getProductoId(), that.getProductoId())
+                && getOrganizacionId() != null && Objects.equals(getOrganizacionId(), that.getOrganizacionId());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(valoraPK);
+        return Objects.hash(productoId, organizacionId);
     }
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @SuperBuilder
 @Entity
@@ -21,13 +21,13 @@ public class Cliente extends User {
 
 
     //Asociación con Productos (Productos en venta).
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     List<Producto> listProductosEnVenta = new ArrayList<>();
 
     //Asociación con Productos (Productos donados).
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clienteDonante", fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     List<Producto> listaProductosDonados = new ArrayList<>();

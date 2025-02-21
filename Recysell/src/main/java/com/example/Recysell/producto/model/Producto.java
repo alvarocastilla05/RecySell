@@ -2,21 +2,20 @@ package com.example.Recysell.producto.model;
 
 import com.example.Recysell.categoria.model.Categoria;
 import com.example.Recysell.cliente.model.Cliente;
+import com.example.Recysell.donacion.model.Donacion;
+import com.example.Recysell.valora.model.Valora;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+@ToString(callSuper = true)
 @Entity
 public class Producto {
 
@@ -64,19 +63,15 @@ public class Producto {
     @ToString.Exclude
     private Set<Categoria> listaCategorias = new HashSet<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Valora valoracion;
+
+    @OneToMany(mappedBy = "productoDonado", fetch = FetchType.LAZY)
+    @Builder.Default
+    @ToString.Exclude
+    private List<Donacion> listaDonaciones = new ArrayList<>();
+
     //MÉTODOS HELPER
-
-        //Con Cliente (Productos en venta).
-
-        public void addCliente(Cliente c){
-            this.listaClientes.add(c);
-            c.getListaFavoritos().add(this);
-        }
-
-        public void removeCliente(Cliente c){
-            c.getListaFavoritos().remove(this);
-            this.listaClientes.remove(c);
-        }
 
         //Con Categoria.
 
@@ -89,6 +84,34 @@ public class Producto {
             c.getListaProductos().remove(this);
             this.listaCategorias.remove(c);
         }
+
+        //Con Cliente(Favoritos).
+
+        public void addClienteFavorito(Cliente c){
+            this.listaClientes.add(c);
+            c.getListaFavoritos().add(this);
+        }
+
+        public void removeClienteFavorito(Cliente c){
+            c.getListaFavoritos().remove(this);
+            this.listaClientes.remove(c);
+        }
+
+        //Con Donacion.
+
+        public void addDonacion(Donacion d){
+            this.listaDonaciones.add(d);
+            d.setProductoDonado(this);
+        }
+
+        public void removeDonacion(Donacion d){
+            d.setProductoDonado(null);
+            this.listaDonaciones.remove(d);
+        }
+
+
+
+
 
     @Override
     public final boolean equals(Object o) {
