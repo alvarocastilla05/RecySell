@@ -37,7 +37,12 @@ public class User implements UserDetails {
 
     private String email;
 
+    private String nombre;
+
+    private String apellidos;
+
     @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
     @Builder.Default
