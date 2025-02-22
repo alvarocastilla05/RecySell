@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,6 +58,40 @@ public class TrabajadorController {
     @PreAuthorize("hasRole('ADMIN')")
     public List<GetTrabajadorDto> findAll(){
         return trabajadorService.findAll();
+    }
+
+
+    @Operation(summary = "Obtiene un trabajador por su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Trabajador obtenido correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetTrabajadorDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                 "username": "jrodriguez",
+                                                 "email": "jrodriguez@recysell.com",
+                                                    "nombre": "null",
+                                                    "apellidos": "null",
+                                                    "puesto": "Tecnico en Reacondicionamiento"
+                                                }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún trabajador con ese ID.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content)
+    })
+    @GetMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public GetTrabajadorDto findById(@PathVariable("id") UUID id){
+        Trabajador trabajador = trabajadorService.findById(id);
+
+        return GetTrabajadorDto.of(trabajador);
     }
 
 

@@ -1,8 +1,11 @@
 package com.example.Recysell.error;
 
+import java.util.UUID;
+
 public class TrabajadorNotFoundException extends NotFoundException{
-    public TrabajadorNotFoundException(String username) {
-        super("Trabajador con username " + username + " no encontrado");
+
+    public TrabajadorNotFoundException(UUID id){
+        super("Trabajador con id " + id + " no encontrado");
     }
 
     public TrabajadorNotFoundException(){
