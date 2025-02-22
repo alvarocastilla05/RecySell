@@ -1,6 +1,7 @@
 package com.example.Recysell.trabajador.controller;
 
 import com.example.Recysell.trabajador.dto.CreateTrabajadorRequest;
+import com.example.Recysell.trabajador.dto.EditTrabajadorCmd;
 import com.example.Recysell.trabajador.dto.GetTrabajadorDto;
 import com.example.Recysell.trabajador.dto.TrabajadorResponse;
 import com.example.Recysell.trabajador.model.Trabajador;
@@ -16,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -130,5 +133,49 @@ public class TrabajadorController {
                 .body(TrabajadorResponse.of(trabajador));
     }
 
+
+    @Operation(summary = "Edita un trabajador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "El trabajador ha sido editado correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetTrabajadorDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                    "username": "jrodriguez",
+                                                    "email": "jrodriguez@recycell.com",
+                                                    "password": "123456",
+                                                    "nombre": "javier",
+                                                    "apellidos": "rodriguez"
+                                            }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "Solicitud incorrecta. Faltan campos obligatorios o el formato es inválido.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "No tienes permiso para editar este trabajador.",
+                    content = @Content)
+    })
+    @PutMapping("{id}")
+    @PreAuthorize("hasRole('TRABAJADOR')")
+    public GetTrabajadorDto edit(@Valid @RequestBody EditTrabajadorCmd editTrabajadorCmd,
+                                 @PathVariable("id") UUID id,
+                                 @AuthenticationPrincipal Trabajador authenticatedTrabajador) {
+        // Verificar que el trabajador autenticado sea el mismo que el que se quiere editar
+        if (!authenticatedTrabajador.getId().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para editar este trabajador.");
+        }
+
+        // Si los IDs coinciden, proceder a la edición
+        Trabajador trabajador = trabajadorService.edit(editTrabajadorCmd, id);
+
+        return GetTrabajadorDto.of(trabajador);
+    }
 
 }
