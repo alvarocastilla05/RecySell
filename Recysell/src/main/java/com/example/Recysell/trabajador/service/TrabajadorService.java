@@ -1,5 +1,6 @@
 package com.example.Recysell.trabajador.service;
 
+import com.example.Recysell.error.TrabajadorNotFoundException;
 import com.example.Recysell.trabajador.dto.CreateTrabajadorRequest;
 import com.example.Recysell.trabajador.dto.GetTrabajadorDto;
 import com.example.Recysell.trabajador.model.Trabajador;
@@ -39,11 +40,11 @@ public class TrabajadorService {
     private String fromMail;
 
     //ListarTrabajadores
-    public List<GetTrabajadorDto> findAllTrabajadorDto(){
+    public List<GetTrabajadorDto> findAll(){
         List<GetTrabajadorDto> result = trabajadorRepository.findAllTrabajadorDto();
 
         if(result.isEmpty()){
-            throw new EntityNotFoundException("No se han encontrado trabajadores");
+            throw new TrabajadorNotFoundException();
         }
 
         return result;

@@ -1,6 +1,7 @@
 package com.example.Recysell.trabajador.controller;
 
 import com.example.Recysell.trabajador.dto.CreateTrabajadorRequest;
+import com.example.Recysell.trabajador.dto.GetTrabajadorDto;
 import com.example.Recysell.trabajador.dto.TrabajadorResponse;
 import com.example.Recysell.trabajador.model.Trabajador;
 import com.example.Recysell.trabajador.service.TrabajadorService;
@@ -15,10 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +26,38 @@ import org.springframework.web.bind.annotation.RestController;
 public class TrabajadorController {
 
     private final TrabajadorService trabajadorService;
+
+
+    @Operation(summary = "Obtiene una lista de todos los trabajadores.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Lista de trabajadores obtenida correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetTrabajadorDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                 "username": "juanperez",
+                                                 "email": "castilla.caal24@triana.salesianos.edu",
+                                                    "nombre": "Juan",
+                                                    "apellidos": "Pérez",
+                                                    "puesto": "Operario"
+                                                }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún trabajador.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<GetTrabajadorDto> findAll(){
+        return trabajadorService.findAll();
+    }
 
 
     @Operation(summary = "Registra un nuevo trabajador.")
