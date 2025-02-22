@@ -1,6 +1,8 @@
 package com.example.Recysell.trabajador.service;
 
+import com.example.Recysell.error.TrabajadorNotFoundException;
 import com.example.Recysell.trabajador.dto.CreateTrabajadorRequest;
+import com.example.Recysell.trabajador.dto.GetTrabajadorDto;
 import com.example.Recysell.trabajador.model.Trabajador;
 import com.example.Recysell.trabajador.repo.TrabajadorRepository;
 import com.example.Recysell.user.model.User;
@@ -8,6 +10,7 @@ import com.example.Recysell.user.model.UserRole;
 import com.example.Recysell.user.repo.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,6 +38,17 @@ public class TrabajadorService {
 
     @Value("${spring.mail.username}")
     private String fromMail;
+
+    //ListarTrabajadores
+    public List<GetTrabajadorDto> findAll(){
+        List<GetTrabajadorDto> result = trabajadorRepository.findAllTrabajadorDto();
+
+        if(result.isEmpty()){
+            throw new TrabajadorNotFoundException();
+        }
+
+        return result;
+    }
 
     //Crear User Trabajador
     public Trabajador createTrabajador(CreateTrabajadorRequest createTrabajadorRequest){
