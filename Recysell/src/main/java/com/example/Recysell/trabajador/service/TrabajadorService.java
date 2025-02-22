@@ -2,6 +2,7 @@ package com.example.Recysell.trabajador.service;
 
 import com.example.Recysell.error.TrabajadorNotFoundException;
 import com.example.Recysell.trabajador.dto.CreateTrabajadorRequest;
+import com.example.Recysell.trabajador.dto.EditTrabajadorCmd;
 import com.example.Recysell.trabajador.dto.GetTrabajadorDto;
 import com.example.Recysell.trabajador.model.Trabajador;
 import com.example.Recysell.trabajador.repo.TrabajadorRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -77,6 +79,26 @@ public class TrabajadorService {
 
 
         return trabajadorRepository.save(trabajador);
+    }
+
+    //Editar Trabajador
+    public Trabajador edit(EditTrabajadorCmd editTrabajadorCmd, UUID id){
+        Optional<Trabajador> trabajador = trabajadorRepository.findById(id);
+
+        if(trabajador.isPresent()){
+            return trabajador
+                    .map(old -> {
+                        old.setUsername(editTrabajadorCmd.username());
+                        old.setPassword(passwordEncoder.encode(editTrabajadorCmd.password()));
+                        old.setEmail(editTrabajadorCmd.email());
+                        old.setNombre(editTrabajadorCmd.nombre());
+                        old.setApellidos(editTrabajadorCmd.apellidos());
+
+                        return trabajadorRepository.save(old);
+                    }).get();
+        }else{
+            throw new TrabajadorNotFoundException(id);
+        }
     }
 
     private void sendActivationEmail(String to, String activationToken) throws MessagingException {
