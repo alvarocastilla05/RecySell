@@ -178,4 +178,22 @@ public class TrabajadorController {
         return GetTrabajadorDto.of(trabajador);
     }
 
+    @Operation(summary = "Elimina un trabajador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "El trabajador ha sido eliminado correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteById(@PathVariable("id") UUID id){
+        trabajadorService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

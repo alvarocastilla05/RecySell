@@ -101,6 +101,11 @@ public class TrabajadorService {
         }
     }
 
+    //Eliminar Trabajador
+    public void deleteById(UUID id){
+        trabajadorRepository.deleteById(id);
+    }
+
     private void sendActivationEmail(String to, String activationToken) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
