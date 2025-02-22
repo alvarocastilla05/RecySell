@@ -50,6 +50,12 @@ public class TrabajadorService {
         return result;
     }
 
+    //Obtener Trabajador por ID
+    public Trabajador findById(UUID id){
+        return trabajadorRepository.findById(id)
+                .orElseThrow(() -> new TrabajadorNotFoundException(id));
+    }
+
     //Crear User Trabajador
     public Trabajador createTrabajador(CreateTrabajadorRequest createTrabajadorRequest){
         Trabajador trabajador = Trabajador.builder()
