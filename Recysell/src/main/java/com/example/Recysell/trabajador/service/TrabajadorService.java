@@ -35,8 +35,6 @@ public class TrabajadorService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
 
-    @Value("${activation.duration}")
-    private int activationDuration;
 
     @Value("${spring.mail.username}")
     private String fromMail;

@@ -68,9 +68,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/activate/account/", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/me").permitAll()
+                .requestMatchers("/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .requestMatchers("/me/admin").hasRole("ADMIN")
                 .requestMatchers("/h2-console/**").permitAll()
-                /*.requestMatchers(HttpMethod.POST, "/trabajador/register").hasRole("ADMIN")*/
+                .requestMatchers(HttpMethod.POST, "/cliente/register").permitAll()
                 .anyRequest().authenticated());
 
 

@@ -172,7 +172,6 @@ public class TrabajadorController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para editar este trabajador.");
         }
 
-        // Si los IDs coinciden, proceder a la edición
         Trabajador trabajador = trabajadorService.edit(editTrabajadorCmd, id);
 
         return GetTrabajadorDto.of(trabajador);
