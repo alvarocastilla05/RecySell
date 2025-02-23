@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -110,6 +111,35 @@ public class ClienteController {
                                        @RequestParam(defaultValue = "10") int size) {
         return clienteService.findAll(PageRequest.of(page, size));
     }
+
+    @Operation(summary = "Obtiene un cliente por su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Cliente obtenido correctamente.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetClienteDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                 "username": "carlosm",
+                                                 "email": "carlosm@recycell.com",
+                                                 "nombre": "Carlos",
+                                                 "apellidos": "MartÃ­nez GÃ³mez"
+                                            }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Cliente no encontrado.",
+                    content = @Content)
+    })
+    @GetMapping("/{id}")
+    public GetClienteDto findById(@PathVariable("id") UUID id){
+        Cliente cliente = clienteService.findById(id);
+
+        return GetClienteDto.of(cliente);
+    }
+
 
 
 
