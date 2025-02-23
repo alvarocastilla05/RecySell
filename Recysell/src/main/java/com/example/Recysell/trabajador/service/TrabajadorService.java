@@ -14,6 +14,8 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -40,8 +42,8 @@ public class TrabajadorService {
     private String fromMail;
 
     //ListarTrabajadores
-    public List<GetTrabajadorDto> findAll(){
-        List<GetTrabajadorDto> result = trabajadorRepository.findAllTrabajadorDto();
+    public Page<GetTrabajadorDto> findAll(Pageable pageable){
+        Page<GetTrabajadorDto> result = trabajadorRepository.findAllTrabajadorDto(pageable);
 
         if(result.isEmpty()){
             throw new TrabajadorNotFoundException();

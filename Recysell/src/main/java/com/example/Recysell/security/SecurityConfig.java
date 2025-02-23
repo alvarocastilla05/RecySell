@@ -71,7 +71,7 @@ public class SecurityConfig {
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .requestMatchers("/me/admin").hasRole("ADMIN")
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/cliente/register").permitAll()
+                .requestMatchers( "/cliente/register", "/cliente").permitAll()
                 .anyRequest().authenticated());
 
 

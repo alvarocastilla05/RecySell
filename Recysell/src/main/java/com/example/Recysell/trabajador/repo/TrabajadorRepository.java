@@ -2,6 +2,8 @@ package com.example.Recysell.trabajador.repo;
 
 import com.example.Recysell.trabajador.dto.GetTrabajadorDto;
 import com.example.Recysell.trabajador.model.Trabajador;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,5 +18,5 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador, UUID> {
         )
         FROM Trabajador t
     """)
-    public List<GetTrabajadorDto> findAllTrabajadorDto();
+    public Page<GetTrabajadorDto> findAllTrabajadorDto(Pageable pageable);
 }

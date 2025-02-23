@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +28,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/trabajador/")
+@RequestMapping("/trabajador")
 public class TrabajadorController {
 
     private final TrabajadorService trabajadorService;
@@ -41,12 +43,55 @@ public class TrabajadorController {
                             examples = {@ExampleObject(
                                     value = """
                                             {
-                                                 "username": "juanperez",
-                                                 "email": "castilla.caal24@triana.salesianos.edu",
-                                                    "nombre": "Juan",
-                                                    "apellidos": "Pérez",
-                                                    "puesto": "Operario"
-                                                }
+                                                     "content": [
+                                                         {
+                                                             "username": "jrodriguez",
+                                                             "email": "jrodriguez@recycell.com",
+                                                             "nombre": "Juan",
+                                                             "apellidos": "RodrÃ­guez PÃ©rez",
+                                                             "puesto": "TÃ©cnico en reacondicionamiento"
+                                                         },
+                                                         {
+                                                             "username": "mlopez",
+                                                             "email": "mlopez@recycell.com",
+                                                             "nombre": "MarÃ­a",
+                                                             "apellidos": "LÃ³pez FernÃ¡ndez",
+                                                             "puesto": "TÃ©cnico en pruebas"
+                                                         },
+                                                         {
+                                                             "username": "agomez",
+                                                             "email": "agomez@recycell.com",
+                                                             "nombre": "Alejandro",
+                                                             "apellidos": "GÃ³mez SÃ¡nchez",
+                                                             "puesto": "TÃ©cnico en ventas"
+                                                         }
+                                                     ],
+                                                     "pageable": {
+                                                         "pageNumber": 0,
+                                                         "pageSize": 5,
+                                                         "sort": {
+                                                             "empty": true,
+                                                             "sorted": false,
+                                                             "unsorted": true
+                                                         },
+                                                         "offset": 0,
+                                                         "paged": true,
+                                                         "unpaged": false
+                                                     },
+                                                     "last": true,
+                                                     "totalPages": 1,
+                                                     "totalElements": 3,
+                                                     "size": 5,
+                                                     "number": 0,
+                                                     "sort": {
+                                                         "empty": true,
+                                                         "sorted": false,
+                                                         "unsorted": true
+                                                     },
+                                                     "first": true,
+                                                     "numberOfElements": 3,
+                                                     "empty": false
+                                                 }
                                             """
                             )}
                     )}),
@@ -59,8 +104,9 @@ public class TrabajadorController {
     })
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<GetTrabajadorDto> findAll(){
-        return trabajadorService.findAll();
+    public Page<GetTrabajadorDto> findAll(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "10") int size){
+        return trabajadorService.findAll(PageRequest.of(page, size));
     }
 
 
@@ -89,7 +135,7 @@ public class TrabajadorController {
                     description = "No autorizado.",
                     content = @Content)
     })
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public GetTrabajadorDto findById(@PathVariable("id") UUID id){
         Trabajador trabajador = trabajadorService.findById(id);
@@ -124,7 +170,7 @@ public class TrabajadorController {
                     description = "No autorizado.",
                     content = @Content),
     })
-    @PostMapping("register")
+    @PostMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TrabajadorResponse> register(@Valid @RequestBody CreateTrabajadorRequest createTrabajadorRequest){
         Trabajador trabajador = trabajadorService.createTrabajador(createTrabajadorRequest);
@@ -162,7 +208,7 @@ public class TrabajadorController {
                     description = "No tienes permiso para editar este trabajador.",
                     content = @Content)
     })
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('TRABAJADOR')")
     public GetTrabajadorDto edit(@Valid @RequestBody EditTrabajadorCmd editTrabajadorCmd,
                                  @PathVariable("id") UUID id,
@@ -186,7 +232,7 @@ public class TrabajadorController {
                     description = "No autorizado.",
                     content = @Content),
     })
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable("id") UUID id){
         trabajadorService.deleteById(id);
