@@ -2,6 +2,7 @@ package com.example.Recysell.cliente.controller;
 
 import com.example.Recysell.cliente.dto.ClienteResponse;
 import com.example.Recysell.cliente.dto.CreateClienteRequest;
+import com.example.Recysell.cliente.dto.EditClienteCmd;
 import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.service.ClienteService;
@@ -16,6 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -173,5 +175,41 @@ public class ClienteController {
         Cliente cliente = clienteService.createCliente(createClienteRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponse.of(cliente));
+    }
+
+    @Operation(summary = "Edita un cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Cliente editado correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetClienteDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                 "username": "carlosm",
+                                                 "email": "carlosm@recycell.com",
+                                                 "nombre": "sisi",
+                                                 "password": "123456",
+                                                 "apellidos": "MartÃ­nez GÃ³mez"
+                                            }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "Solicitud incorrecta. Faltan campos obligatorios o el formato es inválido.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Cliente no encontrado.",
+                    content = @Content)
+    })
+    @PutMapping("/{id}")
+    @PostAuthorize("returnObject.username == authentication.principal.username")
+    public GetClienteDto edit(@Valid @RequestBody EditClienteCmd editClienteCmd, @PathVariable UUID id){
+        Cliente cliente = clienteService.edit(editClienteCmd, id);
+
+        return GetClienteDto.of(cliente);
     }
 }

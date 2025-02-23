@@ -1,6 +1,7 @@
 package com.example.Recysell.cliente.service;
 
 import com.example.Recysell.cliente.dto.CreateClienteRequest;
+import com.example.Recysell.cliente.dto.EditClienteCmd;
 import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.repo.ClienteRepository;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -73,6 +75,26 @@ public class ClienteService {
         }
 
         return clienteRepository.save(cliente);
+    }
+
+    //Editar Cliente
+    public Cliente edit(EditClienteCmd editClienteCmd, UUID id){
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+
+        if(clienteOptional.isPresent()){
+            return clienteOptional
+                    .map(old -> {
+                        old.setUsername(editClienteCmd.username());
+                        old.setEmail(editClienteCmd.email());
+                        old.setNombre(editClienteCmd.nombre());
+                        old.setApellidos(editClienteCmd.apellidos());
+                        old.setPassword(passwordEncoder.encode(editClienteCmd.password()));
+
+                        return clienteRepository.save(old);
+                    }).get();
+        }else{
+            throw new ClienteNotFoundException(id);
+        }
     }
 
     private void sendActivationEmail(String to, String activationToken) throws MessagingException {
