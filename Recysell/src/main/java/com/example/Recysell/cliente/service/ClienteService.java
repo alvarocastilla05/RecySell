@@ -1,8 +1,10 @@
 package com.example.Recysell.cliente.service;
 
 import com.example.Recysell.cliente.dto.CreateClienteRequest;
+import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.repo.ClienteRepository;
+import com.example.Recysell.error.ClienteNotFoundException;
 import com.example.Recysell.user.model.UserRole;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -14,7 +16,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,6 +35,18 @@ public class ClienteService {
 
     @Value("${spring.mail.username}")
     private String fromMail;
+
+
+    //Listar Clientes
+    public Page<GetClienteDto> findAll(Pageable pageable) {
+        Page<GetClienteDto> result = clienteRepository.findAllClienteDto(pageable);
+
+        if (result.isEmpty()) {
+            throw new ClienteNotFoundException();
+        }
+
+        return result;
+    }
 
     //Crear User Cliente
     public Cliente createCliente(CreateClienteRequest createClienteRequest){
