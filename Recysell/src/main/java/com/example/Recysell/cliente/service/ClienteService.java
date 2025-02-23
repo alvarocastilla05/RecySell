@@ -48,6 +48,12 @@ public class ClienteService {
         return result;
     }
 
+    //Filtrar Cliente por ID
+    public Cliente findById(UUID id){
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new ClienteNotFoundException(id));
+    }
+
     //Crear User Cliente
     public Cliente createCliente(CreateClienteRequest createClienteRequest){
         Cliente cliente = Cliente.builder()
