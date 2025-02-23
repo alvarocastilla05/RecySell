@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -209,15 +210,8 @@ public class TrabajadorController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('TRABAJADOR')")
-    public GetTrabajadorDto edit(@Valid @RequestBody EditTrabajadorCmd editTrabajadorCmd,
-                                 @PathVariable("id") UUID id,
-                                 @AuthenticationPrincipal Trabajador authenticatedTrabajador) {
-        // Verificar que el trabajador autenticado sea el mismo que el que se quiere editar
-        if (!authenticatedTrabajador.getId().equals(id)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para editar este trabajador.");
-        }
-
+    @PostAuthorize("returnObject.username == authentication.principal.username")
+    public GetTrabajadorDto edit(@Valid @RequestBody EditTrabajadorCmd editTrabajadorCmd, @PathVariable("id") UUID id) {
         Trabajador trabajador = trabajadorService.edit(editTrabajadorCmd, id);
 
         return GetTrabajadorDto.of(trabajador);
