@@ -97,6 +97,11 @@ public class ClienteService {
         }
     }
 
+    //Eliminar Cliente
+    public void deleteById(UUID id){
+        clienteRepository.deleteById(id);
+    }
+
     private void sendActivationEmail(String to, String activationToken) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
