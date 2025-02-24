@@ -23,6 +23,8 @@ public class GlobalExceptionHandler {
             errorType = "Trabajador no encontrado";
         }else if(ex instanceof ClienteNotFoundException) {
             errorType = "Cliente no encontrado";
+        } else if (ex instanceof ProductoNotFoundException) {
+            errorType = "Producto no encontrado";
         }
 
         Map<String, Object> errorBody = Map.of(
