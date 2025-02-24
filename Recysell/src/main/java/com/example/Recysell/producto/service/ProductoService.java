@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,17 @@ public class ProductoService {
         return result;
 
 
+    }
+
+    //Buscar Producto por ID
+    public Producto findById(Long id){
+        Optional<Producto> producto = productoRepository.findById(id);
+
+        if (producto.isPresent() && !producto.get().isDeleted()) {
+            return producto.get();
+        } else {
+            throw new ProductoNotFoundException(id);
+        }
     }
 
 

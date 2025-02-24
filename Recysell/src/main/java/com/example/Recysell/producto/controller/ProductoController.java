@@ -94,6 +94,45 @@ public class ProductoController {
         return productoService.findAllProductosEnVenta(pageable, isDeleted);
     }
 
+    @Operation(summary = "Obtiene un producto por su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Producto encontrado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetProductoDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "nombre": "iPhone 12",
+                                                "descripcion": "TelÃ©fono reacondicionado en excelente estado",
+                                                "precio": 499.99,
+                                                "imagen": "imagen1.jpg",
+                                                "clienteVendedor": {
+                                                    "username": "carlosm",
+                                                    "email": "carlosm@recycell.com",
+                                                                  "nombre": "Carlos",
+                                                                  "apellidos": "MartÃ­nez GÃ³mez"
+                                                              }
+                                                          }
+                                            }
+                                            
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Producto no encontrado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('CLIENTE')")
+    public GetProductoDto findById(@PathVariable Long id) {
+        Producto producto = productoService.findById(id);
+        return GetProductoDto.of(producto);
+    }
+
     @Operation(summary = "Registra un nuevo producto.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
@@ -120,7 +159,6 @@ public class ProductoController {
                     content = @Content),
     })
     @PostMapping
-    @PreAuthorize("hasRole('CLIENTE')")
     public ResponseEntity<GetProductoDto> createProducto(@Valid @RequestPart("producto") CreateProductoDto createProductoDto,
                                                          @AuthenticationPrincipal Cliente authenticatedCliente, @RequestPart("file") MultipartFile file) {
         Producto producto = productoService.save(createProductoDto, authenticatedCliente, file);
