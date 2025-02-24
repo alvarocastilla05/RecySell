@@ -1,5 +1,6 @@
 package com.example.Recysell.producto.repo;
 
+import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.producto.dto.GetProductoDto;
 import com.example.Recysell.producto.model.Producto;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
@@ -22,4 +24,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
 
     boolean existsByIdAndClienteVendedor_Username(Long productoId, String username);
+
+    Page<Producto> findProductosByClienteVendedor(Cliente clienten, Pageable pageable);
 }

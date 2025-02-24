@@ -4,6 +4,7 @@ import com.example.Recysell.categoria.dto.GetCategoriaDto;
 import com.example.Recysell.cliente.dto.ClienteResponse;
 import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
+import com.example.Recysell.cliente.service.ClienteService;
 import com.example.Recysell.producto.dto.CreateProductoDto;
 import com.example.Recysell.producto.dto.EditProductoCmd;
 import com.example.Recysell.producto.dto.GetProductoConAsociaciones;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +40,7 @@ import java.util.Set;
 public class ProductoController {
 
     private final ProductoService productoService;
+    private final ClienteService clienteService;
 
     @Operation(summary = "Obtiene todos los productos en venta.")
     @ApiResponses(value = {
@@ -234,5 +237,69 @@ public class ProductoController {
     public ResponseEntity<?> deleteProducto(@PathVariable Long id) {
         productoService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Obtiene los productos de un cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Lista de productos del cliente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetProductoDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                      "content": [
+                                                          {
+                                                              "nombre": "iPhone 12",
+                                                              "descripcion": "TelÃ©fono reacondicionado en excelente estado",
+                                                              "precio": 499.99,
+                                                              "imagen": "imagen1.jpg",
+                                                              "clienteVendedor": {
+                                                                  "username": "carlosm",
+                                                                  "email": "carlosm@recycell.com",
+                                                                    "nombre": "Carlos",
+                                                                    "apellidos": "MartÃ­nez GÃ³mez"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "pageable": {
+                                                            "pageNumber": 0,
+                                                            "pageSize": 1,
+                                                            "sort": {
+                                                                "empty": true,
+                                                                "sorted": false,
+                                                                "unsorted": true
+                                                            },
+                                                            "offset": 0,
+                                                            "paged": true,
+                                                            "unpaged": false
+                                                        },
+                                                        "last": false,
+                                                        "totalElements": 5,
+                                                        "totalPages": 5,
+                                                        "first": true,
+                                                        "size": 1,
+                                                        "number": 0,
+                                                        "sort": {
+                                                            "empty": true,
+                                                            "sorted": false,
+                                                            "unsorted": true
+                                                        },
+                                                        "numberOfElements": 1,
+                                                        "empty": false
+                                            }
+                                            
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se encotró ningun producto.",
+                    content = @Content),
+    })
+    @GetMapping("/cliente/{id}")
+    public List<GetProductoDto> findProductosByClienteVendedor(@PathVariable UUID id, Pageable pageable) {
+
+        Cliente cliente = clienteService.findById(id);
+        return productoService.findProductosByClienteVendedor(cliente, pageable).getContent();
     }
 }

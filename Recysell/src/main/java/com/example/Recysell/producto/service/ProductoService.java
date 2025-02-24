@@ -113,5 +113,11 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 
+    //Lista de productos por cliente
+    public Page<GetProductoDto> findProductosByClienteVendedor(Cliente cliente, Pageable pageable){
+        return productoRepository.findProductosByClienteVendedor(cliente, pageable)
+                .map(GetProductoDto::of);
+    }
+
 
 }
