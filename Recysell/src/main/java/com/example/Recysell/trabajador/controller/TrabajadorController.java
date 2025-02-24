@@ -106,8 +106,9 @@ public class TrabajadorController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public Page<GetTrabajadorDto> findAll(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size){
-        return trabajadorService.findAll(PageRequest.of(page, size));
+                                          @RequestParam(defaultValue = "10") int size,
+                                          @RequestParam(value = "isDeleted", required = false, defaultValue = "false") boolean isDeleted){
+        return trabajadorService.findAll(PageRequest.of(page, size), isDeleted);
     }
 
 

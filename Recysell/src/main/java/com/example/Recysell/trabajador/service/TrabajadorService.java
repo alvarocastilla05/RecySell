@@ -11,8 +11,11 @@ import com.example.Recysell.user.model.UserRole;
 import com.example.Recysell.user.repo.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,14 +39,20 @@ public class TrabajadorService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
+    private final EntityManager entityManager;
 
 
     @Value("${spring.mail.username}")
     private String fromMail;
 
     //ListarTrabajadores
-    public Page<GetTrabajadorDto> findAll(Pageable pageable){
+    public Page<GetTrabajadorDto> findAll(Pageable pageable, boolean isDeleted){
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedUserFilter");
+        filter.setParameter("isDeleted", isDeleted);
+
         Page<GetTrabajadorDto> result = trabajadorRepository.findAllTrabajadorDto(pageable);
+        session.disableFilter("deletedUserFilter");
 
         if(result.isEmpty()){
             throw new TrabajadorNotFoundException();
