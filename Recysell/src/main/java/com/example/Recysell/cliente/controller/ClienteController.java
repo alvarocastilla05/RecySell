@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -110,8 +111,9 @@ public class ClienteController {
     })
     @GetMapping
     public Page<GetClienteDto> findAll(@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size) {
-        return clienteService.findAll(PageRequest.of(page, size));
+                                       @RequestParam(defaultValue = "10") int size,
+                                       @RequestParam(value = "isDeleted", required = false, defaultValue = "false") boolean isDeleted){
+        return clienteService.findAll(PageRequest.of(page, size), isDeleted);
     }
 
     @Operation(summary = "Obtiene un cliente por su ID.")
@@ -212,4 +214,21 @@ public class ClienteController {
 
         return GetClienteDto.of(cliente);
     }
+
+    @Operation(summary = "Elimina un cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Cliente eliminado correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content)
+    })
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    public ResponseEntity<?> deleteById(@PathVariable("id") UUID id) {
+        clienteService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

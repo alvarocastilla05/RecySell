@@ -9,6 +9,7 @@ import com.example.Recysell.error.ClienteNotFoundException;
 import com.example.Recysell.user.model.UserRole;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.hibernate.Session;
+import org.hibernate.Filter;
+
 
 
 import java.util.List;
@@ -34,14 +38,21 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
+    private final EntityManager entityManager;
 
     @Value("${spring.mail.username}")
     private String fromMail;
 
 
     //Listar Clientes
-    public Page<GetClienteDto> findAll(Pageable pageable) {
+    public Page<GetClienteDto> findAll(Pageable pageable, boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedUserFilter");
+        filter.setParameter("isDeleted", isDeleted);
+
+
         Page<GetClienteDto> result = clienteRepository.findAllClienteDto(pageable);
+        session.disableFilter("deletedUserFilter");
 
         if (result.isEmpty()) {
             throw new ClienteNotFoundException();
@@ -95,6 +106,11 @@ public class ClienteService {
         }else{
             throw new ClienteNotFoundException(id);
         }
+    }
+
+    //Eliminar Cliente
+    public void deleteById(UUID id){
+        clienteRepository.deleteById(id);
     }
 
     private void sendActivationEmail(String to, String activationToken) throws MessagingException {
