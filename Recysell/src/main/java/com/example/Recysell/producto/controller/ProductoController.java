@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +30,69 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductoController {
 
     private final ProductoService productoService;
+
+    @Operation(summary = "Obtiene todos los productos en venta.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Lista de productos en venta.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetProductoDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                      "content": [
+                                                          {
+                                                              "nombre": "iPhone 12",
+                                                              "descripcion": "TelÃ©fono reacondicionado en excelente estado",
+                                                              "precio": 499.99,
+                                                              "imagen": "imagen1.jpg",
+                                                              "clienteVendedor": {
+                                                                  "username": "carlosm",
+                                                                  "email": "carlosm@recycell.com",
+                                                                  "nombre": "Carlos",
+                                                                  "apellidos": "MartÃ­nez GÃ³mez"
+                                                              }
+                                                          }
+                                                      ],
+                                                      "pageable": {
+                                                          "pageNumber": 0,
+                                                          "pageSize": 1,
+                                                          "sort": {
+                                                              "empty": true,
+                                                              "sorted": false,
+                                                              "unsorted": true
+                                                          },
+                                                          "offset": 0,
+                                                          "paged": true,
+                                                          "unpaged": false
+                                                      },
+                                                      "last": false,
+                                                      "totalElements": 5,
+                                                      "totalPages": 5,
+                                                      "first": true,
+                                                      "size": 1,
+                                                      "number": 0,
+                                                      "sort": {
+                                                          "empty": true,
+                                                          "sorted": false,
+                                                          "unsorted": true
+                                                      },
+                                                      "numberOfElements": 1,
+                                                      "empty": false
+                                            }
+                                            
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se encotró ningun producto.",
+                    content = @Content),
+    })
+    @GetMapping
+    public Page<GetProductoDto> findAllProductosEnVenta(@PageableDefault Pageable pageable,
+                                                        @RequestParam(value = "isDeleted", required = false) boolean isDeleted) {
+        return productoService.findAllProductosEnVenta(pageable, isDeleted);
+    }
 
     @Operation(summary = "Registra un nuevo producto.")
     @ApiResponses(value = {

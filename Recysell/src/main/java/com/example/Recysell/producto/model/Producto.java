@@ -6,6 +6,10 @@ import com.example.Recysell.donacion.model.Donacion;
 import com.example.Recysell.valora.model.Valora;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.*;
@@ -17,6 +21,9 @@ import java.util.*;
 @Builder
 @ToString(callSuper = true)
 @Entity
+@SQLDelete(sql = "UPDATE producto SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedProductoFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedProductoFilter", condition = "deleted = :isDeleted")
 public class Producto {
 
     @Id
@@ -30,6 +37,8 @@ public class Producto {
     private double precio;
 
     String imagen;
+
+    private boolean deleted = Boolean.FALSE;
 
     //Asociación con Cliente (Productos en venta).
     @ManyToOne
