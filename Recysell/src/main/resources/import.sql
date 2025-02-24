@@ -71,3 +71,20 @@ INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174005');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174006');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174007');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174008');
+
+
+INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante)
+VALUES (1, 'iPhone 12', 'Teléfono reacondicionado en excelente estado', 499.99, 'imagen1.jpg', '223e4567-e89b-12d3-a456-426614174004', NULL);
+
+INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante)
+VALUES (2, 'Samsung Galaxy S21', 'Smartphone de alto rendimiento', 599.99, 'imagen2.jpg', '223e4567-e89b-12d3-a456-426614174004', NULL);
+
+INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante)
+VALUES (3, 'MacBook Pro 13"', 'Laptop para trabajo y diseño', 1299.99, 'imagen3.jpg', '223e4567-e89b-12d3-a456-426614174006', NULL);
+
+INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante)
+VALUES (4, 'Monitor LG 4K', 'Monitor UHD para productividad', 299.99, 'imagen4.jpg', '223e4567-e89b-12d3-a456-426614174006', NULL);
+
+INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante)
+VALUES (5, 'Teclado Mecánico', 'Teclado gaming RGB', 99.99, 'imagen5.jpg', '223e4567-e89b-12d3-a456-426614174008', NULL);
+
