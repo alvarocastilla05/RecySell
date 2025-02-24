@@ -25,6 +25,8 @@ public class GlobalExceptionHandler {
             errorType = "Cliente no encontrado";
         } else if (ex instanceof ProductoNotFoundException) {
             errorType = "Producto no encontrado";
+        } else if (ex instanceof CategoriaNotFoundException) {
+            errorType = "Categoría no encontrada";
         }
 
         Map<String, Object> errorBody = Map.of(
