@@ -21,5 +21,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     public Page<GetProductoDto> findAllProductosEnVenta(Pageable pageable);
 
 
-
+    boolean existsByIdAndClienteVendedor_Username(Long productoId, String username);
 }

@@ -1,5 +1,7 @@
 package com.example.Recysell.producto.service;
 
+import com.example.Recysell.categoria.dto.GetCategoriaDto;
+import com.example.Recysell.categoria.repo.CategoriaRepository;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.repo.ClienteRepository;
 import com.example.Recysell.error.ClienteNotFoundException;
@@ -7,6 +9,7 @@ import com.example.Recysell.error.ProductoNotFoundException;
 import com.example.Recysell.files.model.FileMetadata;
 import com.example.Recysell.files.service.StorageService;
 import com.example.Recysell.producto.dto.CreateProductoDto;
+import com.example.Recysell.producto.dto.EditProductoCmd;
 import com.example.Recysell.producto.dto.GetProductoDto;
 import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.producto.repo.ProductoRepository;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +33,16 @@ public class ProductoService {
     private final ProductoRepository productoRepository;
     private final StorageService storageService;
     private final EntityManager entityManager;
+    private final CategoriaRepository categoriaRepository;
 
+
+    public Set<GetCategoriaDto> getCategoriasPorProducto(Long id){
+        return categoriaRepository.findCategoriasByProductoId(id);
+    }
+
+    public boolean esPropietario(Long productoId, String username) {
+        return productoRepository.existsByIdAndClienteVendedor_Username(productoId, username);
+    }
 
     //Listar Productos en Venta.
     public Page<GetProductoDto> findAllProductosEnVenta(Pageable pageable, boolean isDeleted){
@@ -74,6 +87,25 @@ public class ProductoService {
                 .build();
 
         return productoRepository.save(producto);
+    }
+
+    //Modificar Productos
+    public Producto edit(EditProductoCmd editProductoCmd, Long id, MultipartFile file ){
+        Optional<Producto> productoOptional = productoRepository.findById(id);
+
+        if (productoOptional.isPresent() && !productoOptional.get().isDeleted()) {
+            return productoOptional
+                    .map(old -> {
+                        old.setNombre(editProductoCmd.nombre());
+                        old.setDescripcion(editProductoCmd.descripcion());
+                        old.setPrecio(editProductoCmd.precio());
+                        old.setImagen(storageService.store(file).getFilename());
+
+                        return productoRepository.save(old);
+                    }).get();
+        } else {
+            throw new ProductoNotFoundException(id);
+        }
     }
 
 

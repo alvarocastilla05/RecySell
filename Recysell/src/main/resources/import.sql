@@ -88,3 +88,31 @@ VALUES (4, 'Monitor LG 4K', 'Monitor UHD para productividad', 299.99, 'imagen4.j
 INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
 VALUES (5, 'Teclado Mecánico', 'Teclado gaming RGB', 99.99, 'imagen5.jpg', '223e4567-e89b-12d3-a456-426614174008', NULL, false);
 
+ALTER SEQUENCE producto_seq RESTART WITH 55;
+
+
+
+INSERT INTO categoria (id, nombre) VALUES (1, 'Smartphones');
+
+INSERT INTO categoria (id, nombre) VALUES (2, 'Laptops');
+
+INSERT INTO categoria (id, nombre) VALUES (3, 'Tablets');
+
+INSERT INTO categoria (id, nombre) VALUES (4, 'Accesorios');
+
+INSERT INTO categoria (id, nombre) VALUES (5, 'Televisores');
+
+ALTER SEQUENCE categoria_seq RESTART WITH 55;
+
+INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (1, 1);
+
+INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (1, 2);
+
+INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (2, 3);
+
+INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (2, 4);
+
+INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (4, 5);
+
+
+
