@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -110,10 +111,9 @@ public class ClienteController {
                     content = @Content)
     })
     @GetMapping
-    public Page<GetClienteDto> findAll(@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size,
+    public Page<GetClienteDto> findAll(@PageableDefault Pageable pageable,
                                        @RequestParam(value = "isDeleted", required = false, defaultValue = "false") boolean isDeleted){
-        return clienteService.findAll(PageRequest.of(page, size), isDeleted);
+        return clienteService.findAll(pageable, isDeleted);
     }
 
     @Operation(summary = "Obtiene un cliente por su ID.")

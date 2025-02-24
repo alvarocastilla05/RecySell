@@ -29,6 +29,8 @@ public class Producto {
 
     private double precio;
 
+    String imagen;
+
     //Asociación con Cliente (Productos en venta).
     @ManyToOne
     @JoinColumn(
