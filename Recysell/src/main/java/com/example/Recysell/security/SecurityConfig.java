@@ -76,6 +76,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/cliente/**").hasRole("CLIENTE")
                 .requestMatchers(HttpMethod.GET, "/producto").permitAll()
+                .requestMatchers(HttpMethod.GET, "/producto/**").hasRole("CLIENTE")
+                .requestMatchers(HttpMethod.GET, "/producto/**").hasRole("TRABAJADOR")
+                .requestMatchers(HttpMethod.GET, "/producto/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
 
