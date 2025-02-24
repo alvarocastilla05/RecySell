@@ -216,4 +216,23 @@ public class ProductoController {
         Producto producto = productoService.edit(editProductoCmd, id, file);
         return ResponseEntity.ok(GetProductoDto.of(producto));
     }
+
+    @Operation(summary = "Elimina un producto.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "El producto ha sido eliminado correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "No autorizado para eliminar el producto.",
+                    content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    @PreAuthorize("@productoService.esPropietario(#id, authentication.principal.username)")
+    public ResponseEntity<?> deleteProducto(@PathVariable Long id) {
+        productoService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

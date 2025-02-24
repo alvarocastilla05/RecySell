@@ -108,5 +108,10 @@ public class ProductoService {
         }
     }
 
+    //Eliminar Producto
+    public void deleteById(Long id){
+        productoRepository.deleteById(id);
+    }
+
 
 }
