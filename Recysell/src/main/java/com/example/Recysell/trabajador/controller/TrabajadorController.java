@@ -16,6 +16,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -105,10 +107,9 @@ public class TrabajadorController {
     })
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<GetTrabajadorDto> findAll(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size,
+    public Page<GetTrabajadorDto> findAll(@PageableDefault Pageable pageable,
                                           @RequestParam(value = "isDeleted", required = false, defaultValue = "false") boolean isDeleted){
-        return trabajadorService.findAll(PageRequest.of(page, size), isDeleted);
+        return trabajadorService.findAll(pageable, isDeleted);
     }
 
 
