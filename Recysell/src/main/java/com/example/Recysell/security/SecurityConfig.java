@@ -104,6 +104,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/valora").hasRole("TRABAJADOR")
                 .requestMatchers(HttpMethod.GET, "/valora/trabajador/**").hasAnyRole("TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/valora/**").hasRole("TRABAJADOR")
+                .requestMatchers(HttpMethod.DELETE, "/valora/**").hasRole("TRABAJADOR")
 
                 .anyRequest().authenticated());
 

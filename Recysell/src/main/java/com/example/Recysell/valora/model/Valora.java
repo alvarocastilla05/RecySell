@@ -4,6 +4,10 @@ import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.trabajador.model.Trabajador;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -24,13 +28,14 @@ public class Valora {
 
     private String comentario;
 
-    @OneToOne
-    @MapsId("productoId") // Mapea el campo productoId de ValoraPK
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @MapsId("productoId")
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
     @ManyToOne
-    @MapsId("trabajadorId") // Mapea el campo trabajadorValoraId de ValoraPK
+    @MapsId("trabajadorId")
     @JoinColumn(
             name = "trabajador_id",
             foreignKey = @ForeignKey(name = "fk_valora_trabajador")

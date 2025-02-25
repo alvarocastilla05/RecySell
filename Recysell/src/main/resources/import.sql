@@ -197,3 +197,4 @@ VALUES (7, '123e4567-e89b-12d3-a456-426614174001', 5, 'Perfecto para tomar notas
 INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
 VALUES (8, '123e4567-e89b-12d3-a456-426614174002', 4, 'Muy útil, aunque la batería podría durar más.');
 
+
