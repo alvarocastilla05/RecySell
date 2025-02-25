@@ -35,7 +35,7 @@ public class Cliente extends User {
     //Asociación con Productos (Favoritos).
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "anhade-favorito",
+            name = "anhade_favorito",
             joinColumns = @JoinColumn(name="cliente_id_favoritos"),
             inverseJoinColumns = @JoinColumn(name="producto_id_favorito"),
             foreignKey = @ForeignKey(name = "fk_cliente_producto_favorito"),
