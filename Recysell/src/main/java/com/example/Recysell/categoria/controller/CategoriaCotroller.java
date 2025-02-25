@@ -145,4 +145,19 @@ public class CategoriaCotroller {
     public GetCategoriaDto edit(@PathVariable Long id, @Valid @RequestBody EditarCategoriaCmd edit){
         return GetCategoriaDto.of(categoriaService.edit(id, edit));
     }
+
+    @Operation(summary = "Elimina una categoria.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "La categoria ha sido eliminada correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        categoriaService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

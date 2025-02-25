@@ -77,7 +77,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/producto").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categoria").permitAll()
 
-                // Rutas protegidas por roles específicos
+                // Rutas roles específicos
                 .requestMatchers("/me/admin").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/trabajador/**").hasRole("TRABAJADOR")
                 .requestMatchers(HttpMethod.PUT, "/cliente/**").hasRole("CLIENTE")
@@ -91,6 +91,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/categoria").hasAnyRole("TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/categoria/**").hasAnyRole("ADMIN", "TRABAJADOR")
                 .requestMatchers(HttpMethod.PUT, "/categoria/**").hasAnyRole("TRABAJADOR", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/categoria/**").hasAnyRole("TRABAJADOR", "ADMIN")
 
                 // Cualquier otra petición requiere autenticación
                 .anyRequest().authenticated());
