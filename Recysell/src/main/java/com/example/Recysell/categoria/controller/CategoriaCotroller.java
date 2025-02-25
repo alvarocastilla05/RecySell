@@ -160,4 +160,5 @@ public class CategoriaCotroller {
         categoriaService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }
