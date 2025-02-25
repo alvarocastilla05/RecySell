@@ -1,33 +1,60 @@
 package com.example.Recysell.valora.service;
 
 import com.example.Recysell.error.ProductoNotFoundException;
+import com.example.Recysell.error.ProductoYaValoradoException;
 import com.example.Recysell.error.TrabajadorNotFoundException;
+import com.example.Recysell.error.ValoraNotFoundException;
 import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.producto.repo.ProductoRepository;
 import com.example.Recysell.trabajador.model.Trabajador;
 import com.example.Recysell.trabajador.repo.TrabajadorRepository;
 import com.example.Recysell.valora.dto.CreateValoraRequest;
+import com.example.Recysell.valora.dto.GetValoraDtoSinTrabajador;
 import com.example.Recysell.valora.model.Valora;
 import com.example.Recysell.valora.model.ValoraPK;
 import com.example.Recysell.valora.repo.ValoraRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ValoraService {
 
     private final ValoraRepository valoraRepository;
-    private final TrabajadorRepository trabajadorRepository;
     private final ProductoRepository productoRepository;
+    private final TrabajadorRepository TrabajadorRepository;
+    private final TrabajadorRepository trabajadorRepository;
+
+
+    //Listar Valoraciones de un trabajador
+    public Page<GetValoraDtoSinTrabajador> findAllByTrabajadorValora(UUID id, Pageable pageable) {
+        Trabajador trabajadorValora = trabajadorRepository.findById(id)
+                .orElseThrow(() -> new TrabajadorNotFoundException(id));
+
+        Page<GetValoraDtoSinTrabajador> valoraciones = valoraRepository.findAllByTrabajadorValora(trabajadorValora, pageable);
+
+        if(valoraciones.isEmpty()){
+            throw new ValoraNotFoundException();
+        }
+
+        return valoraciones;
+    }
 
     public Valora save(CreateValoraRequest nuevo, Trabajador trabajador) {
         Producto producto = productoRepository.findById(nuevo.productoId())
-                .orElseThrow(ProductoNotFoundException::new);
+                .orElseThrow(() -> new ProductoNotFoundException(nuevo.productoId()));
 
+        // Verificar si el producto ya fue valorado
+        boolean exists = valoraRepository.existsByProductoId(producto.getId());
+        if (exists) {
+            throw new ProductoYaValoradoException();
+        }
 
-        // Construye la entidad Valora
         Valora valora = Valora.builder()
                 .puntuacion(nuevo.puntuacion())
                 .comentario(nuevo.comentario())
@@ -36,7 +63,7 @@ public class ValoraService {
                 .valoraPK(new ValoraPK(trabajador.getId(), producto.getId()))
                 .build();
 
-        // Guarda la entidad
         return valoraRepository.save(valora);
     }
+
 }
