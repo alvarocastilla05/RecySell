@@ -13,12 +13,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +26,33 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoriaCotroller {
 
     private final CategoriaService categoriaService;
+
+
+    @Operation(summary = "Obtiene todas las categorias.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado todas las categorias.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetCategoriaDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "nombre": "tv",
+                                                
+                                            }
+                                            
+                                            
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se han encontrado categorias.",
+                    content = @Content),
+    })
+    @GetMapping
+    public Page<GetCategoriaDto> findAll(@PageableDefault Pageable pageable, boolean isDeleted){
+        return categoriaService.findAll(pageable, isDeleted);
+    }
 
 
     @Operation(summary = "Registra un nueva categoria.")
