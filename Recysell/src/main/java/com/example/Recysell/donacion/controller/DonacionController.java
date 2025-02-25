@@ -5,6 +5,7 @@ import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.donacion.dto.EditDonacionCmd;
 import com.example.Recysell.donacion.dto.GetDonacionDto;
 import com.example.Recysell.donacion.model.Donacion;
+import com.example.Recysell.donacion.model.DonacionPK;
 import com.example.Recysell.donacion.service.DonacionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -175,6 +176,48 @@ public class DonacionController {
     @GetMapping
     public Page<GetDonacionDto> findAll(@PageableDefault Pageable pageable){
         return donacionService.findAll(pageable);
+    }
+
+    @Operation(summary = "Obtiene una donación por su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Donación obtenida correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetDonacionDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                   "fechaDonacion": "2025-03-01T10:00:00",
+                                                   "organizacion": {
+                                                       "nombre": "EcoFuture",
+                                                       "direccion": "Avenida 45, Barcelona"
+                                                   },
+                                                   "productoDonado": {
+                                                       "nombre": "iPhone 12",
+                                                       "descripcion": "TelÃ©fono reacondicionado en excelente estado",
+                                                       "precio": 499.99,
+                                                       "imagen": "imagen1.jpg",
+                                                       "clienteVendedor": {
+                                                           "username": "carlosm",
+                                                           "email": "carlosm@recycell.com",
+                                                           "nombre": "Carlos",
+                                                           "apellidos": "MartÃ­nez GÃ³mez"
+                                                       }
+                                                   }
+                                               }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la donación.",
+                    content = @Content)
+    })
+    @GetMapping("/{productoId}/{organizacionId}")
+    public GetDonacionDto findById(@PathVariable Long productoId, @PathVariable Long organizacionId){
+        return GetDonacionDto.of(donacionService.findById(new DonacionPK(productoId, organizacionId)));
     }
 
     @Operation(summary = "Registra una nueva donación.")
