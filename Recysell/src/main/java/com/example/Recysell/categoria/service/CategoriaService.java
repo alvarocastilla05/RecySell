@@ -55,4 +55,18 @@ public class CategoriaService {
                 .nombre(nuevo.nombre())
                 .build());
     }
+
+    public Categoria edit(Long id, EditarCategoriaCmd edit){
+        Optional<Categoria> categoria = categoriaRepository.findById(id);
+
+        if (categoria.isPresent() && !categoria.get().isDeleted()){
+            return categoria.
+                    map(c -> {
+                        c.setNombre(edit.nombre());
+                        return categoriaRepository.save(c);
+                    }).get();
+        }else{
+            throw new CategoriaNotFoundException(id);
+        }
+    }
 }

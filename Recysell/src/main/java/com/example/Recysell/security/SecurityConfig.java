@@ -59,45 +59,49 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable());
         http.cors(Customizer.withDefaults());
-        http.sessionManagement((session) -> session
+        http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.exceptionHandling(excepz -> excepz
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
         );
+
         http.authorizeHttpRequests(authz -> authz
+                // Rutas públicas
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/activate/account/", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/me").permitAll()
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "v3/api-docs/**").permitAll()
-                .requestMatchers("/me/admin").hasRole("ADMIN")
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/trabajador/**").hasRole("TRABAJADOR")
-                .requestMatchers( "/cliente/register", "/cliente" ).permitAll()
+                .requestMatchers("/cliente/register", "/cliente").permitAll()
                 .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/cliente/**").hasRole("CLIENTE")
                 .requestMatchers(HttpMethod.GET, "/producto").permitAll()
-                .requestMatchers(HttpMethod.GET, "/producto/**").hasRole("CLIENTE")
-                .requestMatchers(HttpMethod.GET, "/producto/**").hasRole("TRABAJADOR")
-                .requestMatchers(HttpMethod.GET, "/producto/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/producto/**").hasRole("CLIENTE")
-                .requestMatchers(HttpMethod.GET, "/producto/cliente/**").hasRole("CLIENTE")
-                .requestMatchers(HttpMethod.GET, "/producto/cliente/**").hasRole("TRABAJADOR")
-                .requestMatchers(HttpMethod.GET, "/producto/cliente/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/categoria").hasRole("TRABAJADOR")
-                .requestMatchers(HttpMethod.POST, "/categoria").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/categoria").permitAll()
-                .requestMatchers(HttpMethod.GET, "/categoria/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/categoria/**").hasRole("TRABAJADOR")
+
+                // Rutas protegidas por roles específicos
+                .requestMatchers("/me/admin").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/trabajador/**").hasRole("TRABAJADOR")
+                .requestMatchers(HttpMethod.PUT, "/cliente/**").hasRole("CLIENTE")
+
+                // Producto
+                .requestMatchers(HttpMethod.GET, "/producto/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/producto/**").hasRole("CLIENTE")
+                .requestMatchers(HttpMethod.GET, "/producto/cliente/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
+
+                // Categoría
+                .requestMatchers(HttpMethod.POST, "/categoria").hasAnyRole("TRABAJADOR", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/categoria/**").hasAnyRole("ADMIN", "TRABAJADOR")
+                .requestMatchers(HttpMethod.PUT, "/categoria/**").hasAnyRole("TRABAJADOR", "ADMIN")
+
+                // Cualquier otra petición requiere autenticación
                 .anyRequest().authenticated());
 
-
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         http.headers(headers ->
                 headers.frameOptions(frameOptions -> frameOptions.disable()));
 
         return http.build();
     }
+
 
 }

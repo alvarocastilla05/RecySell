@@ -116,4 +116,33 @@ public class CategoriaCotroller {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(GetCategoriaDto.of(categoria));
     }
+
+    @Operation(summary = "Edita una categoria.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "La categoria ha sido editada correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetCategoriaDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "nombre": "tv",
+                                                
+                                            }
+                                            
+                                         
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "Solicitud incorrecta. Faltan campos obligatorios o el formato es inválido.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @PutMapping("/{id}")
+    public GetCategoriaDto edit(@PathVariable Long id, @Valid @RequestBody EditarCategoriaCmd edit){
+        return GetCategoriaDto.of(categoriaService.edit(id, edit));
+    }
 }
