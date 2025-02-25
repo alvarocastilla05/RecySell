@@ -77,7 +77,7 @@ public class Producto {
     @ToString.Exclude
     private Set<Categoria> listaCategorias = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "producto", fetch = FetchType.LAZY)
     private Valora valoracion;
 
     @OneToMany(mappedBy = "productoDonado", fetch = FetchType.LAZY)

@@ -18,7 +18,7 @@ public class ValoraPK implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long trabajadorId;
+    private UUID trabajadorId;
 
     private Long productoId;
 
