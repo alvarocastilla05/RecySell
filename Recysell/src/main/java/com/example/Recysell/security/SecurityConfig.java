@@ -110,7 +110,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/donacion").hasRole("CLIENTE")
                 .requestMatchers(HttpMethod.GET, "/donacion").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/donacion/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/donacion/**").hasRole("CLIENTE")
+                .requestMatchers(HttpMethod.PUT, "/donacion/**").hasAnyRole("ADMIN", "TRABAJADOR")
 
                 .anyRequest().authenticated());
 
