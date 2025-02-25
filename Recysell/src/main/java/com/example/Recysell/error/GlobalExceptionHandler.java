@@ -74,4 +74,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
+    @ExceptionHandler(UnauthorizedDonacionException.class)
+    public ResponseEntity<Map<String, Object>> handleUnauthorizedDonacion(UnauthorizedDonacionException ex) {
+        Map<String, Object> errorBody = Map.of(
+                "error", "Acceso no autorizado",
+                "message", ex.getMessage(),
+                "status", HttpStatus.FORBIDDEN.value()
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
+    }
+
 }

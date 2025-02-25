@@ -1,0 +1,47 @@
+package com.example.Recysell.donacion.service;
+
+import com.example.Recysell.cliente.model.Cliente;
+import com.example.Recysell.donacion.dto.EditDonacionCmd;
+import com.example.Recysell.donacion.model.Donacion;
+import com.example.Recysell.donacion.model.DonacionPK;
+import com.example.Recysell.donacion.repo.DonacionRepository;
+import com.example.Recysell.error.OrganizacionNotFoundException;
+import com.example.Recysell.error.ProductoNotFoundException;
+import com.example.Recysell.error.UnauthorizedDonacionException;
+import com.example.Recysell.organizacion.model.Organizacion;
+import com.example.Recysell.organizacion.repo.OrganizacionRepository;
+import com.example.Recysell.producto.model.Producto;
+import com.example.Recysell.producto.repo.ProductoRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class DonacionService {
+
+    private final DonacionRepository donacionRepository;
+    private final ProductoRepository productoRepository;
+    private final OrganizacionRepository organizacionRepository;
+
+    //Añadir Donacion
+    public Donacion save(EditDonacionCmd donacion, Cliente clienteAutenticado) {
+
+        Producto producto = productoRepository.findById(donacion.productoId())
+                .orElseThrow(() -> new ProductoNotFoundException(donacion.productoId()));
+
+        Organizacion organizacion = organizacionRepository.findById(donacion.organizacionId())
+                .orElseThrow(() -> new OrganizacionNotFoundException(donacion.organizacionId()));
+
+        if (!producto.getClienteVendedor().getId().equals(clienteAutenticado.getId())) {
+            throw new UnauthorizedDonacionException("No puedes donar un producto que no has añadido");
+        }
+
+        return donacionRepository.save(Donacion.builder()
+                .donacionPK(new DonacionPK(producto.getId(), organizacion.getId()))
+                .fechaDonacion(donacion.fechaDonacion())
+                .productoDonado(producto)
+                .organizacion(organizacion)
+                .build());
+    }
+
+}
