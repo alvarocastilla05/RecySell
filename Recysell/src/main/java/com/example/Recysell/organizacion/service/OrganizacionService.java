@@ -73,4 +73,9 @@ public class OrganizacionService {
         }
 
     }
+
+    //Eliminar Organización
+    public void deleteById(Long id){
+        organizacionRepository.deleteById(id);
+    }
 }
