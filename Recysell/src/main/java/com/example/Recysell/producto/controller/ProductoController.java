@@ -11,6 +11,8 @@ import com.example.Recysell.producto.dto.GetProductoConAsociaciones;
 import com.example.Recysell.producto.dto.GetProductoDto;
 import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.producto.service.ProductoService;
+import com.example.Recysell.query.ProductoSpecificationBuilder;
+import com.example.Recysell.util.SearchCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -21,6 +23,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +33,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -99,11 +106,34 @@ public class ProductoController {
                     description = "No se encotró ningun producto.",
                     content = @Content),
     })
-    @GetMapping
-    public Page<GetProductoDto> findAllProductosEnVenta(@PageableDefault Pageable pageable,
-                                                        @RequestParam(value = "isDeleted", required = false) boolean isDeleted) {
-        return productoService.findAllProductosEnVenta(pageable, isDeleted);
+    @GetMapping("/listar")
+    public Page<GetProductoDto> buscar(@PageableDefault Pageable pageable,
+                                 @RequestParam(value = "search", required = false) String search,
+                                 @RequestParam(value = "isDeleted", required = false) boolean isDeleted) {
+        List<SearchCriteria> params = new ArrayList<>();
+
+        if (search != null) {
+            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+            Matcher matcher = pattern.matcher(search + ",");
+
+            while (matcher.find()) {
+                String key = matcher.group(1);
+                String operation = matcher.group(2);
+                String value = matcher.group(3);
+
+                params.add(new SearchCriteria(key, operation, value));
+            }
+        }
+
+        ProductoSpecificationBuilder builder = new ProductoSpecificationBuilder(params);
+        Specification<Producto> spec = builder.build();
+
+        Page<Producto> productos = productoService.findAllProductosEnVenta(pageable, isDeleted, spec);
+
+        return productos.map(GetProductoDto::of);
+
     }
+
 
     @Operation(summary = "Obtiene un producto por su ID.")
     @ApiResponses(value = {

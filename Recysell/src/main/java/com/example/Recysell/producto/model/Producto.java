@@ -3,14 +3,17 @@ package com.example.Recysell.producto.model;
 import com.example.Recysell.categoria.model.Categoria;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.donacion.model.Donacion;
+import com.example.Recysell.util.SearchCriteria;
 import com.example.Recysell.valora.model.Valora;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.Join;
 import lombok.*;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.*;
 
@@ -138,5 +141,42 @@ public class Producto {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    // Filtro por categoría
+    public static Specification<Producto> byCategoria(SearchCriteria criteria) {
+        return (root, query, builder) -> {
+            if (criteria.key().equalsIgnoreCase("categoria") && criteria.operation().equals(":")) {
+                Join<Producto, Categoria> categoriaJoin = root.join("listaCategorias");
+                return builder.equal(categoriaJoin.get("nombre"), criteria.value().toString());
+            }
+            return null;
+        };
+    }
+
+    // Filtro por rango de precio
+    public static Specification<Producto> byRangoPrecio(SearchCriteria criteria) {
+        return (root, query, builder) -> {
+            if (criteria.key().equalsIgnoreCase("precio") && criteria.operation().equals(":")) {
+                String[] precios = criteria.value().toString().split("-");
+                if (precios.length == 2) {
+                    Double precioMin = Double.parseDouble(precios[0]);
+                    Double precioMax = Double.parseDouble(precios[1]);
+                    return builder.between(root.get("precio"), precioMin, precioMax);
+                }
+            }
+            return null;
+        };
+    }
+
+    // Filtro por cliente vendedor
+    public static Specification<Producto> byUsuario(SearchCriteria criteria) {
+        return (root, query, builder) -> {
+            if (criteria.key().equalsIgnoreCase("usuario") && criteria.operation().equals(":")) {
+                Join<Producto, Cliente> clienteJoin = root.join("clienteVendedor");
+                return builder.equal(clienteJoin.get("id"), UUID.fromString(criteria.value().toString()));
+            }
+            return null;
+        };
     }
 }
