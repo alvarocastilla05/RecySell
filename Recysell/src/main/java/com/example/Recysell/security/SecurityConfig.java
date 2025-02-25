@@ -98,6 +98,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/organizacion").permitAll()
                 .requestMatchers(HttpMethod.GET, "/organizacion/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/organizacion/**").hasAnyRole("TRABAJADOR", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/organizacion/**").hasAnyRole("TRABAJADOR", "ADMIN")
 
                 .anyRequest().authenticated());
 

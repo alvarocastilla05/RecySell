@@ -146,4 +146,19 @@ public class OrganizacionController {
         Organizacion organizacion = organizacionService.edit(id, aEditar);
         return ResponseEntity.ok(GetOrganizacionDto.of(organizacion));
     }
+
+    @Operation(summary = "Elimina una organización.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "La organización ha sido eliminada correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        organizacionService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
