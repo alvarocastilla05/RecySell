@@ -56,4 +56,21 @@ public class OrganizacionService {
                 .direccion(nuevo.direccion())
                 .build());
     }
+
+    //Editar Organización
+    public Organizacion edit(Long id, EditOrganizacionCmd edit){
+        Optional<Organizacion> organizacion = organizacionRepository.findById(id);
+
+        if (organizacion.isPresent() && !organizacion.get().isDeleted()){
+            return organizacion
+                    .map(o -> {
+                        o.setNombre(edit.nombre());
+                        o.setDireccion(edit.direccion());
+                        return organizacionRepository.save(o);
+                    }).get();
+        } else {
+            throw new OrganizacionNotFoundException(id);
+        }
+
+    }
 }

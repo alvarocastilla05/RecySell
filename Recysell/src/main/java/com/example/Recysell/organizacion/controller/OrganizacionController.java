@@ -113,4 +113,37 @@ public class OrganizacionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(GetOrganizacionDto.of(organizacion));
     }
+
+    @Operation(summary = "Edita una organización.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                description = "La organización ha sido editada correctamente.",
+                content = { @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = GetOrganizacionDto.class),
+                        examples = {@ExampleObject(
+                                value = """
+                                            {
+                                                "nombre": "Caritas",
+                                                "direccion": "Calle 123"
+                                                
+                                            }
+                                            
+                                            """
+                        )}
+                )}),
+        @ApiResponse(responseCode = "400",
+                description = "Solicitud incorrecta. Faltan campos obligatorios o el formato es inválido.",
+                content = @Content),
+        @ApiResponse(responseCode = "401",
+                description = "No autorizado.",
+                content = @Content),
+        @ApiResponse(responseCode = "404",
+                description = "Organización no encontrada.",
+                content = @Content),
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<GetOrganizacionDto> edit(@PathVariable("id") Long id, @Valid @RequestBody EditOrganizacionCmd aEditar){
+        Organizacion organizacion = organizacionService.edit(id, aEditar);
+        return ResponseEntity.ok(GetOrganizacionDto.of(organizacion));
+    }
 }
