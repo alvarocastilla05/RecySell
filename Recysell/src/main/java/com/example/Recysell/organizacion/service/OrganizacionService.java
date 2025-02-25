@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class OrganizacionService {
@@ -34,6 +36,17 @@ public class OrganizacionService {
         }
 
         return result;
+    }
+
+    //Obtener Organización por id
+    public Organizacion findById(Long id){
+        Optional<Organizacion> organizacion = organizacionRepository.findById(id);
+
+        if (organizacion.isPresent() && !organizacion.get().isDeleted()){
+            return organizacion.get();
+        }else{
+            throw new OrganizacionNotFoundException(id);
+        }
     }
 
     //Añadir Organización

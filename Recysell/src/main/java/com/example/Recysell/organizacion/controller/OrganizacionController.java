@@ -53,6 +53,36 @@ public class OrganizacionController {
         return organizacionService.findAll(pageable, isDeleted);
     }
 
+    @Operation(summary = "Obtiene una organización por id.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                description = "Organización encontrada.",
+                content = { @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = GetOrganizacionDto.class),
+                        examples = {@ExampleObject(
+                                value = """
+                                            {
+                                                "nombre": "Caritas",
+                                                "direccion": "Calle 123"
+                                                
+                                            }
+                                            
+                                            """
+                        )}
+                )}),
+        @ApiResponse(responseCode = "404",
+                description = "Organización no encontrada.",
+                content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @GetMapping("/{id}")
+    public GetOrganizacionDto findById(@PathVariable Long id){
+        Organizacion organizacion = organizacionService.findById(id);
+        return GetOrganizacionDto.of(organizacion);
+    }
+
     @Operation(summary = "Añade una organización.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201",
