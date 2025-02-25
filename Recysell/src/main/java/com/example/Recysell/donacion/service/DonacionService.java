@@ -74,4 +74,9 @@ public class DonacionService {
                 .build());
     }
 
+    //Eliminar Donacion
+    public void delete(DonacionPK id){
+        donacionRepository.deleteById(id);
+    }
+
 }
