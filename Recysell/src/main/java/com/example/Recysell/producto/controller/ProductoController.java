@@ -302,4 +302,22 @@ public class ProductoController {
         Cliente cliente = clienteService.findById(id);
         return productoService.findProductosByClienteVendedor(cliente, pageable).getContent();
     }
+
+    @Operation(summary = "Añade una categoría a un producto.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "La categoría ha sido añadida correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Producto o categoría no encontrados.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @PutMapping("/{idProducto}/categoria/{idCategoria}")
+    public ResponseEntity<?> addCategoria(@PathVariable Long idProducto, @PathVariable Long idCategoria){
+        productoService.addCategoriaToProducto(idProducto, idCategoria);
+        return ResponseEntity.noContent().build();
+    }
 }

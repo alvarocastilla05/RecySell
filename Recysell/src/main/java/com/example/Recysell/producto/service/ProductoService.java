@@ -1,6 +1,7 @@
 package com.example.Recysell.producto.service;
 
 import com.example.Recysell.categoria.dto.GetCategoriaDto;
+import com.example.Recysell.categoria.model.Categoria;
 import com.example.Recysell.categoria.repo.CategoriaRepository;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.repo.ClienteRepository;
@@ -117,6 +118,19 @@ public class ProductoService {
     public Page<GetProductoDto> findProductosByClienteVendedor(Cliente cliente, Pageable pageable){
         return productoRepository.findProductosByClienteVendedor(cliente, pageable)
                 .map(GetProductoDto::of);
+    }
+
+    //Añadir categoria a producto
+    public void addCategoriaToProducto(Long productoId, Long CategoriaId){
+        Optional<Producto> producto = productoRepository.findById(productoId);
+        Optional<Categoria> categoria = categoriaRepository.findById(CategoriaId);
+
+        if(producto.isPresent() && categoria.isPresent() && !producto.get().isDeleted() && !categoria.get().isDeleted()){
+            producto.get().addCategoria(categoria.get());
+            productoRepository.save(producto.get());
+        }else{
+            throw new ProductoNotFoundException(productoId);
+        }
     }
 
 
