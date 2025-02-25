@@ -188,4 +188,19 @@ public class ValoraController {
 
         return ResponseEntity.ok(GetValoraDto.of(valora));
     }
+
+    @Operation(summary = "Elimina una valoración.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "La valoración ha sido eliminada correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id, @AuthenticationPrincipal Trabajador trabajador){
+        valoraService.deleteById(trabajador, id);
+        return ResponseEntity.noContent().build();
+    }
 }

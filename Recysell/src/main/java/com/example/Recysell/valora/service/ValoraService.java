@@ -82,5 +82,16 @@ public class ValoraService {
                 .orElseThrow(() -> new ValoraNotFoundException());
     }
 
+    //Eliminar Valoracion
+    public void deleteById(Trabajador trabajador, Long id) {
+        ValoraPK valoraPK = new ValoraPK(trabajador.getId(), id);
+
+        // Buscar la entidad Valora usando el ValoraPK
+        Valora valora = valoraRepository.findById(valoraPK)
+                .orElseThrow(() -> new ValoraNotFoundException());
+
+        // Eliminar la entidad encontrada
+        valoraRepository.delete(valora);
+    }
 
 }
