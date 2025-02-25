@@ -13,12 +13,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +26,32 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrganizacionController {
 
     private final OrganizacionService organizacionService;
+
+    @Operation(summary = "Obtiene una lista de organizaciones.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                description = "Lista de organizaciones obtenida correctamente.",
+                content = { @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = GetOrganizacionDto.class),
+                        examples = {@ExampleObject(
+                                value = """
+                                            {
+                                                "nombre": "Caritas",
+                                                "direccion": "Calle 123"
+                                                
+                                            }
+                                            
+                                            """
+                        )}
+                )}),
+        @ApiResponse(responseCode = "404",
+                description = "No se encontraron organizaciones.",
+                content = @Content),
+    })
+    @GetMapping
+    public Page<GetOrganizacionDto> findAll(@PageableDefault Pageable pageable, boolean isDeleted){
+        return organizacionService.findAll(pageable, isDeleted);
+    }
 
     @Operation(summary = "Añade una organización.")
     @ApiResponses(value = {
