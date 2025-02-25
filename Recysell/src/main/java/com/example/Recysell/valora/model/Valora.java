@@ -30,8 +30,9 @@ public class Valora {
     private Producto producto;
 
     @ManyToOne
+    @MapsId("trabajadorId") // Mapea el campo trabajadorValoraId de ValoraPK
     @JoinColumn(
-            name = "trabajador_valora_id",
+            name = "trabajador_id",
             foreignKey = @ForeignKey(name = "fk_valora_trabajador")
     )
     private Trabajador trabajadorValora;

@@ -171,3 +171,29 @@ INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES 
 INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (5, 'GreenTech', 'Avenida 89, Bilbao', '123e4567-e89b-12d3-a456-426614174011', false);
 
 ALTER SEQUENCE organizacion_seq RESTART WITH 55;
+
+-- Insertar en valora
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (1, '123e4567-e89b-12d3-a456-426614174001', 5, 'Excelente producto, como nuevo.');
+
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (2, '123e4567-e89b-12d3-a456-426614174001', 4, 'Muy buen estado, aunque la batería dura menos de lo esperado.');
+
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (3, '123e4567-e89b-12d3-a456-426614174002', 5, 'Rápido y eficiente, perfecto para mi trabajo.');
+
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (4, '123e4567-e89b-12d3-a456-426614174001', 3, 'Buena calidad, pero los colores no son tan vivos como esperaba.');
+
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (5, '123e4567-e89b-12d3-a456-426614174001', 5, 'Teclado muy cómodo y con una iluminación increíble.');
+
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (6, '123e4567-e89b-12d3-a456-426614174001', 4, 'Gran dispositivo, aunque algo pesado.');
+
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (7, '123e4567-e89b-12d3-a456-426614174001', 5, 'Perfecto para tomar notas y dibujar.');
+
+INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
+VALUES (8, '123e4567-e89b-12d3-a456-426614174002', 4, 'Muy útil, aunque la batería podría durar más.');
+

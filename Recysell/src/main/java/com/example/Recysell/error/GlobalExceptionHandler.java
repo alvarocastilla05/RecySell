@@ -21,14 +21,16 @@ public class GlobalExceptionHandler {
 
         if (ex instanceof TrabajadorNotFoundException) {
             errorType = "Trabajador no encontrado";
-        }else if(ex instanceof ClienteNotFoundException) {
+        } else if (ex instanceof ClienteNotFoundException) {
             errorType = "Cliente no encontrado";
         } else if (ex instanceof ProductoNotFoundException) {
             errorType = "Producto no encontrado";
         } else if (ex instanceof CategoriaNotFoundException) {
             errorType = "Categoría no encontrada";
-        } else if (ex instanceof  OrganizacionNotFoundException) {
+        } else if (ex instanceof OrganizacionNotFoundException) {
             errorType = "Organización no encontrada";
+        } else if (ex instanceof ValoraNotFoundException) {
+            errorType = "Valoración no encontrada";
         }
 
         Map<String, Object> errorBody = Map.of(
@@ -37,6 +39,18 @@ public class GlobalExceptionHandler {
                 "status", status.value()
         );
 
+        return ResponseEntity.status(status).body(errorBody);
+    }
+
+    // Manejo de ProductoYaValoradoException
+    @ExceptionHandler(ProductoYaValoradoException.class)
+    public ResponseEntity<Map<String, Object>> handleProductoYaValoradoException(ProductoYaValoradoException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;  // 400 Bad Request for this case
+        Map<String, Object> errorBody = Map.of(
+                "error", "Producto ya valorado",
+                "message", ex.getMessage(),
+                "status", status.value()
+        );
         return ResponseEntity.status(status).body(errorBody);
     }
 

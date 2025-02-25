@@ -70,7 +70,7 @@ public class SecurityConfig {
                 // Rutas públicas
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/activate/account/", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/me").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/cliente/register", "/cliente").permitAll()
                 .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
@@ -102,6 +102,7 @@ public class SecurityConfig {
 
                 //Valora
                 .requestMatchers(HttpMethod.POST, "/valora").hasRole("TRABAJADOR")
+                .requestMatchers(HttpMethod.GET, "/valora/trabajador/**").hasAnyRole("TRABAJADOR", "ADMIN")
 
                 .anyRequest().authenticated());
 
