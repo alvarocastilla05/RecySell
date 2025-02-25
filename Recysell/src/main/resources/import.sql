@@ -115,4 +115,14 @@ INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (2, 4);
 INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (4, 5);
 
 
+INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (1, 'Green Earth', 'Calle 123, Madrid', '123e4567-e89b-12d3-a456-426614174001', false);
+
+INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (2, 'EcoFuture', 'Avenida 45, Barcelona', '123e4567-e89b-12d3-a456-426614174001', false);
+
+INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (3, 'RecyTech', 'Plaza Mayor, Sevilla', '123e4567-e89b-12d3-a456-426614174002', false);
+
+ALTER SEQUENCE organizacion_seq RESTART WITH 53;
+
+
+
 

@@ -4,6 +4,10 @@ import com.example.Recysell.donacion.model.Donacion;
 import com.example.Recysell.trabajador.model.Trabajador;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
@@ -18,6 +22,9 @@ import java.util.UUID;
 @ToString(callSuper = true)
 @Builder
 @Entity
+@SQLDelete(sql = "UPDATE organizacion SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedOrganizacionFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedOrganizacionFilter", condition = "deleted = :isDeleted")
 public class Organizacion {
 
     @Id
@@ -28,9 +35,11 @@ public class Organizacion {
 
     private String direccion;
 
+    private boolean deleted = Boolean.FALSE;
+
     @ManyToOne
     @JoinColumn(
-            name = "organizacion_id",
+            name = "trabajador_id",
             foreignKey = @ForeignKey(name = "fk_organizacion_trabajador")
     )
     private Trabajador trabajador;

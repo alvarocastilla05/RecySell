@@ -96,6 +96,7 @@ public class SecurityConfig {
 
                 // Organización
                 .requestMatchers(HttpMethod.POST, "/organizacion").hasAnyRole("TRABAJADOR", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/organizacion").permitAll()
 
 
                 .anyRequest().authenticated());
