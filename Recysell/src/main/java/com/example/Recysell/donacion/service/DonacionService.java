@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +39,17 @@ public class DonacionService {
         }
 
         return donaciones;
+    }
+
+    //Donacion por ID
+    public Donacion findById(DonacionPK id){
+        Optional<Donacion> donacion = donacionRepository.findById(id);
+
+        if(donacion.isPresent()){
+            return donacion.get();
+        }else {
+            throw new DonacionNotFoundException();
+        }
     }
 
 
