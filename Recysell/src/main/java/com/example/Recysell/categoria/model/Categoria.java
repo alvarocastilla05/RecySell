@@ -3,6 +3,10 @@ package com.example.Recysell.categoria.model;
 import com.example.Recysell.producto.model.Producto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.HashSet;
@@ -17,6 +21,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
+@SQLDelete(sql = "UPDATE categoria SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedCategoriaFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedCategoriaFilter", condition = "deleted = :isDeleted")
 public class Categoria {
 
     @Id
@@ -24,6 +31,8 @@ public class Categoria {
     private Long id;
 
     private String nombre;
+
+    boolean deleted = Boolean.FALSE;
 
     @ManyToMany(mappedBy = "listaCategorias", fetch = FetchType.LAZY)
     @Builder.Default

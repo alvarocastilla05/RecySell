@@ -92,15 +92,15 @@ ALTER SEQUENCE producto_seq RESTART WITH 55;
 
 
 
-INSERT INTO categoria (id, nombre) VALUES (1, 'Smartphones');
+INSERT INTO categoria (id, nombre, deleted) VALUES (1, 'Smartphones', false);
 
-INSERT INTO categoria (id, nombre) VALUES (2, 'Laptops');
+INSERT INTO categoria (id, nombre, deleted) VALUES (2, 'Laptops', false);
 
-INSERT INTO categoria (id, nombre) VALUES (3, 'Tablets');
+INSERT INTO categoria (id, nombre, deleted) VALUES (3, 'Tablets', false);
 
-INSERT INTO categoria (id, nombre) VALUES (4, 'Accesorios');
+INSERT INTO categoria (id, nombre, deleted) VALUES (4, 'Accesorios', false);
 
-INSERT INTO categoria (id, nombre) VALUES (5, 'Televisores');
+INSERT INTO categoria (id, nombre, deleted) VALUES (5, 'Televisores', false);
 
 ALTER SEQUENCE categoria_seq RESTART WITH 55;
 
