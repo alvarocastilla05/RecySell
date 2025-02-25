@@ -20,6 +20,7 @@ import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,23 +46,31 @@ public class ProductoService {
         return productoRepository.existsByIdAndClienteVendedor_Username(productoId, username);
     }
 
+
+
+
     //Listar Productos en Venta.
-    public Page<GetProductoDto> findAllProductosEnVenta(Pageable pageable, boolean isDeleted){
+    public Page<Producto> findAllProductosEnVenta(Pageable pageable, boolean isDeleted, Specification<Producto> spec) {
+        // Obtener la sesión de Hibernate y activar el filtro de eliminación
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedProductoFilter");
         filter.setParameter("isDeleted", isDeleted);
 
-        Page<GetProductoDto> result = productoRepository.findAllProductosEnVenta(pageable);
+        // Si se ha proporcionado una especificación, la utilizamos con findAll
+        Page<Producto> result = productoRepository.findAll(spec, pageable);
+
+        // Desactivar el filtro de eliminación después de la consulta
         session.disableFilter("deletedProductoFilter");
 
+        // Verificar si el resultado está vacío y lanzar una excepción si es necesario
         if (result.isEmpty()) {
             throw new ProductoNotFoundException();
         }
 
         return result;
-
-
     }
+
+
 
     //Buscar Producto por ID
     public Producto findById(Long id){

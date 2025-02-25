@@ -70,11 +70,11 @@ public class SecurityConfig {
                 // Rutas públicas
                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh/token", "/activate/account/", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/me").permitAll()
-                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/cliente/register", "/cliente").permitAll()
                 .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/producto").permitAll()
+                .requestMatchers(HttpMethod.GET, "/producto/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categoria").permitAll()
 
                 // Rutas roles específicos
@@ -83,7 +83,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/cliente/**").hasRole("CLIENTE")
 
                 // Producto
-                .requestMatchers(HttpMethod.GET, "/producto/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/producto/**").hasRole("CLIENTE")
                 .requestMatchers(HttpMethod.GET, "/producto/cliente/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/producto/{idProducto}/categoria/{idCategoria}").hasAnyRole("ADMIN", "TRABAJADOR")
