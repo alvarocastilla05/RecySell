@@ -197,4 +197,9 @@ VALUES (7, '123e4567-e89b-12d3-a456-426614174001', 5, 'Perfecto para tomar notas
 INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
 VALUES (8, '123e4567-e89b-12d3-a456-426614174002', 4, 'Muy útil, aunque la batería podría durar más.');
 
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (1, 2, '2025-03-01 10:00:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (3, 1, '2025-03-02 15:30:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (5, 4, '2025-03-05 12:45:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (2, 3, '2025-03-07 08:20:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (4, 5, '2025-03-10 18:15:00');
 
