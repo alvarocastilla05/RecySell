@@ -9,6 +9,7 @@ import com.example.Recysell.producto.repo.ProductoRepository;
 import com.example.Recysell.trabajador.model.Trabajador;
 import com.example.Recysell.trabajador.repo.TrabajadorRepository;
 import com.example.Recysell.valora.dto.CreateValoraRequest;
+import com.example.Recysell.valora.dto.EditValoraCmd;
 import com.example.Recysell.valora.dto.GetValoraDtoSinTrabajador;
 import com.example.Recysell.valora.model.Valora;
 import com.example.Recysell.valora.model.ValoraPK;
@@ -45,11 +46,11 @@ public class ValoraService {
         return valoraciones;
     }
 
+    //Añadir valoración
     public Valora save(CreateValoraRequest nuevo, Trabajador trabajador) {
         Producto producto = productoRepository.findById(nuevo.productoId())
                 .orElseThrow(() -> new ProductoNotFoundException(nuevo.productoId()));
 
-        // Verificar si el producto ya fue valorado
         boolean exists = valoraRepository.existsByProductoId(producto.getId());
         if (exists) {
             throw new ProductoYaValoradoException();
@@ -65,5 +66,21 @@ public class ValoraService {
 
         return valoraRepository.save(valora);
     }
+
+    //Editar Valoracion
+    public Valora edit(Trabajador trabajador, EditValoraCmd editar, Long id){
+
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new ProductoNotFoundException(id));
+
+        return valoraRepository.findById(new ValoraPK(trabajador.getId(), id))
+                .map(valora -> {
+                    valora.setPuntuacion(editar.puntuacion());
+                    valora.setComentario(editar.comentario());
+                    return valoraRepository.save(valora);
+                })
+                .orElseThrow(() -> new ValoraNotFoundException());
+    }
+
 
 }

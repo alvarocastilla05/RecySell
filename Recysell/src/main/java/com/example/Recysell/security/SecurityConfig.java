@@ -103,6 +103,7 @@ public class SecurityConfig {
                 //Valora
                 .requestMatchers(HttpMethod.POST, "/valora").hasRole("TRABAJADOR")
                 .requestMatchers(HttpMethod.GET, "/valora/trabajador/**").hasAnyRole("TRABAJADOR", "ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/valora/**").hasRole("TRABAJADOR")
 
                 .anyRequest().authenticated());
 

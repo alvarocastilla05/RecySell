@@ -3,6 +3,7 @@ package com.example.Recysell.valora.controller;
 import com.example.Recysell.categoria.dto.GetCategoriaDto;
 import com.example.Recysell.trabajador.model.Trabajador;
 import com.example.Recysell.valora.dto.CreateValoraRequest;
+import com.example.Recysell.valora.dto.EditValoraCmd;
 import com.example.Recysell.valora.dto.GetValoraDto;
 import com.example.Recysell.valora.dto.GetValoraDtoSinTrabajador;
 import com.example.Recysell.valora.model.Valora;
@@ -152,5 +153,39 @@ public class ValoraController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(GetValoraDto.of(valora));
 
+    }
+
+    @Operation(summary = "Edita una valoración.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "La valoración ha sido editada correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetValoraDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                               "puntuacion": 4,
+                                               "comentario": "Buen producto, pero podría mejorar la calidad de la cámara.",
+                                             }
+                                            
+                                            
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "Solicitud incorrecta. Faltan campos obligatorios o el formato es inválido.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "La valoración no existe.",
+                    content = @Content),
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<GetValoraDto> edit(@PathVariable("id") Long id, @Valid @RequestBody EditValoraCmd editar, @AuthenticationPrincipal Trabajador trabajador){
+        Valora valora = valoraService.edit(trabajador, editar, id);
+
+        return ResponseEntity.ok(GetValoraDto.of(valora));
     }
 }
