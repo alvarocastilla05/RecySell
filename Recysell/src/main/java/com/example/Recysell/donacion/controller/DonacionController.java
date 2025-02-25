@@ -249,4 +249,20 @@ public class DonacionController {
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(GetDonacionDto.of(donacion));
     }
+
+    @Operation(summary = "Elimina una donación.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "La donación ha sido eliminada correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @DeleteMapping("/{productoId}/{organizacionId}")
+    public ResponseEntity<?> delete(@PathVariable Long productoId, @PathVariable Long organizacionId){
+        donacionService.delete(new DonacionPK(productoId, organizacionId));
+
+        return ResponseEntity.noContent().build();
+    }
 }
