@@ -19,33 +19,22 @@ public class ProductoSpecificationBuilder extends GenericSpecificationBuilder<Pr
             return Specification.where(null);
         }
 
-        Specification<Producto> result = null;
+        Specification<Producto> result = Specification.where(null);
 
-        SearchCriteria first = params.get(0);
+        for (SearchCriteria criteria : params) {
+            Specification<Producto> spec = switch (criteria.key().toLowerCase()) {
+                case "categoria" -> Producto.byCategoria(criteria);
+                case "precio" -> Producto.byRangoPrecio(criteria);
+                case "usuario" -> Producto.byUsuario(criteria);
+                default -> super.build(criteria);
+            };
 
-        if (first.key().equalsIgnoreCase("categoria"))
-            result = Producto.byCategoria(first);
-        else if (first.key().equalsIgnoreCase("precio"))
-            result = Producto.byRangoPrecio(first);
-        else if (first.key().equalsIgnoreCase("usuario"))
-            result = Producto.byUsuario(first);
-        else
-            result = super.build(first);
-
-        for (int i = 1; i < params.size(); i++) {
-
-            SearchCriteria criteria = params.get(i);
-
-            if (criteria.key().equalsIgnoreCase("categoria"))
-                result = result.and(Producto.byCategoria(criteria));
-            else if (criteria.key().equalsIgnoreCase("precio"))
-                result = result.and(Producto.byRangoPrecio(criteria));
-            else if (criteria.key().equalsIgnoreCase("usuario"))
-                result = result.and(Producto.byUsuario(criteria));
-            else
-                result = result.and(super.build(criteria));
+            if (spec != null) {
+                result = result.and(spec);
+            }
         }
 
         return result;
     }
+
 }

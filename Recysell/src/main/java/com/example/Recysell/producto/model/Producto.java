@@ -157,26 +157,28 @@ public class Producto {
     // Filtro por rango de precio
     public static Specification<Producto> byRangoPrecio(SearchCriteria criteria) {
         return (root, query, builder) -> {
-            if (criteria.key().equalsIgnoreCase("precio") && criteria.operation().equals(":")) {
-                String[] precios = criteria.value().toString().split("-");
-                if (precios.length == 2) {
-                    Double precioMin = Double.parseDouble(precios[0]);
-                    Double precioMax = Double.parseDouble(precios[1]);
-                    return builder.between(root.get("precio"), precioMin, precioMax);
-                }
+            if (!criteria.key().equalsIgnoreCase("precio")) {
+                return null;
             }
-            return null;
+
+            return switch (criteria.operation()) {
+                case ">" -> builder.greaterThanOrEqualTo(root.get("precio"), Double.parseDouble(criteria.value().toString()));
+                case "<" -> builder.lessThanOrEqualTo(root.get("precio"), Double.parseDouble(criteria.value().toString()));
+                default -> null;
+            };
         };
     }
+
 
     // Filtro por cliente vendedor
     public static Specification<Producto> byUsuario(SearchCriteria criteria) {
         return (root, query, builder) -> {
             if (criteria.key().equalsIgnoreCase("usuario") && criteria.operation().equals(":")) {
-                Join<Producto, Cliente> clienteJoin = root.join("clienteVendedor");
-                return builder.equal(clienteJoin.get("id"), UUID.fromString(criteria.value().toString()));
+                Join<Producto, Cliente> clienteVendedorJoin = root.join("clienteVendedor");
+                return builder.equal(clienteVendedorJoin.get("username"), criteria.value().toString());
             }
             return null;
         };
     }
+
 }
