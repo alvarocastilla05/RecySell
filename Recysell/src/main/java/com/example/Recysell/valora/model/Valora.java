@@ -1,5 +1,6 @@
 package com.example.Recysell.valora.model;
 
+import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.trabajador.model.Trabajador;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,6 +23,11 @@ public class Valora {
     private int puntuacion;
 
     private String comentario;
+
+    @OneToOne
+    @MapsId("productoId") // Mapea el campo productoId de ValoraPK
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
     @ManyToOne
     @JoinColumn(

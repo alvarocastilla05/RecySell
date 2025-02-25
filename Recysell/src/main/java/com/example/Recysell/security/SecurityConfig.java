@@ -100,6 +100,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/organizacion/**").hasAnyRole("TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/organizacion/**").hasAnyRole("TRABAJADOR", "ADMIN")
 
+                //Valora
+                .requestMatchers(HttpMethod.POST, "/valora").hasRole("TRABAJADOR")
+
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
