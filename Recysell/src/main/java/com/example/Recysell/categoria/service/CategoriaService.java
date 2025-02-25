@@ -56,6 +56,7 @@ public class CategoriaService {
                 .build());
     }
 
+    //Editar categoria.
     public Categoria edit(Long id, EditarCategoriaCmd edit){
         Optional<Categoria> categoria = categoriaRepository.findById(id);
 
@@ -68,5 +69,10 @@ public class CategoriaService {
         }else{
             throw new CategoriaNotFoundException(id);
         }
+    }
+
+    //Eliminar categoria.
+    public void deleteById(Long id){
+        categoriaRepository.deleteById(id);
     }
 }
