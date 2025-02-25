@@ -54,6 +54,36 @@ public class CategoriaCotroller {
         return categoriaService.findAll(pageable, isDeleted);
     }
 
+    @Operation(summary = "Obtiene una categoria por id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado la categoria.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetCategoriaDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "nombre": "smartphones",
+                                                
+                                            }
+                                            
+                                            
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la categoria.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401"
+                    , description = "No autorizado.",
+                    content = @Content),
+    })
+    @GetMapping("/{id}")
+    public GetCategoriaDto findById(@PathVariable Long id){
+        Categoria categoria = categoriaService.findById(id);
+        return GetCategoriaDto.of(categoria);
+    }
+
 
     @Operation(summary = "Registra un nueva categoria.")
     @ApiResponses(value = {
