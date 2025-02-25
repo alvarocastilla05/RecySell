@@ -108,6 +108,7 @@ public class SecurityConfig {
 
                 //Donacion
                 .requestMatchers(HttpMethod.POST, "/donacion").hasRole("CLIENTE")
+                .requestMatchers(HttpMethod.GET, "/donacion").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
 
                 .anyRequest().authenticated());
 

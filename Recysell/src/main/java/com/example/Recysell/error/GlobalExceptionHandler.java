@@ -31,6 +31,8 @@ public class GlobalExceptionHandler {
             errorType = "Organización no encontrada";
         } else if (ex instanceof ValoraNotFoundException) {
             errorType = "Valoración no encontrada";
+        }else if (ex instanceof DonacionNotFoundException) {
+            errorType = "Donación no encontrada";
         }
 
         Map<String, Object> errorBody = Map.of(
