@@ -94,7 +94,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/categoria/**").hasAnyRole("TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/categoria/**").hasAnyRole("TRABAJADOR", "ADMIN")
 
-                // Cualquier otra petición requiere autenticación
+                // Organización
+                .requestMatchers(HttpMethod.POST, "/organizacion").hasAnyRole("TRABAJADOR", "ADMIN")
+
+
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
