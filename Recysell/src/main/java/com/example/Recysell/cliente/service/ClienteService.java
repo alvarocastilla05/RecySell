@@ -72,6 +72,8 @@ public class ClienteService {
 
     //Crear User Cliente
     public Cliente createCliente(CreateClienteRequest createClienteRequest){
+
+
         Cliente cliente = Cliente.builder()
                 .username(createClienteRequest.username())
                 .email(createClienteRequest.email())

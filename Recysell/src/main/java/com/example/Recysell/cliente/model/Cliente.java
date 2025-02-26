@@ -5,6 +5,10 @@ import com.example.Recysell.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,8 +24,9 @@ import java.util.Set;
 public class Cliente extends User {
 
 
+
     //Asociación con Productos (Productos en venta).
-    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @Builder.Default
     @ToString.Exclude
     List<Producto> listProductosEnVenta = new ArrayList<>();
@@ -33,7 +38,7 @@ public class Cliente extends User {
     List<Producto> listaProductosDonados = new ArrayList<>();
 
     //Asociación con Productos (Favoritos).
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "anhade_favorito",
             joinColumns = @JoinColumn(name="cliente_id_favoritos"),

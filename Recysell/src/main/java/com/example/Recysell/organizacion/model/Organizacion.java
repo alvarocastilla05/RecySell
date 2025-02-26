@@ -3,11 +3,9 @@ package com.example.Recysell.organizacion.model;
 import com.example.Recysell.donacion.model.Donacion;
 import com.example.Recysell.trabajador.model.Trabajador;
 import jakarta.persistence.*;
+import jakarta.persistence.ForeignKey;
 import lombok.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
@@ -42,6 +40,7 @@ public class Organizacion {
             name = "trabajador_id",
             foreignKey = @ForeignKey(name = "fk_organizacion_trabajador")
     )
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Trabajador trabajador;
 
     @OneToMany(mappedBy = "organizacion", fetch = FetchType.LAZY)

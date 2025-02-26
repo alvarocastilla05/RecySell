@@ -1,5 +1,6 @@
 package com.example.Recysell.cliente.dto;
 
+import com.example.Recysell.security.validation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

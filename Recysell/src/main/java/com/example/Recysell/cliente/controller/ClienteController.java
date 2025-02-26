@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -178,7 +179,7 @@ public class ClienteController {
                     content = @Content),
     })
     @PostMapping("/register")
-    public ResponseEntity<ClienteResponse> register(@Valid @RequestBody CreateClienteRequest createClienteRequest){
+    public ResponseEntity<ClienteResponse> register(@RequestBody @Validated CreateClienteRequest createClienteRequest){
         Cliente cliente = clienteService.createCliente(createClienteRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponse.of(cliente));
