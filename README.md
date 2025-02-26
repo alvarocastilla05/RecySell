@@ -37,4 +37,6 @@ docker-compose up -d
 ### Prueba
 En la colección de Postman hay una carpeta User, dónde podrás encontrar un inicio de sesión de cada role para poder probar posteriormente las distintas funciones. Además, si registras un trabajador o un cliente, para activar la cuenta debes de acceder a la request de la carpeta User.
 
+Además, a la hora de añadir un Producto, hay adjuntado un archivo.json y una imagen. Para que esta no de error tienes que desadjuntarlo y volver a adjuntar otros archivos que tengan la ruta de tu dispositivo. El archivo .json de ejemplo esta en el repositorio adjuntado, la imagen puedes coger la que desees.
+
 
