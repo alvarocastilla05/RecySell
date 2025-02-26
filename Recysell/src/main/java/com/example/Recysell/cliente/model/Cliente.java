@@ -21,12 +21,15 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
+@SQLDelete(sql = "UPDATE user_entity SET deleted = true WHERE id = ?") // Actualiza la tabla User
+@FilterDef(name = "deletedClienteFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedClienteFilter", condition = "deleted = :isDeleted")
 public class Cliente extends User {
 
 
 
     //Asociación con Productos (Productos en venta).
-    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     List<Producto> listProductosEnVenta = new ArrayList<>();
@@ -50,10 +53,13 @@ public class Cliente extends User {
     @ToString.Exclude
     private Set<Producto> listaFavoritos = new HashSet<>();
 
+    @PreUpdate
     @PreRemove
-    private void softDeleteProductos() {
-        for (Producto producto : listProductosEnVenta) {
-            producto.setDeleted(true);
+    private void handleSoftDelete() {
+        if (this.isDeleted()) { // Verifica si el cliente está marcado como eliminado
+            for (Producto producto : listProductosEnVenta) {
+                producto.setDeleted(true); // Marca los productos como eliminados
+            }
         }
     }
 

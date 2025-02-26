@@ -12,6 +12,7 @@ import com.example.Recysell.user.model.UserRole;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -114,13 +115,16 @@ public class ClienteService {
     }
 
     //Eliminar Cliente
-    public void deleteById(UUID id){
-
+    @Transactional
+    public void deleteById(UUID id) {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ClienteNotFoundException(id));
 
         cliente.getListProductosEnVenta().forEach(producto -> producto.setDeleted(true));
-        clienteRepository.deleteById(id);
+
+        cliente.setDeleted(true);
+
+        clienteRepository.save(cliente);
     }
 
     private void sendActivationEmail(String to, String activationToken) throws MessagingException {

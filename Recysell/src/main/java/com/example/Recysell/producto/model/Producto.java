@@ -43,7 +43,7 @@ public class Producto {
     private boolean deleted = Boolean.FALSE;
 
     //Asociación con Cliente (Productos en venta).
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(
             name = "cliente_id_vendedor",
             foreignKey = @ForeignKey(name = "fk_producto_cliente_vendedor")
@@ -83,6 +83,7 @@ public class Producto {
     @Builder.Default
     @ToString.Exclude
     private List<Donacion> listaDonaciones = new ArrayList<>();
+
 
     //MÉTODOS HELPER
 
