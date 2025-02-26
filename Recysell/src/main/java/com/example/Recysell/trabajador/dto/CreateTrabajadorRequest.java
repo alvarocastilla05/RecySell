@@ -1,6 +1,7 @@
 package com.example.Recysell.trabajador.dto;
 
 
+import com.example.Recysell.security.validation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import com.example.Recysell.user.model.UserRole;
 
 public record CreateTrabajadorRequest(
         @NotBlank(message = "El username no puede estar vacío")
+        @UniqueUsername(message = "El username ya está en uso")
         String username,
 
         @NotBlank(message = "El email no puede estar vacío")

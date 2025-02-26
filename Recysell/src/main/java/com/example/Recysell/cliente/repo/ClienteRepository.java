@@ -19,4 +19,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
         FROM Cliente c
     """)
     public Page<GetClienteDto> findAllClienteDto(Pageable pageable);
+
+    boolean existsByUsername(String username);
 }

@@ -1,5 +1,6 @@
 package com.example.Recysell.cliente.dto;
 
+import com.example.Recysell.security.validation.UniqueUsername;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.Size;
 
 public record CreateClienteRequest(
         @NotBlank(message = "El username no puede estar vacío")
+        @UniqueUsername(message = "El nombre de usuario no puede estar repetido")
         String username,
 
         @NotBlank(message = "El email no puede estar vacío")

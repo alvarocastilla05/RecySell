@@ -15,6 +15,7 @@ import com.example.Recysell.producto.dto.GetProductoDto;
 import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.producto.repo.ProductoRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
@@ -85,6 +86,7 @@ public class ProductoService {
 
 
     //Añadir productos
+    @Transactional
     public Producto save(CreateProductoDto createProductoDto, Cliente authenticatedCliente, MultipartFile file) {
         FileMetadata fileMetadata = storageService.store(file);
 

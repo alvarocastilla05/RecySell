@@ -3,11 +3,10 @@ package com.example.Recysell.valora.model;
 import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.trabajador.model.Trabajador;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ForeignKey;
 import lombok.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -40,6 +39,7 @@ public class Valora {
             name = "trabajador_id",
             foreignKey = @ForeignKey(name = "fk_valora_trabajador")
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Trabajador trabajadorValora;
 
     @Override

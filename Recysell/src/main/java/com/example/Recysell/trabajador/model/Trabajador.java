@@ -3,11 +3,16 @@ package com.example.Recysell.trabajador.model;
 import com.example.Recysell.organizacion.model.Organizacion;
 import com.example.Recysell.user.model.User;
 import com.example.Recysell.valora.model.Valora;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +27,12 @@ public class Trabajador extends User {
 
     private String puesto;
 
-    @OneToMany(mappedBy = "trabajador" , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trabajador" , fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @Builder.Default
     @ToString.Exclude
     private List<Organizacion> organizaciones = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trabajadorValora" , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trabajadorValora" , fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @Builder.Default
     @ToString.Exclude
     private List<Valora> valoraciones = new ArrayList<>();

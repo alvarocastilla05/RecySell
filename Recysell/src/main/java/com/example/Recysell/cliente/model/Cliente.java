@@ -5,6 +5,10 @@ import com.example.Recysell.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +21,11 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
+@SQLDelete(sql = "UPDATE user_entity SET deleted = true WHERE id = ?") // Actualiza la tabla User
+@FilterDef(name = "deletedClienteFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedClienteFilter", condition = "deleted = :isDeleted")
 public class Cliente extends User {
+
 
 
     //Asociación con Productos (Productos en venta).
@@ -33,7 +41,7 @@ public class Cliente extends User {
     List<Producto> listaProductosDonados = new ArrayList<>();
 
     //Asociación con Productos (Favoritos).
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "anhade_favorito",
             joinColumns = @JoinColumn(name="cliente_id_favoritos"),
@@ -44,6 +52,16 @@ public class Cliente extends User {
     @Builder.Default
     @ToString.Exclude
     private Set<Producto> listaFavoritos = new HashSet<>();
+
+    @PreUpdate
+    @PreRemove
+    private void handleSoftDelete() {
+        if (this.isDeleted()) { // Verifica si el cliente está marcado como eliminado
+            for (Producto producto : listProductosEnVenta) {
+                producto.setDeleted(true); // Marca los productos como eliminados
+            }
+        }
+    }
 
 
     //MÉTODOS HELPER

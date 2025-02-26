@@ -6,12 +6,11 @@ import com.example.Recysell.donacion.model.Donacion;
 import com.example.Recysell.util.SearchCriteria;
 import com.example.Recysell.valora.model.Valora;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.criteria.Join;
 import lombok.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -84,6 +83,7 @@ public class Producto {
     @Builder.Default
     @ToString.Exclude
     private List<Donacion> listaDonaciones = new ArrayList<>();
+
 
     //MÉTODOS HELPER
 
@@ -180,5 +180,7 @@ public class Producto {
             return null;
         };
     }
+
+
 
 }
