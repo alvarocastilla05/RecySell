@@ -115,6 +115,11 @@ public class ClienteService {
 
     //Eliminar Cliente
     public void deleteById(UUID id){
+
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ClienteNotFoundException(id));
+
+        cliente.getListProductosEnVenta().forEach(producto -> producto.setDeleted(true));
         clienteRepository.deleteById(id);
     }
 

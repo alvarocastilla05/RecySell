@@ -50,6 +50,13 @@ public class Cliente extends User {
     @ToString.Exclude
     private Set<Producto> listaFavoritos = new HashSet<>();
 
+    @PreRemove
+    private void softDeleteProductos() {
+        for (Producto producto : listProductosEnVenta) {
+            producto.setDeleted(true);
+        }
+    }
+
 
     //MÉTODOS HELPER
 
