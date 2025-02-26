@@ -6,6 +6,8 @@ import com.example.Recysell.cliente.dto.EditClienteCmd;
 import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.service.ClienteService;
+import com.example.Recysell.producto.dto.GetProductoDto;
+import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.trabajador.dto.TrabajadorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +30,9 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -229,6 +234,60 @@ public class ClienteController {
     public ResponseEntity<?> deleteById(@PathVariable("id") UUID id) {
         clienteService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @Operation(summary = "Añade un producto a la lista de favoritos de un cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Producto añadido a la lista de favoritos correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content)
+    })
+    @PutMapping("/producto/{idProducto}")
+    public ResponseEntity<?> addProducto(@AuthenticationPrincipal Cliente cliente, @PathVariable Long idProducto){
+        clienteService.addProductoFavorito(cliente.getId(), idProducto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Obtiene la lista de productos favoritos de un cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Lista de productos favoritos obtenida correctamente.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetProductoDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            [
+                                                     {
+                                                         "nombre": "iPhone 12",
+                                                         "descripcion": "TelÃ©fono reacondicionado en excelente estado",
+                                                         "precio": 499.99,
+                                                         "imagen": "imagen1.jpg",
+                                                         "clienteVendedor": {
+                                                             "username": "carlosm",
+                                                             "email": "carlosm@recycell.com",
+                                                             "nombre": "Carlos",
+                                                             "apellidos": "MartÃ­nez GÃ³mez"
+                                                         }
+                                                     }
+                                                 ]
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content)
+    })
+    @GetMapping("/producto")
+    public Set<GetProductoDto> getFavoritos(@AuthenticationPrincipal Cliente cliente) {
+        Set<Producto> productosFavoritos = clienteService.getProductoFavorito(cliente.getId());
+
+        return productosFavoritos.stream()
+                .map(GetProductoDto::of)
+                .collect(Collectors.toSet());
     }
 
 }
