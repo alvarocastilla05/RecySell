@@ -6,6 +6,8 @@ import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.repo.ClienteRepository;
 import com.example.Recysell.error.ClienteNotFoundException;
+import com.example.Recysell.producto.model.Producto;
+import com.example.Recysell.producto.repo.ProductoRepository;
 import com.example.Recysell.user.model.UserRole;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -39,6 +41,7 @@ public class ClienteService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
     private final EntityManager entityManager;
+    private final ProductoRepository productoRepository;
 
     @Value("${spring.mail.username}")
     private String fromMail;
@@ -127,6 +130,34 @@ public class ClienteService {
 
     public String generateRandomActivationCode(){
         return UUID.randomUUID().toString();
+    }
+
+
+    //Añadir Producto a Favoritos
+    public void addProductoFavorito(UUID clienteId, Long productoId){
+        Optional<Cliente> clienteOptional = clienteRepository.findById(clienteId);
+        Optional<Producto> productoOptional = productoRepository.findById(productoId);
+
+        if(clienteOptional.isPresent() && productoOptional.isPresent()){
+            clienteOptional.get().addProductoFavorito(productoOptional.get());
+            clienteRepository.save(clienteOptional.get());
+    }else {
+            throw new ClienteNotFoundException(clienteId);
+        }
+    }
+
+    //Listar Productos Favoritos de un Usuario
+    public Set<Producto> getProductoFavorito(UUID clienteId){
+        Optional<Cliente> clienteOptional = clienteRepository.findById(clienteId);
+
+        if(clienteOptional.isPresent()){
+            if (clienteOptional.get().getListaFavoritos().isEmpty()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay productos favoritos");
+            }
+            return clienteOptional.get().getListaFavoritos();
+        }else {
+            throw new ClienteNotFoundException(clienteId);
+        }
     }
 
 }

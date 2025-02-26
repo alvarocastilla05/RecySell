@@ -82,6 +82,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/trabajador/**").hasRole("TRABAJADOR")
                 .requestMatchers(HttpMethod.PUT, "/cliente/**").hasRole("CLIENTE")
 
+
                 // Producto
                 .requestMatchers(HttpMethod.POST, "/producto/**").hasRole("CLIENTE")
                 .requestMatchers(HttpMethod.GET, "/producto/cliente/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
@@ -111,6 +112,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/donacion").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/donacion/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/donacion/**").hasAnyRole("ADMIN", "TRABAJADOR")
+
+                //Favoritos
+                .requestMatchers(HttpMethod.PUT, "/cliente/producto/**").hasRole("CLIENTE")
+                .requestMatchers(HttpMethod.GET, "/cliente/producto").hasRole("CLIENTE")
 
                 .anyRequest().authenticated());
 
