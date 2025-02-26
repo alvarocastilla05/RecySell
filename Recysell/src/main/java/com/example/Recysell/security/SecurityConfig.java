@@ -116,7 +116,7 @@ public class SecurityConfig {
                 //Favoritos
                 .requestMatchers(HttpMethod.PUT, "/cliente/producto/**").hasRole("CLIENTE")
                 .requestMatchers(HttpMethod.GET, "/cliente/producto").hasRole("CLIENTE")
-
+                .requestMatchers(HttpMethod.DELETE, "/cliente/producto/**").hasRole("CLIENTE")
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

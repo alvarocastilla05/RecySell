@@ -290,4 +290,19 @@ public class ClienteController {
                 .collect(Collectors.toSet());
     }
 
+    @Operation(summary = "Elimina un producto de la lista de favoritos de un cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Producto eliminado de la lista de favoritos correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content)
+    })
+    @DeleteMapping("/producto/{idProducto}")
+    public ResponseEntity<?> deleteProductoFavorito(@AuthenticationPrincipal Cliente cliente, @PathVariable Long idProducto){
+        clienteService.deleteProductoFavorito(cliente.getId(), idProducto);
+        return ResponseEntity.noContent().build();
+    }
+
 }

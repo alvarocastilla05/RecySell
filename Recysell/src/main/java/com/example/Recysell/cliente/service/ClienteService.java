@@ -160,4 +160,17 @@ public class ClienteService {
         }
     }
 
+    //Eliminar Producto de Favoritos
+    public void deleteProductoFavorito(UUID clienteId, Long productoId){
+        Optional<Cliente> clienteOptional = clienteRepository.findById(clienteId);
+        Optional<Producto> productoOptional = productoRepository.findById(productoId);
+
+        if(clienteOptional.isPresent() && productoOptional.isPresent()){
+            clienteOptional.get().removeProductoFavorito(productoOptional.get());
+            clienteRepository.save(clienteOptional.get());
+        }else {
+            throw new ClienteNotFoundException(clienteId);
+        }
+    }
+
 }
