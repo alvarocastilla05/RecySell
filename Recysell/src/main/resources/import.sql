@@ -106,39 +106,6 @@ INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174008');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174020');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174021');
 
--- Insertar en producto
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (1, 'iPhone 12', 'Teléfono reacondicionado en excelente estado', 499.99, 'imagen1.jpg', '223e4567-e89b-12d3-a456-426614174004', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (2, 'Samsung Galaxy S21', 'Smartphone de alto rendimiento', 599.99, 'imagen2.jpg', '223e4567-e89b-12d3-a456-426614174004', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (3, 'MacBook Pro 13"', 'Laptop para trabajo y diseño', 1299.99, 'imagen3.jpg', '223e4567-e89b-12d3-a456-426614174006', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (4, 'Monitor LG 4K', 'Monitor UHD para productividad', 299.99, 'imagen4.jpg', '223e4567-e89b-12d3-a456-426614174006', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (5, 'Teclado Mecánico', 'Teclado gaming RGB', 99.99, 'imagen5.jpg', '223e4567-e89b-12d3-a456-426614174008', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (6, 'iPad Pro 12.9"', 'Tablet de alta gama para profesionales', 899.99, 'imagen6.jpg', '223e4567-e89b-12d3-a456-426614174005', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (7, 'Samsung Galaxy Tab S7', 'Tablet con lápiz óptico incluido', 699.99, 'imagen7.jpg', '223e4567-e89b-12d3-a456-426614174007', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (8, 'Apple Watch Series 6', 'Reloj inteligente con monitor de oxígeno en sangre', 399.99, 'imagen8.jpg', '223e4567-e89b-12d3-a456-426614174008', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (9, 'Dell XPS 15', 'Laptop ultraportátil con pantalla InfinityEdge', 1499.99, 'imagen9.jpg', '223e4567-e89b-12d3-a456-426614174004', NULL, false);
-
-INSERT INTO producto (id, nombre, descripcion, precio, imagen, cliente_id_vendedor, cliente_id_donante, deleted)
-VALUES (10, 'Sony WH-1000XM4', 'Auriculares con cancelación de ruido', 349.99, 'imagen10.jpg', '223e4567-e89b-12d3-a456-426614174006', NULL, false);
-
-ALTER SEQUENCE producto_seq RESTART WITH 60;
-
 -- Insertar en categoria
 INSERT INTO categoria (id, nombre, deleted) VALUES (1, 'Smartphones', false);
 INSERT INTO categoria (id, nombre, deleted) VALUES (2, 'Laptops', false);
@@ -151,17 +118,57 @@ INSERT INTO categoria (id, nombre, deleted) VALUES (8, 'Gaming', false);
 
 ALTER SEQUENCE categoria_seq RESTART WITH 58;
 
--- Insertar en tiene (relación entre productos y categorías)
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (1, 1);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (1, 2);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (2, 3);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (2, 4);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (4, 5);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (3, 6);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (3, 7);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (6, 8);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (2, 9);
-INSERT INTO tiene(categoria_id_producto, producto_id_categoria) VALUES (7, 10);
+--Insertar productos
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (1, 'iPhone 12', 'Teléfono reacondicionado en excelente estado', 499.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-01 10:00:00', 'COMO_NUEVO', 1);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (2, 'Samsung Galaxy S21', 'Smartphone de alto rendimiento', 599.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-02 11:00:00', 'BUEN_ESTADO', 1);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (3, 'MacBook Pro 13"', 'Laptop para trabajo y diseño', 1299.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-03 12:00:00', 'ESTADO_REGULAR', 2);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (4, 'Monitor LG 4K', 'Monitor UHD para productividad', 299.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-04 13:00:00', 'BUEN_ESTADO', 5);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (5, 'Teclado Mecánico', 'Teclado gaming RGB', 99.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-05 14:00:00', 'COMO_NUEVO', 8);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (6, 'iPad Pro 12.9"', 'Tablet de alta gama para profesionales', 899.99, '223e4567-e89b-12d3-a456-426614174005', NULL, false, '2023-10-06 15:00:00', 'CON_DANIOS', 3);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (7, 'Samsung Galaxy Tab S7', 'Tablet con lápiz óptico incluido', 699.99, '223e4567-e89b-12d3-a456-426614174007', NULL, false, '2023-10-07 16:00:00', 'BUEN_ESTADO', 3);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (8, 'Apple Watch Series 6', 'Reloj inteligente con monitor de oxígeno en sangre', 399.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-08 17:00:00', 'COMO_NUEVO', 6);
+
+INSERT INTO producto (id, nombre, descripcion, precio , cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (9, 'Dell XPS 15', 'Laptop ultraportátil con pantalla InfinityEdge', 1499.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-09 18:00:00', 'ESTADO_REGULAR', 2);
+
+INSERT INTO producto (id, nombre, descripcion, precio , cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
+VALUES (10, 'Sony WH-1000XM4', 'Auriculares con cancelación de ruido', 349.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-10 19:00:00', 'BUEN_ESTADO', 7);
+
+ALTER SEQUENCE producto_seq RESTART WITH 60;
+
+-- Insertar en producto_imagenes
+
+INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (1, 'imagen1.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (2, 'imagen2.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (1, 'imagen2.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (2, 'imagenX.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (3, 'imagen3.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (4, 'imagen4.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (5, 'imagen5.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (6, 'imagen6.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (7, 'imagen7.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (8, 'imagen8.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (9, 'imagen9.jpg');
+INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (10, 'imagen10.jpg');
+
+
+
+
 
 -- Insertar en organizacion
 INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (1, 'Green Earth', 'Calle 123, Madrid', '123e4567-e89b-12d3-a456-426614174001', false);

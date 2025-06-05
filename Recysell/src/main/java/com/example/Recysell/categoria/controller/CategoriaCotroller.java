@@ -19,6 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -110,9 +111,10 @@ public class CategoriaCotroller {
                     content = @Content),
     })
     @PostMapping
-    public ResponseEntity<GetCategoriaDto> save(@Valid @RequestBody EditarCategoriaCmd nuevo){
+    public ResponseEntity<GetCategoriaDto> save(@Valid @RequestPart("categoria") EditarCategoriaCmd nuevo,
+                                                @RequestPart("file")MultipartFile file){
 
-        Categoria categoria = categoriaService.save(nuevo);
+        Categoria categoria = categoriaService.save(nuevo, file);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(GetCategoriaDto.of(categoria));
     }
@@ -142,8 +144,9 @@ public class CategoriaCotroller {
                     content = @Content),
     })
     @PutMapping("/{id}")
-    public GetCategoriaDto edit(@PathVariable Long id, @Valid @RequestBody EditarCategoriaCmd edit){
-        return GetCategoriaDto.of(categoriaService.edit(id, edit));
+    public GetCategoriaDto edit(@PathVariable Long id, @Valid @RequestPart("categoria") EditarCategoriaCmd edit,
+                                @RequestPart("file") MultipartFile file){
+        return GetCategoriaDto.of(categoriaService.edit(id, edit, file));
     }
 
     @Operation(summary = "Elimina una categoria.")

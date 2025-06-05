@@ -1,8 +1,10 @@
 package com.example.Recysell.producto.dto;
 
-import com.example.Recysell.cliente.dto.GetClienteDto;
+import com.example.Recysell.categoria.model.Categoria;
+import com.example.Recysell.producto.model.Estado;
 import jakarta.validation.constraints.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record CreateProductoDto(
@@ -14,7 +16,15 @@ public record CreateProductoDto(
         String descripcion,
 
         @Positive(message = "El precio debe ser un valor positivo")
-        double precio
+        double precio,
+
+        @NotNull(message = "El estado del producto es obligatorio")
+        Estado estado,
+
+        @NotNull(message = "La categoría es obligatoria")
+        Long categoriaId
+
+
 ) {
 }
 

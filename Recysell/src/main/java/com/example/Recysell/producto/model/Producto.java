@@ -6,6 +6,8 @@ import com.example.Recysell.donacion.model.Donacion;
 import com.example.Recysell.util.SearchCriteria;
 import com.example.Recysell.valora.model.Valora;
 import jakarta.persistence.*;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.criteria.Join;
@@ -14,6 +16,8 @@ import org.hibernate.annotations.*;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -38,7 +42,19 @@ public class Producto {
 
     private double precio;
 
-    String imagen;
+    @ElementCollection
+    @CollectionTable(name = "producto_imagenes", joinColumns = @JoinColumn(name = "producto_id"))
+    @Column(name = "imagen_url") // nombre de la columna para cada imagen
+    private List<String> imagenes = new ArrayList<>();
+
+
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime fechaRegistro;
+
 
     private boolean deleted = Boolean.FALSE;
 
@@ -64,17 +80,13 @@ public class Producto {
     @ToString.Exclude
     private Set<Cliente> listaClientes = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "tiene",
-            joinColumns = @JoinColumn(name="producto_id_categoria"),
-            inverseJoinColumns = @JoinColumn(name="categoria_id_producto"),
-            foreignKey = @ForeignKey(name = "fk_producto_categoria"),
-            inverseForeignKey = @ForeignKey(name = "fk_categoria_producto")
+    @ManyToOne
+    @JoinColumn(
+            name = "categoria_id",
+            foreignKey = @ForeignKey(name = "fk_producto_categoria")
     )
-    @Builder.Default
-    @ToString.Exclude
-    private Set<Categoria> listaCategorias = new HashSet<>();
+    private Categoria categoria;
+
 
     @OneToOne(mappedBy = "producto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Valora valoracion;
@@ -86,18 +98,6 @@ public class Producto {
 
 
     //MÉTODOS HELPER
-
-        //Con Categoria.
-
-        public void addCategoria(Categoria c){
-            this.listaCategorias.add(c);
-            c.getListaProductos().add(this);
-        }
-
-        public void removeCategoria(Categoria c){
-            c.getListaProductos().remove(this);
-            this.listaCategorias.remove(c);
-        }
 
         //Con Cliente(Favoritos).
 
@@ -147,7 +147,7 @@ public class Producto {
     public static Specification<Producto> byCategoria(SearchCriteria criteria) {
         return (root, query, builder) -> {
             if (criteria.key().equalsIgnoreCase("categoria") && criteria.operation().equals(":")) {
-                Join<Producto, Categoria> categoriaJoin = root.join("listaCategorias");
+                Join<Producto, Categoria> categoriaJoin = root.join("categoria");
                 return builder.equal(categoriaJoin.get("nombre"), criteria.value().toString());
             }
             return null;

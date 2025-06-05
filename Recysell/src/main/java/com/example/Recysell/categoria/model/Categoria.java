@@ -9,10 +9,7 @@ import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -32,23 +29,26 @@ public class Categoria {
 
     private String nombre;
 
+    private String imagen;
+
     boolean deleted = Boolean.FALSE;
 
-    @ManyToMany(mappedBy = "listaCategorias", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
-    private Set<Producto> listaProductos = new HashSet<>();
+    private List<Producto> listaProductos = new ArrayList<>();
+
 
     //MÉTODOS HELPER
 
     public void addProducto(Producto p){
         this.listaProductos.add(p);
-        p.getListaCategorias().add(this);
+        p.setCategoria(this);
     }
 
     public void removeProducto(Producto p){
+        p.setCategoria(null);
         this.listaProductos.remove(p);
-        p.getListaCategorias().remove(this);
     }
 
     @Override
