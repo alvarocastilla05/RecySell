@@ -29,7 +29,7 @@ public class Cliente extends User {
 
 
     //Asociación con Productos (Productos en venta).
-    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.EAGER)
     @Builder.Default
     @ToString.Exclude
     List<Producto> listProductosEnVenta = new ArrayList<>();
