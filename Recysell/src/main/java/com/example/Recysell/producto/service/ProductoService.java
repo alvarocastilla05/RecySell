@@ -57,24 +57,24 @@ public class ProductoService {
 
     //Listar Productos en Venta.
     public Page<Producto> findAllProductosEnVenta(Pageable pageable, boolean isDeleted, Specification<Producto> spec) {
-        // Obtener la sesión de Hibernate y activar el filtro de eliminación
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedProductoFilter");
         filter.setParameter("isDeleted", isDeleted);
 
-        // Si se ha proporcionado una especificación, la utilizamos con findAll
-        Page<Producto> result = productoRepository.findAll(spec, pageable);
+        Specification<Producto> enVentaSpec = (root, query, cb) -> cb.isNotNull(root.get("clienteVendedor"));
+        Specification<Producto> finalSpec = (spec == null) ? enVentaSpec : spec.and(enVentaSpec);
 
-        // Desactivar el filtro de eliminación después de la consulta
+        Page<Producto> result = productoRepository.findAll(finalSpec, pageable);
+
         session.disableFilter("deletedProductoFilter");
 
-        // Verificar si el resultado está vacío y lanzar una excepción si es necesario
         if (result.isEmpty()) {
             throw new ProductoNotFoundException();
         }
 
         return result;
     }
+
 
 
 
