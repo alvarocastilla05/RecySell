@@ -53,6 +53,7 @@ public class OrganizacionService {
     public Organizacion save(EditOrganizacionCmd nuevo){
         return organizacionRepository.save(Organizacion.builder()
                 .nombre(nuevo.nombre())
+                .descripcion(nuevo.descripcion())
                 .direccion(nuevo.direccion())
                 .build());
     }
@@ -65,6 +66,7 @@ public class OrganizacionService {
             return organizacion
                     .map(o -> {
                         o.setNombre(edit.nombre());
+                        o.setDescripcion(edit.descripcion());
                         o.setDireccion(edit.direccion());
                         return organizacionRepository.save(o);
                     }).get();

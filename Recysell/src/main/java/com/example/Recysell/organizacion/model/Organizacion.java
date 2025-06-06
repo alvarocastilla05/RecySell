@@ -31,6 +31,8 @@ public class Organizacion {
 
     private String nombre;
 
+    private String descripcion;
+
     private String direccion;
 
     private boolean deleted = Boolean.FALSE;

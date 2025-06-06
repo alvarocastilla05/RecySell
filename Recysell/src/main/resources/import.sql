@@ -171,11 +171,20 @@ INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (10, 'imagen10.jp
 
 
 -- Insertar en organizacion
-INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (1, 'Green Earth', 'Calle 123, Madrid', '123e4567-e89b-12d3-a456-426614174001', false);
-INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (2, 'EcoFuture', 'Avenida 45, Barcelona', '123e4567-e89b-12d3-a456-426614174001', false);
-INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (3, 'RecyTech', 'Plaza Mayor, Sevilla', '123e4567-e89b-12d3-a456-426614174002', false);
-INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (4, 'EcoRecycle', 'Calle 67, Valencia', '123e4567-e89b-12d3-a456-426614174010', false);
-INSERT INTO organizacion (id, nombre, direccion, trabajador_id, deleted) VALUES (5, 'GreenTech', 'Avenida 89, Bilbao', '123e4567-e89b-12d3-a456-426614174011', false);
+INSERT INTO organizacion (id, nombre, descripcion, direccion, trabajador_id, deleted)
+VALUES (1, 'Green Earth', 'Organización dedicada a la reforestación y conservación del medio ambiente.', 'Calle 123, Madrid', '123e4567-e89b-12d3-a456-426614174001', false);
+
+INSERT INTO organizacion (id, nombre, descripcion, direccion, trabajador_id, deleted)
+VALUES (2, 'EcoFuture', 'Promueve el uso de tecnologías sostenibles para un futuro más ecológico.', 'Avenida 45, Barcelona', '123e4567-e89b-12d3-a456-426614174001', false);
+
+INSERT INTO organizacion (id, nombre, descripcion, direccion, trabajador_id, deleted)
+VALUES (3, 'RecyTech', 'Especializada en el reciclaje de dispositivos electrónicos y tecnológicos.', 'Plaza Mayor, Sevilla', '123e4567-e89b-12d3-a456-426614174002', false);
+
+INSERT INTO organizacion (id, nombre, descripcion, direccion, trabajador_id, deleted)
+VALUES (4, 'EcoRecycle', 'Fomenta la reutilización de materiales para reducir los desechos.', 'Calle 67, Valencia', '123e4567-e89b-12d3-a456-426614174010', false);
+
+INSERT INTO organizacion (id, nombre, descripcion, direccion, trabajador_id, deleted)
+VALUES (5, 'GreenTech', 'Desarrolla soluciones tecnológicas para la sostenibilidad ambiental.', 'Avenida 89, Bilbao', '123e4567-e89b-12d3-a456-426614174011', false);
 
 ALTER SEQUENCE organizacion_seq RESTART WITH 55;
 
