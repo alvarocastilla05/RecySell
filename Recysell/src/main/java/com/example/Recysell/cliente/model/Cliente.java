@@ -1,5 +1,6 @@
 package com.example.Recysell.cliente.model;
 
+import com.example.Recysell.compra.model.Compra;
 import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.user.model.User;
 import jakarta.persistence.*;
@@ -27,9 +28,14 @@ import java.util.Set;
 public class Cliente extends User {
 
 
+    //Asociación con Compra.
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @Builder.Default
+    @ToString.Exclude
+    List<Compra> listaCompras = new ArrayList<>();
 
     //Asociación con Productos (Productos en venta).
-    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clienteVendedor", fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     List<Producto> listProductosEnVenta = new ArrayList<>();
