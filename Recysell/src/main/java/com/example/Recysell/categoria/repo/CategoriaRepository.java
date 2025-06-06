@@ -15,17 +15,8 @@ import java.util.UUID;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     @Query("""
-    SELECT new com.example.Recysell.categoria.dto.GetCategoriaDto(c.nombre)
-    FROM Producto p
-    JOIN p.listaCategorias c
-    WHERE p.id = :id
-""")
-    Set<GetCategoriaDto> findCategoriasByProductoId(@Param("id") Long id);
-
-
-    @Query("""
     SELECT new com.example.Recysell.categoria.dto.GetCategoriaDto(
-    c.nombre
+    c.nombre, c.imagen
     )
     FROM Categoria c
     """)

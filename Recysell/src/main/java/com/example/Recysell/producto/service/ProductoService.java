@@ -3,8 +3,10 @@ package com.example.Recysell.producto.service;
 import com.example.Recysell.categoria.dto.GetCategoriaDto;
 import com.example.Recysell.categoria.model.Categoria;
 import com.example.Recysell.categoria.repo.CategoriaRepository;
+import com.example.Recysell.categoria.service.CategoriaService;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.repo.ClienteRepository;
+import com.example.Recysell.error.CategoriaNotFoundException;
 import com.example.Recysell.error.ClienteNotFoundException;
 import com.example.Recysell.error.ProductoNotFoundException;
 import com.example.Recysell.files.model.FileMetadata;
@@ -25,9 +27,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +41,11 @@ public class ProductoService {
     private final StorageService storageService;
     private final EntityManager entityManager;
     private final CategoriaRepository categoriaRepository;
+    private final CategoriaService categoriaService;
 
 
-    public Set<GetCategoriaDto> getCategoriasPorProducto(Long id){
-        return categoriaRepository.findCategoriasByProductoId(id);
+    public Set<GetProductoDto> getProductoDtosByCategoria(Long id){
+        return productoRepository.findProductosByCategoria(id);
     }
 
     public boolean esPropietario(Long productoId, String username) {
@@ -52,24 +57,24 @@ public class ProductoService {
 
     //Listar Productos en Venta.
     public Page<Producto> findAllProductosEnVenta(Pageable pageable, boolean isDeleted, Specification<Producto> spec) {
-        // Obtener la sesión de Hibernate y activar el filtro de eliminación
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedProductoFilter");
         filter.setParameter("isDeleted", isDeleted);
 
-        // Si se ha proporcionado una especificación, la utilizamos con findAll
-        Page<Producto> result = productoRepository.findAll(spec, pageable);
+        Specification<Producto> enVentaSpec = (root, query, cb) -> cb.isNotNull(root.get("clienteVendedor"));
+        Specification<Producto> finalSpec = (spec == null) ? enVentaSpec : spec.and(enVentaSpec);
 
-        // Desactivar el filtro de eliminación después de la consulta
+        Page<Producto> result = productoRepository.findAll(finalSpec, pageable);
+
         session.disableFilter("deletedProductoFilter");
 
-        // Verificar si el resultado está vacío y lanzar una excepción si es necesario
         if (result.isEmpty()) {
             throw new ProductoNotFoundException();
         }
 
         return result;
     }
+
 
 
 
@@ -85,40 +90,57 @@ public class ProductoService {
     }
 
 
-    //Añadir productos
+    //Añadir producto
     @Transactional
-    public Producto save(CreateProductoDto createProductoDto, Cliente authenticatedCliente, MultipartFile file) {
-        FileMetadata fileMetadata = storageService.store(file);
+    public Producto save(CreateProductoDto createProductoDto, Cliente authenticatedCliente, List<MultipartFile> files) {
+        List<String> nombresImagenes = files.stream()
+                .map(file -> storageService.store(file).getFilename())
+                .toList();
+
+        Categoria categoria = categoriaRepository.findById(createProductoDto.categoriaId())
+                .orElseThrow(() -> new CategoriaNotFoundException(createProductoDto.categoriaId()));
 
         Producto producto = Producto.builder()
                 .nombre(createProductoDto.nombre())
                 .descripcion(createProductoDto.descripcion())
                 .precio(createProductoDto.precio())
-                .imagen(fileMetadata.getFilename())
-                .clienteVendedor(authenticatedCliente) // Asigna el cliente autenticado
+                .imagenes(nombresImagenes) // lista de strings
+                .estado(createProductoDto.estado())
+                .categoria(categoria)
+                .clienteVendedor(authenticatedCliente)
                 .build();
 
         return productoRepository.save(producto);
     }
 
-    //Modificar Productos
-    public Producto edit(EditProductoCmd editProductoCmd, Long id, MultipartFile file ){
-        Optional<Producto> productoOptional = productoRepository.findById(id);
 
-        if (productoOptional.isPresent() && !productoOptional.get().isDeleted()) {
-            return productoOptional
-                    .map(old -> {
-                        old.setNombre(editProductoCmd.nombre());
-                        old.setDescripcion(editProductoCmd.descripcion());
-                        old.setPrecio(editProductoCmd.precio());
-                        old.setImagen(storageService.store(file).getFilename());
 
-                        return productoRepository.save(old);
-                    }).get();
-        } else {
-            throw new ProductoNotFoundException(id);
-        }
+    //Editar Producto
+    @Transactional
+    public Producto edit(EditProductoCmd editProductoCmd, Long id, List<MultipartFile> files) {
+        Producto producto = productoRepository.findById(id)
+                .filter(p -> !p.isDeleted())
+                .orElseThrow(() -> new ProductoNotFoundException(id));
+
+        Categoria categoria = categoriaRepository.findById(editProductoCmd.categoriaId())
+                .orElseThrow(() -> new CategoriaNotFoundException(editProductoCmd.categoriaId()));
+
+        // Subir y guardar las nuevas imágenes
+        List<String> nombresImagenes = files.stream()
+                .map(file -> storageService.store(file).getFilename())
+                .toList();
+
+        // Actualizar el producto
+        producto.setNombre(editProductoCmd.nombre());
+        producto.setDescripcion(editProductoCmd.descripcion());
+        producto.setPrecio(editProductoCmd.precio());
+        producto.setEstado(editProductoCmd.estado());
+        producto.setCategoria(categoria);
+        producto.setImagenes(nombresImagenes); // <-- aquí guardas múltiples imágenes
+
+        return productoRepository.save(producto);
     }
+
 
     //Eliminar Producto
     public void deleteById(Long id){
@@ -132,7 +154,7 @@ public class ProductoService {
     }
 
     //Añadir categoria a producto
-    public void addCategoriaToProducto(Long productoId, Long CategoriaId){
+    /*public void addCategoriaToProducto(Long productoId, Long CategoriaId){
         Optional<Producto> producto = productoRepository.findById(productoId);
         Optional<Categoria> categoria = categoriaRepository.findById(CategoriaId);
 
@@ -142,7 +164,7 @@ public class ProductoService {
         }else{
             throw new ProductoNotFoundException(productoId);
         }
-    }
+    }*/
 
 
 }

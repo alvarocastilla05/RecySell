@@ -171,10 +171,10 @@ public class ProductoController {
     @PreAuthorize("hasRole('CLIENTE')")
     public GetProductoConAsociaciones findById(@PathVariable Long id) {
 
-        Set<GetCategoriaDto> categorias = productoService.getCategoriasPorProducto(id);
+
 
         Producto producto = productoService.findById(id);
-        return GetProductoConAsociaciones.of(producto, categorias);
+        return GetProductoConAsociaciones.of(producto);
     }
 
     @Operation(summary = "Registra un nuevo producto.")
@@ -204,12 +204,12 @@ public class ProductoController {
     })
     @PostMapping
     public ResponseEntity<GetProductoDto> createProducto(@Valid @RequestPart("producto") CreateProductoDto createProductoDto,
-                                                         @AuthenticationPrincipal Cliente authenticatedCliente, @RequestPart("file") MultipartFile file) {
-        Producto producto = productoService.save(createProductoDto, authenticatedCliente, file);
+                                                         @AuthenticationPrincipal Cliente authenticatedCliente,
+                                                         @RequestPart("files") List<MultipartFile> files) {
+        Producto producto = productoService.save(createProductoDto, authenticatedCliente, files);
         return ResponseEntity.status(HttpStatus.CREATED).body(GetProductoDto.of(producto));
-
-
     }
+
 
 
     @Operation(summary = "Actualiza un producto.")
@@ -245,10 +245,13 @@ public class ProductoController {
     })
     @PutMapping("/{id}")
     @PreAuthorize("@productoService.esPropietario(#id, authentication.principal.username)")
-    public ResponseEntity<GetProductoDto> updateProducto(@PathVariable Long id, @Valid @RequestPart("producto")EditProductoCmd editProductoCmd, @RequestPart("file") MultipartFile file) {
-        Producto producto = productoService.edit(editProductoCmd, id, file);
+    public ResponseEntity<GetProductoDto> updateProducto(@PathVariable Long id,
+                                                         @Valid @RequestPart("producto") EditProductoCmd editProductoCmd,
+                                                         @RequestPart("files") List<MultipartFile> files) {
+        Producto producto = productoService.edit(editProductoCmd, id, files);
         return ResponseEntity.ok(GetProductoDto.of(producto));
     }
+
 
     @Operation(summary = "Elimina un producto.")
     @ApiResponses(value = {
@@ -333,7 +336,7 @@ public class ProductoController {
         return productoService.findProductosByClienteVendedor(cliente, pageable).getContent();
     }
 
-    @Operation(summary = "Añade una categoría a un producto.")
+    /*@Operation(summary = "Añade una categoría a un producto.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
                     description = "La categoría ha sido añadida correctamente.",
@@ -349,5 +352,5 @@ public class ProductoController {
     public ResponseEntity<?> addCategoria(@PathVariable Long idProducto, @PathVariable Long idCategoria){
         productoService.addCategoriaToProducto(idProducto, idCategoria);
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }

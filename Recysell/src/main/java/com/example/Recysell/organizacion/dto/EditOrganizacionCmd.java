@@ -8,6 +8,10 @@ public record EditOrganizacionCmd(
         @Size(max = 100, message = "El nombre no puede tener más de 100 caracteres")
         String nombre,
 
+        @NotBlank(message = "La descripción no puede estar vacía")
+        @Size(max = 500, message = "La descripción no puede tener más de 500 caracteres")
+        String descripcion,
+
         @NotBlank(message = "La dirección no puede estar vacía")
         @Size(max = 200, message = "La dirección no puede tener más de 200 caracteres")
         String direccion
