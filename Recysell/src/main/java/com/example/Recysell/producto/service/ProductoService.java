@@ -27,10 +27,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,13 +52,16 @@ public class ProductoService {
 
 
 
-    //Listar Productos en Venta.
+    // Listar Productos en Venta.
     public Page<Producto> findAllProductosEnVenta(Pageable pageable, boolean isDeleted, Specification<Producto> spec) {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedProductoFilter");
         filter.setParameter("isDeleted", isDeleted);
 
-        Specification<Producto> enVentaSpec = (root, query, cb) -> cb.isNotNull(root.get("clienteVendedor"));
+        Specification<Producto> enVentaSpec = (root, query, cb) -> cb.and(
+                cb.isNotNull(root.get("clienteVendedor")),
+                cb.isTrue(root.get("disponibilidad"))
+        );
         Specification<Producto> finalSpec = (spec == null) ? enVentaSpec : spec.and(enVentaSpec);
 
         Page<Producto> result = productoRepository.findAll(finalSpec, pageable);
@@ -126,9 +126,11 @@ public class ProductoService {
                 .orElseThrow(() -> new CategoriaNotFoundException(editProductoCmd.categoriaId()));
 
         // Subir y guardar las nuevas imágenes
-        List<String> nombresImagenes = files.stream()
+        List<String> nombresImagenes = new ArrayList<>(files.stream()
                 .map(file -> storageService.store(file).getFilename())
-                .toList();
+                .toList());
+        producto.setImagenes(nombresImagenes);
+
 
         // Actualizar el producto
         producto.setNombre(editProductoCmd.nombre());

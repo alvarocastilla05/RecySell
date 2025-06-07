@@ -119,36 +119,35 @@ INSERT INTO categoria (id, nombre, deleted) VALUES (8, 'Gaming', false);
 ALTER SEQUENCE categoria_seq RESTART WITH 58;
 
 --Insertar productos
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (1, 'iPhone 12', 'Teléfono reacondicionado en excelente estado', 499.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-01 10:00:00', 'COMO_NUEVO', 1);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (1, 'iPhone 12', 'Teléfono reacondicionado en excelente estado', 499.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-01 10:00:00', 'COMO_NUEVO', 1, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (2, 'Samsung Galaxy S21', 'Smartphone de alto rendimiento', 599.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-02 11:00:00', 'BUEN_ESTADO', 1);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (2, 'Samsung Galaxy S21', 'Smartphone de alto rendimiento', 599.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-02 11:00:00', 'BUEN_ESTADO', 1, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (3, 'MacBook Pro 13"', 'Laptop para trabajo y diseño', 1299.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-03 12:00:00', 'ESTADO_REGULAR', 2);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (3, 'MacBook Pro 13"', 'Laptop para trabajo y diseño', 1299.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-03 12:00:00', 'ESTADO_REGULAR', 2, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (4, 'Monitor LG 4K', 'Monitor UHD para productividad', 299.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-04 13:00:00', 'BUEN_ESTADO', 5);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (4, 'Monitor LG 4K', 'Monitor UHD para productividad', 299.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-04 13:00:00', 'BUEN_ESTADO', 5, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (5, 'Teclado Mecánico', 'Teclado gaming RGB', 99.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-05 14:00:00', 'COMO_NUEVO', 8);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (5, 'Teclado Mecánico', 'Teclado gaming RGB', 99.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-05 14:00:00', 'COMO_NUEVO', 8, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (6, 'iPad Pro 12.9"', 'Tablet de alta gama para profesionales', 899.99, '223e4567-e89b-12d3-a456-426614174005', NULL, false, '2023-10-06 15:00:00', 'CON_DANIOS', 3);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (6, 'iPad Pro 12.9"', 'Tablet de alta gama para profesionales', 899.99, '223e4567-e89b-12d3-a456-426614174005', NULL, false, '2023-10-06 15:00:00', 'CON_DANIOS', 3, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (7, 'Samsung Galaxy Tab S7', 'Tablet con lápiz óptico incluido', 699.99, '223e4567-e89b-12d3-a456-426614174007', NULL, false, '2023-10-07 16:00:00', 'BUEN_ESTADO', 3);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (7, 'Samsung Galaxy Tab S7', 'Tablet con lápiz óptico incluido', 699.99, '223e4567-e89b-12d3-a456-426614174007', NULL, false, '2023-10-07 16:00:00', 'BUEN_ESTADO', 3, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (8, 'Apple Watch Series 6', 'Reloj inteligente con monitor de oxígeno en sangre', 399.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-08 17:00:00', 'COMO_NUEVO', 6);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (8, 'Apple Watch Series 6', 'Reloj inteligente con monitor de oxígeno en sangre', 399.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-08 17:00:00', 'COMO_NUEVO', 6, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio , cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (9, 'Dell XPS 15', 'Laptop ultraportátil con pantalla InfinityEdge', 1499.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-09 18:00:00', 'ESTADO_REGULAR', 2);
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (9, 'Dell XPS 15', 'Laptop ultraportátil con pantalla InfinityEdge', 1499.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-09 18:00:00', 'ESTADO_REGULAR', 2, true);
 
-INSERT INTO producto (id, nombre, descripcion, precio , cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id)
-VALUES (10, 'Sony WH-1000XM4', 'Auriculares con cancelación de ruido', 349.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-10 19:00:00', 'BUEN_ESTADO', 7);
-
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (10, 'Sony WH-1000XM4', 'Auriculares con cancelación de ruido', 349.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-10 19:00:00', 'BUEN_ESTADO', 7, true);
 ALTER SEQUENCE producto_seq RESTART WITH 60;
 
 -- Insertar en producto_imagenes
