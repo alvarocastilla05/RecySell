@@ -43,8 +43,11 @@ public class Producto {
 
     private double precio;
 
+    private boolean disponibilidad;
+
     @ElementCollection
     @CollectionTable(name = "producto_imagenes", joinColumns = @JoinColumn(name = "producto_id"))
+    @Builder.Default
     @Column(name = "imagen_url") // nombre de la columna para cada imagen
     private List<String> imagenes = new ArrayList<>();
 
@@ -97,7 +100,7 @@ public class Producto {
     @ToString.Exclude
     private List<Donacion> listaDonaciones = new ArrayList<>();
 
-    @OneToOne(mappedBy = "productoLinea", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "productoLinea", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
     private LineaVenta lineaVenta;
 
 
