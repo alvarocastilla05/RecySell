@@ -1,5 +1,6 @@
 package com.example.Recysell.error;
 
+import com.example.Recysell.compra.model.Compra;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -33,6 +34,10 @@ public class GlobalExceptionHandler {
             errorType = "Valoración no encontrada";
         }else if (ex instanceof DonacionNotFoundException) {
             errorType = "Donación no encontrada";
+        } else if (ex instanceof LineaVentaNotFoundException) {
+            errorType = "Línea de venta no encontrada";
+        } else if (ex instanceof CompraNotFoundException) {
+            errorType = "Compra no encontrada";
         }
 
         Map<String, Object> errorBody = Map.of(

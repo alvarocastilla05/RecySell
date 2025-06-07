@@ -50,4 +50,17 @@ public class Compra {
     @ToString.Exclude
     private List<LineaVenta> lineaVentas = new ArrayList<>();
 
+    //MÉTODOS HELPER
+
+    //Línea de venta
+    public void addLineaVenta(LineaVenta lineaVenta) {
+        this.lineaVentas.add(lineaVenta);
+        lineaVenta.setCompra(this);
+    }
+
+    public void removeLineaVenta(LineaVenta lineaVenta) {
+        lineaVenta.setCompra(null);
+        this.lineaVentas.remove(lineaVenta);
+    }
+
 }

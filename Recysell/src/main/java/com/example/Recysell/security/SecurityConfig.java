@@ -121,6 +121,7 @@ public class SecurityConfig {
 
                 //LineaVenta
                 .requestMatchers(HttpMethod.GET, "/linea-venta").hasAnyRole("ADMIN", "TRABAJADOR")
+                .requestMatchers(HttpMethod.POST, "/linea-venta").hasRole("CLIENTE")
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
