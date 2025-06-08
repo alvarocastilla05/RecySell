@@ -239,17 +239,17 @@ VALUES (5, 20.0, 150.0, '2023-10-05 14:00:00', 'Bilbao', '48001', 'Gran Vía, 30
 ALTER SEQUENCE compra_seq RESTART WITH 55;
 
 -- Insertar datos en lineaVenta
-INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
-VALUES (1, false, 1, 7);
+INSERT INTO linea_venta (id , compra_id, producto_id_linea_venta)
+VALUES (1, 1, 7);
 
-INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
-VALUES (2, false, 1, 8);
+INSERT INTO linea_venta (id , compra_id, producto_id_linea_venta)
+VALUES (2, 1, 8);
 
-INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
-VALUES (3, false, 2, 9);
+INSERT INTO linea_venta (id, compra_id, producto_id_linea_venta)
+VALUES (3, 2, 9);
 
-INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
-VALUES (4, false, 2, 10);
+INSERT INTO linea_venta (id, compra_id, producto_id_linea_venta)
+VALUES (4, 2, 10);
 
 
 
