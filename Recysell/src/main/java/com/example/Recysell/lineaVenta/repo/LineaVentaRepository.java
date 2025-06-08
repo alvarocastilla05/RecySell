@@ -29,4 +29,8 @@ public interface LineaVentaRepository extends JpaRepository<LineaVenta, Long> {
     List<LineaVenta> findByProductoLineaAndCompraEstadoCompraAndCompraClienteNot(
             Producto producto, EstadoCompra estadoCompra, Cliente cliente);
 
+    boolean existsByIdAndCompraClienteUsername(Long id, String username);
+
+
+
 }

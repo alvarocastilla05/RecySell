@@ -3,11 +3,10 @@ package com.example.Recysell.lineaVenta.model;
 import com.example.Recysell.compra.model.Compra;
 import com.example.Recysell.producto.model.Producto;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ForeignKey;
 import lombok.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.*;
 
 @Getter
 @Setter
@@ -16,16 +15,16 @@ import org.hibernate.annotations.SQLDelete;
 @Builder
 @ToString(callSuper = true)
 @Entity
-@SQLDelete(sql = "UPDATE lineaVenta SET deleted = true WHERE id = ?")
-@FilterDef(name = "deletedLineaVentaFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
-@Filter(name = "deletedLineaVentaFilter", condition = "deleted = :isDeleted")
+//@SQLDelete(sql = "UPDATE linea_venta SET deleted = true WHERE id = ?")
+//@FilterDef(name = "deletedLineaVentaFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+//@Filter(name = "deletedLineaVentaFilter", condition = "deleted = :isDeleted")
 public class LineaVenta {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    boolean deleted = Boolean.FALSE;
+    //boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     @JoinColumn(

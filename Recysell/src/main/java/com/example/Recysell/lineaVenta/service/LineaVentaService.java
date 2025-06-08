@@ -15,6 +15,7 @@ import com.example.Recysell.lineaVenta.repo.LineaVentaRepository;
 import com.example.Recysell.producto.model.Producto;
 import com.example.Recysell.producto.repo.ProductoRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Filter;
 import org.hibernate.Session;
@@ -36,14 +37,19 @@ public class LineaVentaService {
     private final CompraRepository compraRepository;
     private final ProductoRepository productoRepository;
 
+    public boolean esPropietario(Long lineaVentaId, String username) {
+
+        return lineaVentaRepository.existsByIdAndCompraClienteUsername(lineaVentaId, username);
+    }
+
     // Listar Líneas de Venta
     public Page<GetLineaVentaDto> findAll(Pageable pageable, boolean isDeleted) {
-        Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("deletedLineaVentaFilter");
-        filter.setParameter("isDeleted", isDeleted);
+        //Session session = entityManager.unwrap(Session.class);
+        //Filter filter = session.enableFilter("deletedLineaVentaFilter");
+        //filter.setParameter("isDeleted", isDeleted);
 
         Page<GetLineaVentaDto> result = lineaVentaRepository.findAllLineasVenta(pageable);
-        session.disableFilter("deletedLineaVentaFilter");
+        //session.disableFilter("deletedLineaVentaFilter");
 
         if (result.isEmpty()) {
             throw new LineaVentaNotFoundException();
@@ -77,6 +83,21 @@ public class LineaVentaService {
             throw new ProductoYaEnCarritoException("El producto con ID " + producto.getId() + " ya está en el carrito.");
         }
     }
+
+    //Eliminar línea de venta
+    @Transactional
+    public void deleteById(Long id) {
+        LineaVenta lineaVenta = lineaVentaRepository.findById(id)
+                .orElseThrow(() -> new LineaVentaNotFoundException(id));
+
+        Compra compra = lineaVenta.getCompra();
+        if (compra != null) {
+            compra.removeLineaVenta(lineaVenta);  // helper que limpia la relación bidireccional
+        }
+
+        lineaVentaRepository.delete(lineaVenta);
+    }
+
 
 
 
