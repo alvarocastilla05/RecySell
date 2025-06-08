@@ -2,6 +2,7 @@ package com.example.Recysell.compra.model;
 
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.lineaVenta.model.LineaVenta;
+import com.example.Recysell.producto.model.Estado;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,15 +28,19 @@ public class Compra {
 
     private double subTotal;
 
-    @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaVenta;
+
+    private LocalDateTime fechaEntrega;
 
     private String provincia;
 
     private String codigoPostal;
 
     private String direccionEntrega;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoCompra estadoCompra;
 
     //Asociacion con Cliente
     @ManyToOne

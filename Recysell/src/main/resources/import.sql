@@ -256,3 +256,9 @@ VALUES (4, false, 2, 10);
 -- Reiniciar la secuencia de lineaVenta
 ALTER SEQUENCE linea_venta_seq RESTART WITH 61;
 
+-- Eliminar la restricción de clave única en producto_id_linea_venta
+ALTER TABLE linea_venta DROP CONSTRAINT IF EXISTS linea_venta_producto_id_linea_venta_key;
+
+-- Agregar restricción compuesta (producto no puede repetirse en misma compra)
+ALTER TABLE linea_venta ADD CONSTRAINT linea_venta_unique_compra_producto UNIQUE (compra_id, producto_id_linea_venta);
+
