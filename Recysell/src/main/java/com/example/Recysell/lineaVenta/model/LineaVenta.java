@@ -15,16 +15,16 @@ import org.hibernate.annotations.*;
 @Builder
 @ToString(callSuper = true)
 @Entity
-//@SQLDelete(sql = "UPDATE linea_venta SET deleted = true WHERE id = ?")
-//@FilterDef(name = "deletedLineaVentaFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
-//@Filter(name = "deletedLineaVentaFilter", condition = "deleted = :isDeleted")
+@SQLDelete(sql = "UPDATE linea_venta SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedLineaVentaFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedLineaVentaFilter", condition = "deleted = :isDeleted")
 public class LineaVenta {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    //boolean deleted = Boolean.FALSE;
+    boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     @JoinColumn(

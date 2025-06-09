@@ -4,8 +4,9 @@ import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.lineaVenta.model.LineaVenta;
 import com.example.Recysell.producto.model.Estado;
 import jakarta.persistence.*;
+import jakarta.persistence.ForeignKey;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,11 +19,16 @@ import java.util.List;
 @Builder
 @ToString(callSuper = true)
 @Entity
+@SQLDelete(sql = "UPDATE compra SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedCompraFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedCompraFilter", condition = "deleted = :isDeleted")
 public class Compra {
 
     @Id
     @GeneratedValue
     private Long id;
+
+    private boolean deleted = Boolean.FALSE;
 
     private double gastosEnvio;
 

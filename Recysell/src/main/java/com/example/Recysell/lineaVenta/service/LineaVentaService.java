@@ -44,12 +44,12 @@ public class LineaVentaService {
 
     // Listar Líneas de Venta
     public Page<GetLineaVentaDto> findAll(Pageable pageable, boolean isDeleted) {
-        //Session session = entityManager.unwrap(Session.class);
-        //Filter filter = session.enableFilter("deletedLineaVentaFilter");
-        //filter.setParameter("isDeleted", isDeleted);
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedLineaVentaFilter");
+        filter.setParameter("isDeleted", isDeleted);
 
         Page<GetLineaVentaDto> result = lineaVentaRepository.findAllLineasVenta(pageable);
-        //session.disableFilter("deletedLineaVentaFilter");
+        session.disableFilter("deletedLineaVentaFilter");
 
         if (result.isEmpty()) {
             throw new LineaVentaNotFoundException();
@@ -94,6 +94,8 @@ public class LineaVentaService {
         if (compra != null) {
             compra.removeLineaVenta(lineaVenta);  // helper que limpia la relación bidireccional
         }
+
+        lineaVenta.setDeleted(true); // Marcar como eliminado
 
         lineaVentaRepository.delete(lineaVenta);
     }
