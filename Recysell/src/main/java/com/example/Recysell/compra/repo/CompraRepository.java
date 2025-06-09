@@ -21,6 +21,7 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
         c.provincia,
         c.codigoPostal,
         c.direccionEntrega,
+        c.estadoCompra,
         c.cliente
     )
     FROM Compra c
@@ -35,6 +36,7 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
         c.provincia,
         c.codigoPostal,
         c.direccionEntrega,
+        c.estadoCompra,
         c.cliente)
     FROM Compra c
     WHERE c.cliente = :cliente

@@ -2,6 +2,7 @@ package com.example.Recysell.compra.service;
 
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.repo.ClienteRepository;
+import com.example.Recysell.compra.dto.CreateCompraDto;
 import com.example.Recysell.compra.dto.GetCompraDto;
 import com.example.Recysell.compra.model.Compra;
 import com.example.Recysell.compra.model.EstadoCompra;
@@ -96,5 +97,25 @@ public class CompraService {
         }
         return result;
     }
+
+    //Crear Compra.
+    @Transactional
+    public Compra addCompra(CreateCompraDto dto, Cliente cliente) {
+
+        Compra compra = Compra.builder()
+                .cliente(cliente)
+                .estadoCompra(EstadoCompra.CARRITO)
+                .gastosEnvio(5.00)
+                .subTotal(0.0) // fijo en 0
+                .provincia(dto.provincia())
+                .codigoPostal(dto.codigoPostal())
+                .direccionEntrega(dto.direccionEntrega())
+                .fechaVenta(null)
+                .build();
+
+        return compraRepository.save(compra);
+    }
+
+
 }
 

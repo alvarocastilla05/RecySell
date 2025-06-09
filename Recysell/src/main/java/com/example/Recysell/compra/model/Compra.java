@@ -34,7 +34,6 @@ public class Compra {
 
     private double subTotal;
 
-    @Column(nullable = false, updatable = false)
     private LocalDateTime fechaVenta;
 
     private LocalDateTime fechaEntrega;

@@ -3,6 +3,7 @@ package com.example.Recysell.compra.dto;
 import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.compra.model.Compra;
+import com.example.Recysell.compra.model.EstadoCompra;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ public record GetCompraDto(
         String provincia,
         String codigoPostal,
         String direccionEntrega,
+        EstadoCompra estadoCompra,
         GetClienteDto clienteDto
 ) {
 
@@ -24,6 +26,7 @@ public record GetCompraDto(
                 compra.getProvincia(),
                 compra.getCodigoPostal(),
                 compra.getDireccionEntrega(),
+                compra.getEstadoCompra(),
                 GetClienteDto.of(compra.getCliente())
         );
     }
@@ -35,6 +38,7 @@ public record GetCompraDto(
             String provincia,
             String codigoPostal,
             String direccionEntrega,
+            EstadoCompra estadoCompra,
             Cliente cliente
     ) {
         this(
@@ -44,6 +48,7 @@ public record GetCompraDto(
                 provincia,
                 codigoPostal,
                 direccionEntrega,
+                estadoCompra,
                 GetClienteDto.of(cliente)
         );
     }
