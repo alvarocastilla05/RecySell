@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,6 +36,10 @@ public class CompraService {
     private final LineaVentaRepository lineaVentaRepository;
     private final ClienteRepository clienteRepository;
     private final EntityManager entityManager;
+
+    public boolean esPropietario(Long compraId, String username) {
+        return compraRepository.existsByIdAndCliente_Username(compraId, username);
+    }
 
 
     @Transactional
@@ -115,6 +120,33 @@ public class CompraService {
 
         return compraRepository.save(compra);
     }
+
+    // Editar solo los datos de entrega de una compra
+    public Compra editarCompra(Long id, CreateCompraDto edit) {
+        Optional<Compra> compra = compraRepository.findById(id);
+
+        if (compra.isPresent() && !compra.get().isDeleted()) {
+            return compra
+                    .map(c -> {
+                        c.setProvincia(edit.provincia());
+                        c.setCodigoPostal(edit.codigoPostal());
+                        c.setDireccionEntrega(edit.direccionEntrega());
+                        return compraRepository.save(c);
+                    }).get();
+        } else {
+            throw new CompraNotFoundException(id);
+        }
+    }
+
+    private void actualizarSubtotal(Compra compra) {
+        double nuevoSubtotal = compra.getLineaVentas().stream()
+                .mapToDouble(lv -> lv.getProductoLinea().getPrecio())
+                .sum();
+        compra.setSubTotal(nuevoSubtotal);
+        compraRepository.save(compra);
+    }
+
+
 
 
 }

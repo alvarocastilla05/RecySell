@@ -43,5 +43,7 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
 """)
     Page<GetCompraDto> findCompraByCliente(@Param("cliente") Cliente cliente, Pageable pageable);
 
+    boolean existsByIdAndCliente_Username(Long compraId, String username);
+
 
 }

@@ -58,6 +58,7 @@ public class LineaVentaService {
     }
 
     // Añadir línea de venta
+    @Transactional
     public LineaVenta save(CreateLineaVentaDto nuevo) {
         Compra compra = compraRepository.findById(nuevo.compraId())
                 .orElseThrow(() -> new CompraNotFoundException(nuevo.compraId()));
@@ -77,12 +78,18 @@ public class LineaVentaService {
                 .build();
 
         try {
-            return lineaVentaRepository.save(nuevaLinea);
+            LineaVenta guardada = lineaVentaRepository.save(nuevaLinea);
+
+            // ✅ Sumar el precio del producto al subtotal de la compra
+            compra.setSubTotal(compra.getSubTotal() + producto.getPrecio());
+            compraRepository.save(compra);
+
+            return guardada;
         } catch (DataIntegrityViolationException ex) {
-            // Aquí capturamos el error que lanza la base por restricción única
             throw new ProductoYaEnCarritoException("El producto con ID " + producto.getId() + " ya está en el carrito.");
         }
     }
+
 
     //Eliminar línea de venta
     @Transactional
@@ -92,13 +99,17 @@ public class LineaVentaService {
 
         Compra compra = lineaVenta.getCompra();
         if (compra != null) {
-            compra.removeLineaVenta(lineaVenta);  // helper que limpia la relación bidireccional
+            // ✅ Restar el precio del producto al subtotal
+            Producto producto = lineaVenta.getProductoLinea();
+            compra.setSubTotal(compra.getSubTotal() - producto.getPrecio());
+            compra.removeLineaVenta(lineaVenta); // Limpieza bidireccional
+            compraRepository.save(compra);
         }
 
         lineaVenta.setDeleted(true); // Marcar como eliminado
-
         lineaVentaRepository.delete(lineaVenta);
     }
+
 
 
 
