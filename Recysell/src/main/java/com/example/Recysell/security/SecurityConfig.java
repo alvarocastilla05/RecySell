@@ -125,6 +125,7 @@ public class SecurityConfig {
 
                 //Compra
                 .requestMatchers(HttpMethod.GET, "/compra").hasAnyRole( "TRABAJADOR", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/compra/cliente/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
 
                 .anyRequest().authenticated());
 
