@@ -1,9 +1,12 @@
 package com.example.Recysell.compra.service;
 
+import com.example.Recysell.cliente.model.Cliente;
+import com.example.Recysell.cliente.repo.ClienteRepository;
 import com.example.Recysell.compra.dto.GetCompraDto;
 import com.example.Recysell.compra.model.Compra;
 import com.example.Recysell.compra.model.EstadoCompra;
 import com.example.Recysell.compra.repo.CompraRepository;
+import com.example.Recysell.error.ClienteNotFoundException;
 import com.example.Recysell.error.CompraNotFoundException;
 import com.example.Recysell.lineaVenta.model.LineaVenta;
 import com.example.Recysell.lineaVenta.repo.LineaVentaRepository;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,7 @@ public class CompraService {
     private final CompraRepository compraRepository;
     private final ProductoRepository productoRepository;
     private final LineaVentaRepository lineaVentaRepository;
+    private final ClienteRepository clienteRepository;
     private final EntityManager entityManager;
 
 
@@ -66,6 +71,24 @@ public class CompraService {
         filter.setParameter("isDeleted", isDeleted);
 
         Page<GetCompraDto> result = compraRepository.findAllCompras(pageable);
+        session.disableFilter("deletedCompraFilter");
+
+        if (result.isEmpty()) {
+            throw new CompraNotFoundException();
+        }
+        return result;
+    }
+
+    //Listar Compras por Cliente.
+    public Page<GetCompraDto> findCompraByCliente(UUID clienteId, Pageable pageable, boolean isDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedCompraFilter");
+        filter.setParameter("isDeleted", isDeleted);
+
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new ClienteNotFoundException(clienteId));
+
+        Page<GetCompraDto> result = compraRepository.findCompraByCliente(cliente, pageable);
         session.disableFilter("deletedCompraFilter");
 
         if (result.isEmpty()) {
