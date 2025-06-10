@@ -8,6 +8,7 @@ import com.example.Recysell.compra.model.Compra;
 import com.example.Recysell.compra.model.EstadoCompra;
 import com.example.Recysell.compra.repo.CompraRepository;
 import com.example.Recysell.error.ClienteNotFoundException;
+import com.example.Recysell.error.CompraCanceladaException;
 import com.example.Recysell.error.CompraNotFoundException;
 import com.example.Recysell.lineaVenta.model.LineaVenta;
 import com.example.Recysell.lineaVenta.repo.LineaVentaRepository;
@@ -160,13 +161,28 @@ public class CompraService {
         }
     }
 
-    private void actualizarSubtotal(Compra compra) {
-        double nuevoSubtotal = compra.getLineaVentas().stream()
-                .mapToDouble(lv -> lv.getProductoLinea().getPrecio())
-                .sum();
-        compra.setSubTotal(nuevoSubtotal);
+    //Cancelar Compra
+    @Transactional
+    public void cancelarCompra(Long compraId) {
+        Compra compra = compraRepository.findById(compraId)
+                .orElseThrow(() -> new CompraNotFoundException(compraId));
+
+        if (compra.getEstadoCompra() == EstadoCompra.CARRITO) {
+            throw new CompraCanceladaException();
+        }
+
+        // Restaurar disponibilidad de productos
+        for (LineaVenta lv : compra.getLineaVentas()) {
+            Producto producto = lv.getProductoLinea();
+            producto.setDisponibilidad(true);
+            productoRepository.save(producto);
+        }
+
+        // Marcar compra como cancelada
+        compra.setEstadoCompra(EstadoCompra.CANCELADO);
         compraRepository.save(compra);
     }
+
 
 
 

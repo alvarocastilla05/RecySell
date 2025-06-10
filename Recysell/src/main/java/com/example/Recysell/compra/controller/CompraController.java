@@ -254,5 +254,27 @@ public class CompraController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Cancela una compra.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "La compra ha sido cancelada correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Compra no encontrada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "No autorizado para cancelar la compra.",
+                    content = @Content)
+    })
+    @PutMapping("/{compraId}/cancelar")
+    @PreAuthorize("@compraService.esPropietario(#compraId, authentication.principal.username)")
+    public ResponseEntity<Void> cancelarCompra(@PathVariable Long compraId) {
+        compraService.cancelarCompra(compraId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
