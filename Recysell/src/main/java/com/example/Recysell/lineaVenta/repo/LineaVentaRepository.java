@@ -32,5 +32,5 @@ public interface LineaVentaRepository extends JpaRepository<LineaVenta, Long> {
     boolean existsByIdAndCompraClienteUsername(Long id, String username);
 
 
-
+    List<LineaVenta> findByProductoLinea(Producto producto);
 }
