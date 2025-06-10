@@ -66,6 +66,10 @@ public class LineaVentaService {
         Producto producto = productoRepository.findById(nuevo.productoId())
                 .orElseThrow(() -> new ProductoNotFoundException(nuevo.productoId()));
 
+        if(!producto.isDisponibilidad()) {
+            throw new ProductoNotFoundException("El producto con ID " + producto.getId() + " no está disponible.");
+        }
+
         boolean existe = lineaVentaRepository.findByCompraAndProductoLinea(compra, producto).isPresent();
 
         if (existe) {
@@ -99,16 +103,17 @@ public class LineaVentaService {
 
         Compra compra = lineaVenta.getCompra();
         if (compra != null) {
-            // ✅ Restar el precio del producto al subtotal
             Producto producto = lineaVenta.getProductoLinea();
             compra.setSubTotal(compra.getSubTotal() - producto.getPrecio());
             compra.removeLineaVenta(lineaVenta); // Limpieza bidireccional
             compraRepository.save(compra);
         }
 
-        lineaVenta.setDeleted(true); // Marcar como eliminado
-        lineaVentaRepository.delete(lineaVenta);
+        // Soft delete: marcar como eliminado
+        lineaVenta.setDeleted(true);
+        lineaVentaRepository.save(lineaVenta); // Guardar el cambio de estado
     }
+
 
 
 

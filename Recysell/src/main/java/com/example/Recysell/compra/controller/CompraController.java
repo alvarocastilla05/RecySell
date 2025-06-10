@@ -2,9 +2,11 @@ package com.example.Recysell.compra.controller;
 
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.compra.dto.CreateCompraDto;
+import com.example.Recysell.compra.dto.GetCompraConLineaDto;
 import com.example.Recysell.compra.dto.GetCompraDto;
 import com.example.Recysell.compra.model.Compra;
 import com.example.Recysell.compra.service.CompraService;
+import com.example.Recysell.error.CompraNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -182,4 +184,75 @@ public class CompraController {
         Compra compra = compraService.editarCompra(id, editCompraDto);
         return ResponseEntity.ok(GetCompraDto.of(compra));
     }
+
+    @Operation(summary = "Obtiene una compra con sus líneas de venta por id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado la compra con sus líneas de venta.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetCompraConLineaDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                {
+                                    "gastosEnvio": 5.99,
+                                    "subTotal": 49.99,
+                                    "fechaVenta": "2023-10-01T10:00:00",
+                                    "provincia": "Madrid",
+                                    "codigoPostal": "28001",
+                                    "direccionEntrega": "Calle Gran Vía, 1",
+                                    "estadoCompra": "EN_ENVIO",
+                                    "clienteDto": {
+                                        "id": 1,
+                                        "nombre": "Juan Pérez",
+                                        "email": "juan.perez@example.com"
+                                    },
+                                    "lineasVenta": [
+                                        {
+                                            "productoId": 101,
+                                        },
+                                        {
+                                            "productoId": 102,
+                                        }
+                                    ]
+                                }
+                                """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la compra.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+    })
+    @GetMapping("/{id}")
+    @PreAuthorize("@compraService.esPropietario(#id, authentication.principal.username)")
+    public GetCompraConLineaDto findById(@PathVariable Long id) {
+        Compra compra = compraService.findById(id)
+                .orElseThrow(() -> new CompraNotFoundException(id));
+        return GetCompraConLineaDto.of(compra);
+    }
+
+    @Operation(summary = "Confirma una compra.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "La compra ha sido confirmada correctamente.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Compra no encontrada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content)
+    })
+    @PutMapping("/{compraId}/confirmar")
+    @PreAuthorize("@compraService.esPropietario(#compraId, authentication.principal.username)")
+    public ResponseEntity<Void> confirmarCompra(@PathVariable Long compraId) {
+        Compra compra = compraService.findById(compraId)
+                .orElseThrow(() -> new CompraNotFoundException(compraId));
+        compraService.confirmarCompra(compra);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

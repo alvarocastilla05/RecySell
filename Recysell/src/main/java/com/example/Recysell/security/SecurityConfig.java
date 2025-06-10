@@ -128,6 +128,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/compra/cliente/**").hasAnyRole("CLIENTE", "TRABAJADOR", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/compra").hasRole("CLIENTE")
 
+
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
