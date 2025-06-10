@@ -11,4 +11,8 @@ public class ProductoNotFoundException extends NotFoundException{
     public ProductoNotFoundException(){
         super("No se ha encontrado ningún producto");
     }
+
+    public ProductoNotFoundException(String message){
+        super(message);
+    }
 }

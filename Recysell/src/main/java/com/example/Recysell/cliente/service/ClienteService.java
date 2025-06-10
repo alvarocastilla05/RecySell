@@ -73,8 +73,6 @@ public class ClienteService {
 
     //Crear User Cliente
     public Cliente createCliente(CreateClienteRequest createClienteRequest){
-
-
         Cliente cliente = Cliente.builder()
                 .username(createClienteRequest.username())
                 .email(createClienteRequest.email())
@@ -85,14 +83,13 @@ public class ClienteService {
                 .activationToken(generateRandomActivationCode())
                 .build();
 
-        try {
-            sendActivationEmail(cliente.getEmail(), cliente.getActivationToken());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al enviar el correo de activación", e);
-        }
+        clienteRepository.save(cliente);
 
-        return clienteRepository.save(cliente);
+        sendActivationEmail(cliente.getEmail(), cliente.getActivationToken());
+
+        return cliente;
     }
+
 
     //Editar Cliente
     public Cliente edit(EditClienteCmd editClienteCmd, UUID id){
@@ -127,17 +124,26 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
-    private void sendActivationEmail(String to, String activationToken) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    private void sendActivationEmail(String to, String activationToken) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setFrom(fromMail);
-        helper.setTo(to);
-        helper.setSubject("Activación de cuenta");
-        helper.setText("Su código de activación es: " + activationToken, true);
+            helper.setFrom(fromMail);
+            helper.setTo(to);
+            helper.setSubject("Activación de cuenta");
 
-        mailSender.send(message);
+            String html = "<p>Gracias por registrarse.</p><p>Su código de activación es: <strong>" + activationToken + "</strong></p>";
+            helper.setText(html, true);
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error enviando email de activación", e);
+        }
     }
+
+
 
     public String generateRandomActivationCode(){
         return UUID.randomUUID().toString();

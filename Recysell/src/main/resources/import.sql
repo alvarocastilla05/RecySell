@@ -220,29 +220,28 @@ INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (4, 5
 
 
 -- Insertar datos en compra
-INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id)
-VALUES (1, 10.0, 90.0, '2023-10-01 10:00:00', 'Madrid', '28001', 'Calle Gran Vía, 1', '223e4567-e89b-12d3-a456-426614174004');
+INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
+VALUES (1, 10.0, 90.0, '2023-10-01 10:00:00', 'Madrid', '28001', 'Calle Gran Vía, 1', '223e4567-e89b-12d3-a456-426614174004', false, 'CARRITO');
 
-INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id)
-VALUES (2, 15.0, 120.0, '2023-10-02 11:00:00', 'Barcelona', '08002', 'Avenida Diagonal, 45', '223e4567-e89b-12d3-a456-426614174005');
+INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
+VALUES (2, 15.0, 120.0, '2023-10-02 11:00:00', 'Barcelona', '08002', 'Avenida Diagonal, 45', '223e4567-e89b-12d3-a456-426614174005', false, 'CARRITO');
 
-INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id)
-VALUES (3, 8.0, 75.0, '2023-10-03 12:00:00', 'Sevilla', '41001', 'Plaza Nueva, 10', '223e4567-e89b-12d3-a456-426614174006');
+INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
+VALUES (3, 8.0, 75.0, '2023-10-03 12:00:00', 'Sevilla', '41001', 'Plaza Nueva, 10', '223e4567-e89b-12d3-a456-426614174006', false, 'CARRITO');
 
-INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id)
-VALUES (4, 12.0, 110.0, '2023-10-04 13:00:00', 'Valencia', '46001', 'Calle Colón, 20', '223e4567-e89b-12d3-a456-426614174007');
+INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
+VALUES (4, 12.0, 110.0, '2023-10-04 13:00:00', 'Valencia', '46001', 'Calle Colón, 20', '223e4567-e89b-12d3-a456-426614174007', false, 'CARRITO');
 
-INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id)
-VALUES (5, 20.0, 150.0, '2023-10-05 14:00:00', 'Bilbao', '48001', 'Gran Vía, 30', '223e4567-e89b-12d3-a456-426614174008');
-
+INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
+VALUES (5, 20.0, 150.0, '2023-10-05 14:00:00', 'Bilbao', '48001', 'Gran Vía, 30', '223e4567-e89b-12d3-a456-426614174008', false, 'CARRITO');
 -- Reiniciar la secuencia de compra
 ALTER SEQUENCE compra_seq RESTART WITH 55;
 
 -- Insertar datos en lineaVenta
-INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
+INSERT INTO linea_venta (id ,deleted, compra_id, producto_id_linea_venta)
 VALUES (1, false, 1, 7);
 
-INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
+INSERT INTO linea_venta (id ,deleted, compra_id, producto_id_linea_venta)
 VALUES (2, false, 1, 8);
 
 INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
@@ -255,4 +254,10 @@ VALUES (4, false, 2, 10);
 
 -- Reiniciar la secuencia de lineaVenta
 ALTER SEQUENCE linea_venta_seq RESTART WITH 61;
+
+-- Eliminar la restricción de clave única en producto_id_linea_venta
+ALTER TABLE linea_venta DROP CONSTRAINT IF EXISTS linea_venta_producto_id_linea_venta_key;
+
+-- Agregar restricción compuesta (producto no puede repetirse en misma compra)
+ALTER TABLE linea_venta ADD CONSTRAINT linea_venta_unique_compra_producto UNIQUE (compra_id, producto_id_linea_venta);
 

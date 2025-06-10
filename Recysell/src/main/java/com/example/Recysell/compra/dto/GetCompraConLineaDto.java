@@ -4,10 +4,13 @@ import com.example.Recysell.cliente.dto.GetClienteDto;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.compra.model.Compra;
 import com.example.Recysell.compra.model.EstadoCompra;
+import com.example.Recysell.lineaVenta.dto.GetLineaVentaDto;
+import com.example.Recysell.lineaVenta.dto.GetLineaVentaSinCompraDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public record GetCompraDto(
+public record GetCompraConLineaDto(
         double gastosEnvio,
         double subTotal,
         LocalDateTime fechaVenta,
@@ -15,11 +18,12 @@ public record GetCompraDto(
         String codigoPostal,
         String direccionEntrega,
         EstadoCompra estadoCompra,
-        GetClienteDto clienteDto
+        GetClienteDto clienteDto,
+        List<GetLineaVentaSinCompraDto> lineasVenta
 ) {
 
-    public static GetCompraDto of(Compra compra) {
-        return new GetCompraDto(
+    public static GetCompraConLineaDto of(Compra compra) {
+        return new GetCompraConLineaDto(
                 compra.getGastosEnvio(),
                 compra.getSubTotal(),
                 compra.getFechaVenta(),
@@ -27,11 +31,14 @@ public record GetCompraDto(
                 compra.getCodigoPostal(),
                 compra.getDireccionEntrega(),
                 compra.getEstadoCompra(),
-                GetClienteDto.of(compra.getCliente())
+                GetClienteDto.of(compra.getCliente()),
+                compra.getLineaVentas().stream()
+                        .map(GetLineaVentaSinCompraDto::of)
+                        .toList()
         );
     }
 
-    public GetCompraDto(
+    public GetCompraConLineaDto(
             double gastosEnvio,
             double subTotal,
             LocalDateTime fechaVenta,
@@ -39,7 +46,8 @@ public record GetCompraDto(
             String codigoPostal,
             String direccionEntrega,
             EstadoCompra estadoCompra,
-            Cliente cliente
+            Cliente cliente,
+            List<GetLineaVentaSinCompraDto> lineasVenta
     ) {
         this(
                 gastosEnvio,
@@ -49,7 +57,8 @@ public record GetCompraDto(
                 codigoPostal,
                 direccionEntrega,
                 estadoCompra,
-                GetClienteDto.of(cliente)
+                GetClienteDto.of(cliente),
+                lineasVenta
         );
     }
 }

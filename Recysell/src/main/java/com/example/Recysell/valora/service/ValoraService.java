@@ -28,7 +28,6 @@ public class ValoraService {
 
     private final ValoraRepository valoraRepository;
     private final ProductoRepository productoRepository;
-    private final TrabajadorRepository TrabajadorRepository;
     private final TrabajadorRepository trabajadorRepository;
 
 

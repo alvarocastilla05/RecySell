@@ -3,7 +3,6 @@ package com.example.Recysell.producto.model;
 import com.example.Recysell.categoria.model.Categoria;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.donacion.model.Donacion;
-import com.example.Recysell.lineaVenta.model.LineaVenta;
 import com.example.Recysell.util.SearchCriteria;
 import com.example.Recysell.valora.model.Valora;
 import jakarta.persistence.*;
@@ -17,7 +16,6 @@ import org.hibernate.annotations.*;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -99,9 +97,6 @@ public class Producto {
     @Builder.Default
     @ToString.Exclude
     private List<Donacion> listaDonaciones = new ArrayList<>();
-
-    @OneToOne(mappedBy = "productoLinea", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
-    private LineaVenta lineaVenta;
 
 
 

@@ -1,5 +1,6 @@
 package com.example.Recysell.error;
 
+import com.example.Recysell.compra.model.Compra;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -33,6 +34,10 @@ public class GlobalExceptionHandler {
             errorType = "Valoración no encontrada";
         }else if (ex instanceof DonacionNotFoundException) {
             errorType = "Donación no encontrada";
+        } else if (ex instanceof LineaVentaNotFoundException) {
+            errorType = "Línea de venta no encontrada";
+        } else if (ex instanceof CompraNotFoundException) {
+            errorType = "Compra no encontrada";
         }
 
         Map<String, Object> errorBody = Map.of(
@@ -86,6 +91,28 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
+    }
+
+    @ExceptionHandler(ProductoYaEnCarritoException.class)
+    public ResponseEntity<Map<String, Object>> handleProductoYaEnCarritoException(ProductoYaEnCarritoException ex) {
+        Map<String, Object> errorBody = Map.of(
+                "error", "Producto ya en carrito",
+                "message", ex.getMessage(),
+                "status", HttpStatus.BAD_REQUEST.value()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    @ExceptionHandler(CompraCanceladaException.class)
+    public ResponseEntity<Map<String, Object>> handleCompraCanceladaException(CompraCanceladaException ex) {
+        Map<String, Object> errorBody = Map.of(
+                "error", "Compra aún en carrito",
+                "message", ex.getMessage(),
+                "status", HttpStatus.BAD_REQUEST.value()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
 }
