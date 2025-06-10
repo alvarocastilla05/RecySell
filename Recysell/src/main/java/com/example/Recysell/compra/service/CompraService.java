@@ -57,16 +57,27 @@ public class CompraService {
                             producto, EstadoCompra.CARRITO, compra.getCliente());
 
             for (LineaVenta lvAjena : otrasLineas) {
-                lineaVentaRepository.delete(lvAjena);
+                Compra compraAjena = lvAjena.getCompra();
+                if (compraAjena != null) {
+                    // Ajustar el subtotal de la compra ajena
+                    compraAjena.setSubTotal(compraAjena.getSubTotal() - producto.getPrecio());
+                    compraAjena.removeLineaVenta(lvAjena); // Limpieza bidireccional
+                    compraRepository.save(compraAjena);
+                }
+
+                // Marcar la línea de venta como eliminada (soft delete)
+                lvAjena.setDeleted(true);
+                lineaVentaRepository.save(lvAjena);
             }
         }
+
         // Marcar compra como confirmada
         LocalDateTime hoy = LocalDateTime.now();
         compra.setEstadoCompra(EstadoCompra.EN_ENVIO);
         compra.setFechaVenta(hoy);
         compra.setFechaEntrega(hoy.plusDays(15));
 
-        // Guardar cambios en la compra (estado actualizado fuera de este método si es necesario)
+        // Guardar cambios en la compra
         compraRepository.save(compra);
     }
 
@@ -83,6 +94,17 @@ public class CompraService {
             throw new CompraNotFoundException();
         }
         return result;
+    }
+
+    @Transactional
+    public Optional<Compra> findById(Long id) {
+        Optional<Compra> compra = compraRepository.findById(id);
+
+        if (compra.isPresent() && !compra.get().isDeleted()) {
+            return compra;
+        } else {
+            throw new CompraNotFoundException(id);
+        }
     }
 
     //Listar Compras por Cliente.
