@@ -104,4 +104,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
+    @ExceptionHandler(CompraCanceladaException.class)
+    public ResponseEntity<Map<String, Object>> handleCompraCanceladaException(CompraCanceladaException ex) {
+        Map<String, Object> errorBody = Map.of(
+                "error", "Compra aún en carrito",
+                "message", ex.getMessage(),
+                "status", HttpStatus.BAD_REQUEST.value()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
 }
