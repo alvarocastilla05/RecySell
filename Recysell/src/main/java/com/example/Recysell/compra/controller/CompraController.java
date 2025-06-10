@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -143,5 +144,42 @@ public class CompraController {
     public ResponseEntity<GetCompraDto> addCompra(@Valid @RequestBody CreateCompraDto dto, @AuthenticationPrincipal Cliente cliente) {
         Compra nuevaCompra = compraService.addCompra(dto, cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(GetCompraDto.of(nuevaCompra));
+    }
+
+    @Operation(summary = "Actualiza los datos de entrega de una compra.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "La compra ha sido actualizada correctamente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetCompraDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                        {
+                                            "provincia": "Madrid",
+                                            "codigoPostal": "28001",
+                                            "direccionEntrega": "Calle Gran Vía, 1"
+                                        }
+                                        """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "Solicitud incorrecta. Faltan campos obligatorios o el formato es inválido.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401",
+                    description = "No autorizado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Compra no encontrada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "403",
+                    description = "No autorizado para modificar la compra.",
+                    content = @Content),
+    })
+    @PutMapping("/{id}")
+    @PreAuthorize("@compraService.esPropietario(#id, authentication.principal.username)")
+    public ResponseEntity<GetCompraDto> editarCompra(@PathVariable Long id,
+                                                     @Valid @RequestBody CreateCompraDto editCompraDto) {
+        Compra compra = compraService.editarCompra(id, editCompraDto);
+        return ResponseEntity.ok(GetCompraDto.of(compra));
     }
 }
