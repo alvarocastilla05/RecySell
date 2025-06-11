@@ -25,8 +25,7 @@ import { ValoracionComponent } from './components/valoracion/valoracion.componen
 import { MenuNavComponent } from './shared/menu-nav/menu-nav.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
-
+import { provideHttpClient } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
