@@ -1,0 +1,9 @@
+body {
+  background: #0e110f;
+}
+
+.home-main {
+  margin-top: 64px; /* Ajusta según la altura real de tu nav */
+  background: #0e110f;
+  min-height: calc(100vh - 64px);
+}

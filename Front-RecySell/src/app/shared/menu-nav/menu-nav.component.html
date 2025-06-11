@@ -1,1 +1,52 @@
-<p>menu-nav works!</p>
+<nav class="navbar-login">
+    <div class="navbar-content" style="width: 100%; justify-content: space-between;">
+        <!-- Logo y título -->
+        <div style="display: flex; align-items: center;">
+            <a routerLink="/home" class="navbar-logo"
+                style="display: flex; align-items: center; margin-right: 1.5rem; text-decoration: none;">
+                <i class="bi bi-recycle" style="font-size: 2.5rem; color: #4caf50;"></i>
+                <span class="navbar-title" style="margin-left: 0.5rem;">Recysell</span>
+            </a>
+            <!-- Opciones de menú -->
+            <div class="menu-links" style="display: flex; align-items: center; gap: 1.5rem;">
+                <a routerLink="/productos-venta" class="menu-link">Comprar</a>
+                <a routerLink="/vender" class="menu-link">Vender</a>
+                <a routerLink="/donar" class="menu-link">Donar</a>
+                <a routerLink="/reciclar" class="menu-link">Reciclar</a>
+                <a routerLink="/sobre-nosotros" class="menu-link">Sobre nosotros</a>
+            </div>
+        </div>
+        <!-- Botones usuario -->
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <ng-container *ngIf="!isLoggedIn; else logged">
+                <a routerLink="/registro"
+                    class="bg-[#53d22c] text-black px-4 py-2 rounded-full font-semibold text-sm hover:bg-[#42b423] transition"
+                    style="margin-right: 0.5rem;">
+                    Empezar
+                </a>
+                <a routerLink="/login"
+                    class="bg-transparent border border-[#53d22c] text-[#53d22c] px-4 py-2 rounded-full font-semibold text-sm hover:bg-[#42b423] hover:text-black transition">
+                    Iniciar sesión
+                </a>
+            </ng-container>
+            <ng-template #logged>
+                <!--a routerLink="/favoritos" class="icon-btn" title="Favoritos" style="margin-right: 0.5rem;">
+                    <i class="bi bi-heart-fill" style="font-size: 1.5rem; color: #53d22c;"></i>
+                </a-->
+                <a routerLink="/carrito" class="icon-btn" title="Carrito" style="margin-right: 0.5rem;">
+                    <i class="bi bi-cart-fill" style="font-size: 1.5rem; color: #53d22c;"></i>
+                </a>
+                <a routerLink="/mi-perfil" class="profile-btn" title="Mi perfil"
+                    style="display: flex; align-items: center;">
+                    <img [src]="
+      userProfileImage
+        ? userProfileImage
+        : (esTrabajador
+            ? 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=facearea&w=256&h=256'
+            : 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=facearea&w=256&h=256')
+    " alt="Perfil" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #53d22c;">
+                </a>
+            </ng-template>
+        </div>
+    </div>
+</nav>

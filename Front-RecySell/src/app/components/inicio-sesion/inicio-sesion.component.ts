@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthServiceService } from '../../service/auth-service.service';
-import { Router } from '@angular/router'; // <-- Importa Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -13,11 +13,10 @@ export class InicioSesionComponent {
   errorMsg: string = '';
   showPassword = false;
 
-
   constructor(
     private fb: FormBuilder,
     private authService: AuthServiceService,
-    private router: Router // <-- Inyecta Router
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -32,7 +31,10 @@ export class InicioSesionComponent {
 
     this.authService.login(username, password).subscribe({
       next: (res) => {
-        // Redirige a /home si el login es exitoso
+        // Guarda el token y actualiza el estado de login
+        this.authService.loginSuccess(res.token);
+        // Guarda el tipo de usuario para el nav
+        localStorage.setItem('tipo', res.role?.toLowerCase() || 'cliente');
         this.router.navigate(['/home']);
       },
       error: (err) => {
