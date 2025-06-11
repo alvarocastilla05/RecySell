@@ -22,6 +22,8 @@ import { VerificacionComponent } from './components/verificacion/verificacion.co
 import { ListadoComprasComponent } from './components/listado-compras/listado-compras.component';
 import { ListadoDonacionesComponent } from './components/listado-donaciones/listado-donaciones.component';
 import { ValoracionComponent } from './components/valoracion/valoracion.component';
+import { MenuNavComponent } from './shared/menu-nav/menu-nav.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { ValoracionComponent } from './components/valoracion/valoracion.componen
     VerificacionComponent,
     ListadoComprasComponent,
     ListadoDonacionesComponent,
-    ValoracionComponent
+    ValoracionComponent,
+    MenuNavComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
