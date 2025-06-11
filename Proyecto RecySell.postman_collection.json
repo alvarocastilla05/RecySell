@@ -703,14 +703,14 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "file",
+									"key": "files",
 									"type": "file",
-									"src": "/C:/Users/castilla.caalv24_tri/Desktop/RecySell/DiagramaDeClases.drawio.png"
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/DiagramaDeClases.drawio.png"
 								},
 								{
 									"key": "producto",
 									"type": "file",
-									"src": "/C:/Users/castilla.caalv24_tri/Desktop/RecySell/Añadir Producto.json"
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/Añadir Producto.json"
 								}
 							]
 						},
@@ -734,7 +734,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/producto/listar?search=categoria:Smartphones,precio>100,precio<500,usuario:carlosm",
+							"raw": "http://localhost:8080/producto/listar",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -747,7 +747,8 @@
 							"query": [
 								{
 									"key": "search",
-									"value": "categoria:Smartphones,precio>100,precio<500,usuario:carlosm"
+									"value": "categoria:Smartphones,precio>100,precio<600,usuario:carlosm",
+									"disabled": true
 								}
 							]
 						}
@@ -803,14 +804,17 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "file",
+									"key": "files",
 									"type": "file",
-									"src": "/C:/Users/castilla.caalv24_tri/Desktop/RecySell/DiagramaDeClases.drawio.png"
+									"src": [
+										"/C:/Users/alvar/OneDrive/Imágenes/Captura de pantalla 2024-01-02 105555.png",
+										"/C:/Users/alvar/OneDrive/Imágenes/Captura de pantalla 2024-01-07 230040.png"
+									]
 								},
 								{
 									"key": "producto",
 									"type": "file",
-									"src": "/C:/Users/castilla.caalv24_tri/Desktop/RecySell/Añadir Producto.json"
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/Añadir Producto.json"
 								}
 							]
 						},
@@ -889,38 +893,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Añadir Categoría a Producto",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_admin}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/producto/1/categoria/4",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"producto",
-								"1",
-								"categoria",
-								"4"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -943,13 +915,19 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"tv\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/DiagramaDeClases.drawio.png"
+								},
+								{
+									"key": "categoria",
+									"type": "file",
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/Categoria.json"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:8080/categoria",
@@ -1022,7 +1000,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token_admin}}",
+									"value": "{{token_trabajador}}",
 									"type": "string"
 								}
 							]
@@ -1030,13 +1008,19 @@
 						"method": "PUT",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"telefonos moviles\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/DiagramaDeClases.drawio.png"
+								},
+								{
+									"key": "categoria",
+									"type": "file",
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/Categoria.json"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:8080/categoria/1",
@@ -1105,7 +1089,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Caritas\",\r\n    \"direccion\": \"Calle 123\"\r\n}",
+							"raw": "{\r\n    \"nombre\": \"Caritas\",\r\n    \"descripcion\": \"confederación oficial de entidades de acción caritativa y social de la Iglesia católica.\",\r\n    \"direccion\": \"Calle 123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1192,7 +1176,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"El Mas Mejo\",\r\n    \"direccion\": \"Calle 123, Madrid\"\r\n}",
+							"raw": "{\r\n    \"nombre\": \"El Mas Mejo\",\r\n    \"descripcion\": \"La entidad mas mejor de todas\",\r\n    \"direccion\": \"Calle 123, Madrid\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1409,7 +1393,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fechaDonacion\": \"2025-03-10T14:30:00\",\r\n  \"productoId\": 1,\r\n  \"organizacionId\": 2\r\n}\r\n",
+							"raw": "{\r\n  \"productoId\": 1,\r\n  \"organizacionId\": 1\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1516,6 +1500,377 @@
 								"donacion",
 								"1",
 								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Línea de Venta",
+			"item": [
+				{
+					"name": "Listar Líneas de Venta",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_trabajador}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"/C:/Users/alvar/OneDrive/Imágenes/Captura de pantalla 2024-01-02 105555.png",
+										"/C:/Users/alvar/OneDrive/Imágenes/Captura de pantalla 2024-01-07 230040.png"
+									],
+									"disabled": true
+								},
+								{
+									"key": "producto",
+									"type": "file",
+									"src": "/C:/Users/alvar/OneDrive/Escritorio/RecySell/Añadir Producto.json",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/linea-venta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"linea-venta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Añadir Línea de Venta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"compraId\": 1,\r\n    \"productoId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/linea-venta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"linea-venta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Línea de Venta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"compraId\": 1,\r\n    \"productoId\": 7\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/linea-venta/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"linea-venta",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Compra",
+			"item": [
+				{
+					"name": "Listar Compra",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_trabajador}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/compra",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Compras de Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/compra/cliente/223e4567-e89b-12d3-a456-426614174004",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"compra",
+								"cliente",
+								"223e4567-e89b-12d3-a456-426614174004"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Añadir Compra",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"provincia\": \"Madrid\",\r\n  \"codigoPostal\": \"28001\",\r\n  \"direccionEntrega\": \"Calle Gran Vía, 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/compra",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Compra",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"provincia\": \"LucaLand\",\r\n  \"codigoPostal\": \"28001\",\r\n  \"direccionEntrega\": \"Calle Gran Vía, 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/compra/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"compra",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Compra por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/compra/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"compra",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FInalizarCompra",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"provincia\": \"LucaLand\",\r\n  \"codigoPostal\": \"28001\",\r\n  \"direccionEntrega\": \"Calle Gran Vía, 1\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/compra/1/confirmar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"compra",
+								"1",
+								"confirmar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Compra",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_cliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"provincia\": \"LucaLand\",\r\n  \"codigoPostal\": \"28001\",\r\n  \"direccionEntrega\": \"Calle Gran Vía, 1\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/compra/1/cancelar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"compra",
+								"1",
+								"cancelar"
 							]
 						}
 					},
