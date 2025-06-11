@@ -24,6 +24,8 @@ import { ListadoDonacionesComponent } from './components/listado-donaciones/list
 import { ValoracionComponent } from './components/valoracion/valoracion.component';
 import { MenuNavComponent } from './shared/menu-nav/menu-nav.component';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -51,11 +53,13 @@ import { LoadingComponent } from './shared/loading/loading.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
 
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient()
   ],
   bootstrap: [AppComponent]
 })
