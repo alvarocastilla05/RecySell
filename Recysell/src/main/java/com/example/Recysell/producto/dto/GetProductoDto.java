@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public record GetProductoDto(
+        Long id,
         String nombre,
         String descripcion,
         double precio,
@@ -24,6 +25,7 @@ public record GetProductoDto(
 
     public static GetProductoDto of(Producto producto) {
         return new GetProductoDto(
+                producto.getId(),
                 producto.getNombre(),
                 producto.getDescripcion(),
                 producto.getPrecio(),
@@ -36,8 +38,8 @@ public record GetProductoDto(
         );
     }
 
-    public GetProductoDto(String nombre, String descripcion, double precio, List<String> imagenes, Estado estado, LocalDateTime fechaRegistro, Categoria categoria,  Cliente clienteVendedor) {
-        this(nombre, descripcion, precio, imagenes, estado, fechaRegistro, GetCategoriaDto.of(categoria) , GetClienteDto.of(clienteVendedor));
+    public GetProductoDto(Long id, String nombre, String descripcion, double precio, List<String> imagenes, Estado estado, LocalDateTime fechaRegistro, Categoria categoria,  Cliente clienteVendedor) {
+        this(id, nombre, descripcion, precio, imagenes, estado, fechaRegistro, GetCategoriaDto.of(categoria) , GetClienteDto.of(clienteVendedor));
     }
 
 

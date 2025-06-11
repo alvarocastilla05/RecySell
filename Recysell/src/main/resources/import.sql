@@ -150,20 +150,8 @@ INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, clie
 VALUES (10, 'Sony WH-1000XM4', 'Auriculares con cancelación de ruido', 349.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-10 19:00:00', 'BUEN_ESTADO', 7, true);
 ALTER SEQUENCE producto_seq RESTART WITH 60;
 
--- Insertar en producto_imagenes
 
-INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (1, 'imagen1.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (2, 'imagen2.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (1, 'imagen2.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (2, 'imagenX.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url ) VALUES (3, 'imagen3.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (4, 'imagen4.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (5, 'imagen5.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (6, 'imagen6.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (7, 'imagen7.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (8, 'imagen8.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (9, 'imagen9.jpg');
-INSERT INTO producto_imagenes (producto_id, imagen_url) VALUES (10, 'imagen10.jpg');
+
 
 
 

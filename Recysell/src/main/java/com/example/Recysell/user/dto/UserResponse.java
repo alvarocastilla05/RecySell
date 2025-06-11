@@ -11,14 +11,18 @@ public record UserResponse(
         @JsonInclude(JsonInclude.Include.NON_NULL)
         String token,
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        String refreshToken
-        ) {
+        String refreshToken,
+        String role // <-- Añade este campo
+) {
 
     public static UserResponse of(User user){
-        return new UserResponse(user.getId(), user.getUsername(), null, null);
+        // Suponiendo que solo hay un rol principal
+        String mainRole = user.getRoles().stream().findFirst().map(Enum::name).orElse("CLIENTE");
+        return new UserResponse(user.getId(), user.getUsername(), null, null, mainRole);
     }
 
     public static UserResponse of(User user, String token, String refreshToken){
-        return new UserResponse(user.getId(), user.getUsername(), token, refreshToken);
+        String mainRole = user.getRoles().stream().findFirst().map(Enum::name).orElse("CLIENTE");
+        return new UserResponse(user.getId(), user.getUsername(), token, refreshToken, mainRole);
     }
 }

@@ -1,1 +1,100 @@
-<p>registro works!</p>
+<nav class="navbar-login">
+    <div class="navbar-content">
+        <span class="navbar-logo" style="display: flex; align-items: center; margin-right: 1rem;">
+            <i class="bi bi-recycle" style="font-size: 2.5rem; color: #4caf50;"></i>
+        </span>
+        <span class="navbar-title">Recysell</span>
+    </div>
+</nav>
+
+<div class="registro-container">
+    <div class="registro-card">
+        <h2>Registro de {{ esTrabajador ? 'Trabajador' : 'Cliente' }}</h2>
+        <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+            <label for="username">Nombre de usuario</label>
+            <input id="username" type="text" formControlName="username" placeholder="Nombre de usuario"
+                [class.error]="registroForm.get('username')?.invalid && registroForm.get('username')?.touched" />
+
+            <label for="email">Correo electrónico</label>
+            <input id="email" type="email" formControlName="email" placeholder="Correo electrónico"
+                [class.error]="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" />
+
+            <label for="password">Contraseña</label>
+            <div style="position: relative;">
+                <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                    placeholder="Contraseña"
+                    [class.error]="registroForm.get('password')?.invalid && registroForm.get('password')?.touched"
+                    style="padding-right: 2.5rem; width: 100%;" />
+                <span (click)="showPassword = !showPassword" style="
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    " tabindex="0" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                    <ng-container *ngIf="showPassword; else hideEye">
+                        👁️
+                    </ng-container>
+                    <ng-template #hideEye>
+                        👁️‍🗨️
+                    </ng-template>
+                </span>
+            </div>
+
+            <label for="verifyPassword">Confirmar contraseña</label>
+            <div style="position: relative;">
+                <input id="verifyPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                    formControlName="verifyPassword" placeholder="Confirmar contraseña"
+                    [class.error]="registroForm.get('verifyPassword')?.invalid && registroForm.get('verifyPassword')?.touched"
+                    style="padding-right: 2.5rem; width: 100%;" />
+                <span (click)="showConfirmPassword = !showConfirmPassword" style="
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    " tabindex="0" [attr.aria-label]="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                    <ng-container *ngIf="showConfirmPassword; else hideEye2">
+                        👁️
+                    </ng-container>
+                    <ng-template #hideEye2>
+                        👁️‍🗨️
+                    </ng-template>
+                </span>
+            </div>
+
+            <label for="nombre">Nombre</label>
+            <input id="nombre" type="text" formControlName="nombre" placeholder="Nombre"
+                [class.error]="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" />
+
+            <label for="apellidos">Apellidos</label>
+            <input id="apellidos" type="text" formControlName="apellidos" placeholder="Apellidos"
+                [class.error]="registroForm.get('apellidos')?.invalid && registroForm.get('apellidos')?.touched" />
+
+            <!-- Solo para trabajador -->
+            <div *ngIf="esTrabajador">
+                <label for="puesto">Puesto de trabajo</label>
+                <input id="puesto" type="text" formControlName="puesto" placeholder="Puesto de trabajo"
+                    [class.error]="registroForm.get('puesto')?.invalid && registroForm.get('puesto')?.touched" />
+            </div>
+
+            <div *ngIf="errorMsg" class="error-message">
+                {{ errorMsg }}
+            </div>
+
+            <button type="submit" class="registro-button" [disabled]="registroForm.invalid">
+                Registrarse
+            </button>
+        </form>
+    </div>
+</div>

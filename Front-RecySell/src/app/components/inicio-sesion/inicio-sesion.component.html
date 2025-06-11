@@ -1,3 +1,12 @@
+<nav class="navbar-login">
+  <div class="navbar-content">
+    <span class="navbar-logo" style="display: flex; align-items: center; margin-right: 1rem;">
+      <i class="bi bi-recycle" style="font-size: 2.5rem; color: #4caf50;"></i>
+    </span>
+    <span class="navbar-title">Recysell</span>
+  </div>
+</nav>
+
 <div class="login-container">
   <div class="login-card">
     <h2>Bienvenido a RECYSELL</h2>
@@ -13,40 +22,40 @@
       />
 
       <label for="password">Password</label>
-<div style="position: relative;">
-  <input
-    id="password"
-    [type]="showPassword ? 'text' : 'password'"
-    formControlName="password"
-    placeholder="Enter your password"
-    [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-    style="padding-right: 2.5rem; width: 100%;"
-  />
-  <span
-    (click)="showPassword = !showPassword"
-    style="
-      position: absolute;
-      right: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #888;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      height: 100%;
-    "
-    tabindex="0"
-    [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
-  >
-    <ng-container *ngIf="showPassword; else hideEye">
-      👁️
-    </ng-container>
-    <ng-template #hideEye>
-      👁️‍🗨️
-    </ng-template>
-  </span>
-</div>
+      <div style="position: relative;">
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Enter your password"
+          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          style="padding-right: 2.5rem; width: 100%;"
+        />
+        <span
+          (click)="showPassword = !showPassword"
+          style="
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            height: 100%;
+          "
+          tabindex="0"
+          [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+        >
+          <ng-container *ngIf="showPassword; else hideEye">
+            👁️
+          </ng-container>
+          <ng-template #hideEye>
+            👁️‍🗨️
+          </ng-template>
+        </span>
+      </div>
 
       <div *ngIf="errorMsg" class="error-message">
         {{ errorMsg }}
@@ -57,5 +66,6 @@
       </button>
     </form>
 
-    <p class="register-text">¿No tienes una cuenta? <a routerLink="/registro">Regístrate</a></p>  </div>
+    <p class="register-text">¿No tienes una cuenta? <a routerLink="/registro">Regístrate</a></p>
+  </div>
 </div>
