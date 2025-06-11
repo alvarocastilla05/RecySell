@@ -1,1 +1,72 @@
-<p>home works!</p>
+<app-menu-nav></app-menu-nav>
+<main class="px-40 flex flex-1 justify-center py-5 home-main">
+  <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+    <!-- HERO -->
+    <section class="@container">
+      <div class="@[480px]:p-4">
+        <div
+          class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-xl items-center justify-center p-4"
+          style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJ-8wTLoMwxEHf8-76wwEdpiBhyeXoudNIlk9xd2if6I2IFjHkZxrxCl4ASknbraWaR5yxN0NvblrO_mvta5CPgRaNBRFbwo-BWDpkPilZkeCCDdJEBOQMxLDAz9dsncZAeBSLGwDUdF69ahCAf3n8688auKtoVxQeL5wEtnpNgwQnnuzi2UmblE7XPZ8SaPmJKydg1fOOwFgN34aNtJivKvN3D8W1EiT44M_oTtPoSuKKaJ_m7YWJqp4CAu9uuWL3UojVZexGGfKo");'>
+          <div class="flex flex-col gap-2 text-center">
+            <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
+              Dale una segunda vida a tus dispositivos
+            </h1>
+            <h2 class="text-white text-sm font-normal @[480px]:text-base">
+              Vende, dona o recicla tus dispositivos electrónicos usados y contribuye a un futuro más sostenible.
+            </h2>
+          </div>
+          <a
+            routerLink="/sobre-nosotros"
+            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#53d22c] text-[#131712] text-sm font-bold @[480px]:text-base no-underline">
+            <span class="truncate">Descubre cómo</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: PRODUCTOS DESTACADOS -->
+    <section class="px-4 pb-3 pt-5">
+      <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Productos Destacados</h2>
+      <div class="flex flex-wrap gap-6">
+        <app-card-product *ngFor="let producto of productos" [producto]="producto">
+        </app-card-product>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: ACCIONES (Vender, Donar, Reciclar) -->
+    <section class="px-4 py-10">
+      <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6 text-center">
+        ¿Qué quieres hacer con tu dispositivo?
+      </h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        <!-- Tarjeta Vender -->
+        <div class="bg-[#1f2937] rounded-xl p-6 text-white shadow-md flex flex-col items-center text-center">
+          <img src="https://img.icons8.com/ios-filled/100/2563eb/sell.png" alt="Vender" class="w-12 h-12 mb-4" />
+          <h3 class="text-lg font-semibold mb-2">Vender</h3>
+          <p class="text-sm mb-4">Recibe dinero por tu dispositivo usado. Nosotros nos encargamos de encontrarle un
+            nuevo dueño.</p>
+          <a routerLink="/vender" class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full">Vender ahora</a>
+        </div>
+
+        <!-- Tarjeta Donar -->
+        <div class="bg-[#1f2937] rounded-xl p-6 text-white shadow-md flex flex-col items-center text-center">
+          <img src="https://img.icons8.com/ios-filled/100/ef4444/heart-with-arrow.png" alt="Donar"
+            class="w-12 h-12 mb-4" />
+          <h3 class="text-lg font-semibold mb-2">Donar</h3>
+          <p class="text-sm mb-4">Haz que tu dispositivo siga ayudando a otros. Dona a escuelas u organizaciones sin
+            fines de lucro.</p>
+          <a routerLink="/donar" class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full">Donar ahora</a>
+        </div>
+
+        <!-- Tarjeta Reciclar -->
+        <div class="bg-[#1f2937] rounded-xl p-6 text-white shadow-md flex flex-col items-center text-center">
+          <img src="https://img.icons8.com/?size=100&id=2965&format=png&color=53d22c" alt="Reciclar"
+            class="w-12 h-12 mb-4" />
+          <h3 class="text-lg font-semibold mb-2">Reciclar</h3>
+          <p class="text-sm mb-4">Recicla tu dispositivo de forma segura y responsable. Nosotros lo hacemos por ti.</p>
+          <a routerLink="/reciclar" class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full">Reciclar ahora</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

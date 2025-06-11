@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { Producto } from '../../interfaces/product/product-list.inteface';
 
 @Component({
   selector: 'app-card-product',
@@ -6,5 +8,23 @@ import { Component } from '@angular/core';
   styleUrl: './card-product.component.css'
 })
 export class CardProductComponent {
+  @Input() producto!: Producto;
 
+  imageUrl: string = '';
+
+  constructor(private router: Router) {}
+
+  ngOnChanges() {
+    this.setImageUrl();
+  }
+
+  setImageUrl() {
+    this.imageUrl = this.producto.imagenes && this.producto.imagenes.length > 0
+      ? 'http://localhost:8080/uploads/' + this.producto.imagenes[0]
+      : 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png';
+  }
+
+  goToDetails() {
+    this.router.navigate(['/producto', this.producto.id]);
+  }
 }
