@@ -61,7 +61,7 @@ export class RegistroComponent implements OnInit {
       : this.authService.registerCliente(payload);
 
     obs.subscribe({
-      next: () => this.router.navigate(['/login']), // <-- Redirige al login si todo va bien
+      next: () => this.router.navigate(['/verificacion']), 
       error: (err) => {
         this.errorMsg = err.error?.message || 'Error al registrar usuario';
       }

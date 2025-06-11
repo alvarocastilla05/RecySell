@@ -25,4 +25,8 @@ export class AuthServiceService {
     return this.http.post(this.trabajadorUrl, data);
   }
 
+  verifyAccount(token: string) {
+  return this.http.post('http://localhost:8080/activate/account/', { token });
+}
+
 }

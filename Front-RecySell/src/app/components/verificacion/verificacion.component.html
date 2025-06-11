@@ -1,1 +1,27 @@
-<p>verificacion works!</p>
+<nav class="navbar-login">
+    <div class="navbar-content">
+        <span class="navbar-logo" style="display: flex; align-items: center; margin-right: 1rem;">
+            <i class="bi bi-recycle" style="font-size: 2.5rem; color: #4caf50;"></i>
+        </span>
+        <span class="navbar-title">Recysell</span>
+    </div>
+</nav>
+
+<div class="verificacion-container">
+    <div class="verificacion-card">
+        <h2>Verificación de cuenta</h2>
+        <form [formGroup]="verificacionForm" (ngSubmit)="onSubmit()">
+            <label for="token">Introduzca su token de verificación</label>
+            <input id="token" type="text" formControlName="token" placeholder="Token recibido por correo"
+                [class.error]="verificacionForm.get('token')?.invalid && verificacionForm.get('token')?.touched" />
+
+            <div *ngIf="errorMsg" class="error-message">
+                {{ errorMsg }}
+            </div>
+
+            <button type="submit" class="verificacion-button" [disabled]="verificacionForm.invalid">
+                Verificar cuenta
+            </button>
+        </form>
+    </div>
+</div>
