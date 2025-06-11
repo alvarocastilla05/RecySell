@@ -1,1 +1,61 @@
-<p>inicio-sesion works!</p>
+<div class="login-container">
+  <div class="login-card">
+    <h2>Bienvenido a RECYSELL</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label for="username">Username</label>
+      <input
+        id="username"
+        type="email"
+        formControlName="username"
+        placeholder="Enter your username"
+        [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+      />
+
+      <label for="password">Password</label>
+<div style="position: relative;">
+  <input
+    id="password"
+    [type]="showPassword ? 'text' : 'password'"
+    formControlName="password"
+    placeholder="Enter your password"
+    [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+    style="padding-right: 2.5rem; width: 100%;"
+  />
+  <span
+    (click)="showPassword = !showPassword"
+    style="
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    "
+    tabindex="0"
+    [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+  >
+    <ng-container *ngIf="showPassword; else hideEye">
+      👁️
+    </ng-container>
+    <ng-template #hideEye>
+      👁️‍🗨️
+    </ng-template>
+  </span>
+</div>
+
+      <div *ngIf="errorMsg" class="error-message">
+        {{ errorMsg }}
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid">
+        Log in
+      </button>
+    </form>
+
+    <p class="register-text">¿No tienes una cuenta? <a routerLink="/registro">Regístrate</a></p>  </div>
+</div>
