@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthServiceService } from '../../service/auth-service.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-menu-nav',
@@ -12,19 +13,36 @@ export class MenuNavComponent implements OnInit {
   userProfileImage = '';
   esTrabajador = false;
 
-  constructor(private authService: AuthServiceService) {}
+  constructor(private authService: AuthServiceService) { }
 
   ngOnInit() {
-    // Comprobar si hay token al iniciar el componente
-    this.isLoggedIn = !!localStorage.getItem('token');
+    this.isLoggedIn = this.checkToken();
     this.esTrabajador = localStorage.getItem('tipo') === 'trabajador';
     this.userProfileImage = localStorage.getItem('profileImage') || '';
 
-    // Suscribirse a cambios de login para actualizar el menú dinámicamente
     this.authService.isLoggedIn$.subscribe(status => {
-      this.isLoggedIn = status || !!localStorage.getItem('token');
+      this.isLoggedIn = this.checkToken();
       this.esTrabajador = localStorage.getItem('tipo') === 'trabajador';
       this.userProfileImage = localStorage.getItem('profileImage') || '';
     });
+  }
+
+  checkToken(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+    try {
+      const decoded: any = jwtDecode(token);
+      // exp está en segundos desde Epoch
+      if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+        // Token expirado, lo eliminamos
+        localStorage.removeItem('token');
+        return false;
+      }
+      return true;
+    } catch (e) {
+      // Token inválido
+      localStorage.removeItem('token');
+      return false;
+    }
   }
 }
