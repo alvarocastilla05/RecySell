@@ -27,6 +27,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { CrearCompraComponent } from './components/crear-compra/crear-compra.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ListadoDonacionesComponent,
     ValoracionComponent,
     MenuNavComponent,
-    LoadingComponent
+    LoadingComponent,
+    CrearCompraComponent
   ],
   imports: [
     BrowserModule,

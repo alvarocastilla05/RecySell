@@ -1,1 +1,262 @@
-<p>product-details works!</p>
+<app-menu-nav></app-menu-nav>
+
+<div class="min-h-screen bg-[#0e110f] text-white font-manrope flex flex-col items-center pt-20 px-4">
+    <div class="w-full max-w-3xl bg-[#181c15] rounded-xl shadow-lg p-8 flex flex-col gap-8">
+
+        <!-- Carrusel o imagen única -->
+        <div class="w-full flex justify-center mb-4">
+            <ng-container *ngIf="producto?.imagenes?.length > 1; else unaImagen">
+                <div class="relative w-[350px] h-[250px] flex items-center justify-center">
+                    <img [src]="'http://localhost:8080/uploads/' + producto.imagenes[imagenActual]"
+                        class="rounded-xl object-cover w-[350px] h-[250px] mx-auto"
+                        [alt]="'Imagen ' + (imagenActual + 1)" />
+                    <!-- Botón anterior -->
+                    <button (click)="cambiarImagen(-1)"
+                        class="absolute left-2 top-1/2 -translate-y-1/2 bg-[#232823] bg-opacity-80 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 hover:bg-[#53d22c] transition"
+                        aria-label="Anterior">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3"
+                            viewBox="0 0 24 24">
+                            <path d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <!-- Botón siguiente -->
+                    <button (click)="cambiarImagen(1)"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#232823] bg-opacity-80 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 hover:bg-[#53d22c] transition"
+                        aria-label="Siguiente">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3"
+                            viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    <!-- Indicadores -->
+                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+                        <span *ngFor="let img of producto.imagenes; let i = index"
+                            [class.bg-[#53d22c]]="i === imagenActual"
+                            class="w-3 h-3 rounded-full bg-gray-400 inline-block transition"></span>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #unaImagen>
+                <img [src]="producto?.imagenes && producto.imagenes.length > 0
+                  ? 'http://localhost:8080/uploads/' + producto.imagenes[0]
+                  : 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'"
+                    class="rounded-xl object-cover w-[350px] h-[250px] mx-auto" alt="Imagen producto" />
+            </ng-template>
+        </div>
+
+        <!-- Información del producto -->
+        <div class="flex flex-col gap-2">
+            <h1 class="text-2xl font-bold mb-2">{{ producto?.nombre }}</h1>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="px-3 py-1 rounded-full text-xs font-bold" [ngClass]="{
+                'bg-[#53d22c] text-black': producto?.estado === 'COMO_NUEVO',
+                'bg-blue-500 text-white': producto?.estado === 'BUEN_ESTADO',
+                'bg-yellow-400 text-black': producto?.estado === 'ESTADO_REGULAR',
+                'bg-red-500 text-white': producto?.estado === 'CON_DANIOS'
+              }">
+                    {{ getEstadoLegible(producto?.estado) }}
+                </span>
+                <span class="bg-[#232823] text-[#53d22c] px-3 py-1 rounded-full text-xs font-bold">
+                    {{ producto?.categoria?.nombre }}
+                </span>
+            </div>
+            <div class="text-lg font-bold text-[#53d22c] mb-2">
+                {{ producto?.precio | currency:'EUR' }}
+            </div>
+            <div class="text-gray-300 mb-4">
+                {{ producto?.descripcion }}
+            </div>
+            <div class="text-sm text-gray-400 mb-2">
+                Publicado por: <span class="font-semibold text-white">{{ producto?.clienteVendedor?.nombre }} {{
+                    producto?.clienteVendedor?.apellidos }}</span>
+                <span class="ml-2 text-gray-500">({{ producto?.clienteVendedor?.username }})</span>
+            </div>
+            <div class="text-xs text-gray-500">
+                Fecha de publicación: {{ producto?.fechaRegistro | date:'mediumDate' }}
+            </div>
+        </div>
+
+        <!-- Valoración del producto -->
+        <div *ngIf="producto?.valora" class="bg-[#232823] rounded-xl p-4 mt-4 flex flex-col gap-2 shadow">
+            <div class="flex items-center gap-2 mb-1">
+                <span class="text-yellow-400 text-lg font-bold flex items-center">
+                    <ng-container *ngFor="let star of [].constructor(producto.valora.puntacion)">
+                        <i class="bi bi-star-fill"></i>
+                    </ng-container>
+                    <ng-container *ngFor="let star of [].constructor(5 - producto.valora.puntacion)">
+                        <i class="bi bi-star"></i>
+                    </ng-container>
+                </span>
+                <span class="ml-2 text-xs text-gray-400">Valorado por el equipo</span>
+            </div>
+            <div class="text-gray-200 italic mb-1">
+                "{{ producto.valora.comentario }}"
+            </div>
+            <div class="text-xs text-gray-400">
+                Técnico: <span class="font-semibold text-white">{{ producto.valora.trabajador.nombre }} {{
+                    producto.valora.trabajador.apellidos }}</span>
+                <span class="ml-2 text-gray-500">({{ producto.valora.trabajador.username }})</span>
+                <span class="ml-2 text-gray-500">{{ producto.valora.trabajador.puesto }}</span>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div *ngIf="isLoggedIn" class="flex flex-wrap gap-4 mt-4 justify-end">
+            <!-- Si el producto es del usuario logueado -->
+            <ng-container *ngIf="esPropietario; else botonesCompra">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded transition"
+                    (click)="editarProducto()">
+                    Editar producto
+                </button>
+                <button class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded transition"
+                    (click)="showConfirmarEliminarModal = true">
+                    Eliminar producto
+                </button>
+            </ng-container>
+            <!-- Si NO es del usuario logueado -->
+            <ng-template #botonesCompra>
+                <button class="bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-2 rounded transition"
+                    (click)="anadirAlCarrito()">
+                    Añadir al carrito
+                </button>
+                <ng-container *ngIf="!enFavoritos; else yaFavorito">
+                    <button class="bg-[#232823] hover:bg-[#53d22c] text-white font-bold px-6 py-2 rounded transition"
+                        (click)="anadirAFavoritos()">
+                        Añadir a favoritos
+                    </button>
+                </ng-container>
+                <ng-template #yaFavorito>
+                    <button class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded transition"
+                        (click)="eliminarDeFavoritos()">
+                        Quitar de favoritos
+                    </button>
+                </ng-template>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<!-- Modal selector de carrito -->
+<div *ngIf="mostrarSelectorCarrito" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+    <div class="text-lg font-bold text-white mb-2">Selecciona un carrito</div>
+    <select [(ngModel)]="carritoSeleccionadoId"
+            class="w-full p-2 rounded bg-[#181c15] text-white border border-[#53d22c] mb-4">
+      <option *ngFor="let carrito of carritosDisponibles" [value]="carrito.id">
+        Carrito #{{carrito.id}} - {{carrito.fechaVenta | date:'short'}} - {{carrito.direccionEntrega}}
+      </option>
+    </select>
+    <div class="flex gap-4">
+      <button (click)="confirmarAnadirAlCarrito()"
+              class="px-6 py-2 rounded bg-[#53d22c] text-black font-bold hover:bg-[#3bb31c] transition">
+        Añadir a este carrito
+      </button>
+      <button (click)="mostrarSelectorCarrito = false"
+              class="px-6 py-2 rounded bg-red-500 text-white font-bold hover:bg-red-600 transition">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de éxito -->
+<div *ngIf="showModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[300px]">
+        <svg class="text-[#53d22c]" width="48" height="48" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="12" fill="#53d22c" fill-opacity="0.15" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" stroke="#53d22c" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+        <div class="text-xl font-bold text-[#53d22c] text-center">¡Añadido a favoritos!</div>
+        <button (click)="showModal = false"
+            class="mt-2 px-6 py-2 rounded bg-[#53d22c] text-black font-bold hover:bg-[#3bb31c] transition">
+            Cerrar
+        </button>
+    </div>
+</div>
+
+<!-- Modal de eliminado de favoritos -->
+<div *ngIf="showEliminadoModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[300px]">
+    <svg class="text-red-500" width="48" height="48" fill="none" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="12" fill="#ef4444" fill-opacity="0.15" />
+      <path d="M6 12l6 6 6-6" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="text-xl font-bold text-red-500 text-center">Eliminado de favoritos</div>
+    <button (click)="showEliminadoModal = false"
+      class="mt-2 px-6 py-2 rounded bg-red-500 text-white font-bold hover:bg-red-600 transition">
+      Cerrar
+    </button>
+  </div>
+</div>
+
+<!-- Modal de éxito al añadir al carrito -->
+<div *ngIf="showCarritoModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[300px]">
+    <svg class="text-[#53d22c]" width="48" height="48" fill="none" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="12" fill="#53d22c" fill-opacity="0.15" />
+      <path d="M8 12.5l2.5 2.5L16 9.5" stroke="#53d22c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="text-xl font-bold text-[#53d22c] text-center">¡Añadido al carrito!</div>
+    <button (click)="showCarritoModal = false"
+      class="mt-2 px-6 py-2 rounded bg-[#53d22c] text-black font-bold hover:bg-[#3bb31c] transition">
+      Cerrar
+    </button>
+  </div>
+</div>
+
+<!-- Modal: producto ya en carrito -->
+<div *ngIf="showYaEnCarritoModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[300px]">
+    <svg class="text-yellow-400" width="48" height="48" fill="none" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="12" fill="#fde68a" fill-opacity="0.15" />
+      <path d="M12 8v4m0 4h.01" stroke="#f59e42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="text-xl font-bold text-yellow-400 text-center">
+      Este producto ya pertenece a este carrito
+    </div>
+    <button (click)="showYaEnCarritoModal = false"
+      class="mt-2 px-6 py-2 rounded bg-yellow-400 text-black font-bold hover:bg-yellow-500 transition">
+      Cerrar
+    </button>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div *ngIf="showErrorModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[300px]">
+        <svg class="text-red-500" width="48" height="48" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="12" fill="#ef4444" fill-opacity="0.15" />
+            <path d="M8 8l8 8M16 8l-8 8" stroke="#ef4444" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+        <div class="text-xl font-bold text-red-500 text-center">No se pudo realizar la acción</div>
+        <button (click)="showErrorModal = false"
+            class="mt-2 px-6 py-2 rounded bg-red-500 text-white font-bold hover:bg-red-600 transition">
+            Cerrar
+        </button>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div *ngIf="showConfirmarEliminarModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+    <svg class="text-red-500" width="48" height="48" fill="none" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="12" fill="#ef4444" fill-opacity="0.15" />
+      <path d="M6 12l6 6 6-6" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="text-xl font-bold text-red-500 text-center">
+      ¿Estás seguro de que quieres eliminar este producto?
+    </div>
+    <div class="flex gap-4">
+      <button (click)="confirmarEliminarProducto()"
+        class="px-6 py-2 rounded bg-red-600 text-white font-bold hover:bg-red-700 transition">
+        Sí, eliminar
+      </button>
+      <button (click)="showConfirmarEliminarModal = false"
+        class="px-6 py-2 rounded bg-gray-400 text-black font-bold hover:bg-gray-500 transition">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
