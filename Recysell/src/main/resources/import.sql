@@ -148,7 +148,23 @@ VALUES (9, 'Dell XPS 15', 'Laptop ultraportátil con pantalla InfinityEdge', 149
 
 INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
 VALUES (10, 'Sony WH-1000XM4', 'Auriculares con cancelación de ruido', 349.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-10 19:00:00', 'BUEN_ESTADO', 7, true);
-ALTER SEQUENCE producto_seq RESTART WITH 60;
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (11, 'Huawei P30', 'Smartphone con excelente cámara', 399.99, NULL, '223e4567-e89b-12d3-a456-426614174004', false, '2023-10-11 10:00:00', 'BUEN_ESTADO', 1, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (12, 'Lenovo ThinkPad X1', 'Laptop empresarial de alto rendimiento', 1299.99, NULL, '223e4567-e89b-12d3-a456-426614174004', false, '2023-10-12 11:00:00', 'COMO_NUEVO', 2, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (13, 'Amazon Echo Dot', 'Altavoz inteligente con Alexa', 49.99, NULL, '223e4567-e89b-12d3-a456-426614174004', false, '2023-10-13 12:00:00', 'COMO_NUEVO', 7, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (14, 'Sony PlayStation 5', 'Consola de videojuegos de última generación', 499.99, NULL, '223e4567-e89b-12d3-a456-426614174004', false, '2023-10-14 13:00:00', 'COMO_NUEVO', 8, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (15, 'Samsung Galaxy Watch 4', 'Reloj inteligente con funciones avanzadas', 299.99, NULL, '223e4567-e89b-12d3-a456-426614174004', false, '2023-10-15 14:00:00', 'BUEN_ESTADO', 6, true);
+
+ALTER SEQUENCE producto_seq RESTART WITH 65;
 
 
 
@@ -200,11 +216,11 @@ VALUES (7, '123e4567-e89b-12d3-a456-426614174001', 5, 'Perfecto para tomar notas
 INSERT INTO valora (producto_id, trabajador_id, puntuacion, comentario)
 VALUES (8, '123e4567-e89b-12d3-a456-426614174002', 4, 'Muy útil, aunque la batería podría durar más.');
 
-INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (1, 2, '2025-03-01 10:00:00');
-INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (3, 1, '2025-03-02 15:30:00');
-INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (5, 4, '2025-03-05 12:45:00');
-INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (2, 3, '2025-03-07 08:20:00');
-INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (4, 5, '2025-03-10 18:15:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (10, 2, '2025-03-01 10:00:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (11, 1, '2025-03-02 15:30:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (12, 4, '2025-03-05 12:45:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (13, 3, '2025-03-07 08:20:00');
+INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (14, 5, '2025-03-10 18:15:00');
 
 
 -- Insertar datos en compra

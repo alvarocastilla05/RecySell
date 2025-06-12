@@ -16,7 +16,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
     @Query("""
         SELECT new com.example.Recysell.cliente.dto.GetClienteDto(
-        c.username, c.email, c.nombre, c.apellidos
+        c.id, c.username, c.email, c.nombre, c.apellidos
         )
         FROM Cliente c
     """)

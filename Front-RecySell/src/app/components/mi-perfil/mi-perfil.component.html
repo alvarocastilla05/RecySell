@@ -1,1 +1,362 @@
-<p>mi-perfil works!</p>
+<app-menu-nav></app-menu-nav>
+
+<div class="flex min-h-screen bg-[#0e110f] text-white font-manrope mt-20">
+    <!-- Contenido principal a la izquierda -->
+    <div class="flex-1 p-8">
+        <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'usuario'">
+                <h2 class="text-2xl font-bold mb-4">Datos de usuario</h2>
+                <div *ngIf="!editMode">
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-400">Usuario</label>
+                        <div class="text-lg font-semibold">{{ usuario?.username }}</div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-400">Email</label>
+                        <div class="text-lg">{{ usuario?.email }}</div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-400">Nombre</label>
+                        <div class="text-lg">{{ usuario?.nombre }}</div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm text-gray-400">Apellidos</label>
+                        <div class="text-lg">{{ usuario?.apellidos }}</div>
+                    </div>
+                    <button class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full mt-4"
+                        (click)="editMode = true">
+                        Editar datos
+                    </button>
+                </div>
+
+                <form *ngIf="editMode" (ngSubmit)="guardarCambios()" #form="ngForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-400">Usuario</label>
+                        <input class="w-full rounded px-3 py-2 bg-[#232823] text-white" [(ngModel)]="usuario.username"
+                            name="username" required minlength="3" #username="ngModel" />
+                        <div *ngIf="username.invalid && username.touched" class="text-red-400 text-xs mt-1">
+                            El usuario es obligatorio y debe tener al menos 3 caracteres.
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400">Email</label>
+                        <input class="w-full rounded px-3 py-2 bg-[#232823] text-white" [(ngModel)]="usuario.email"
+                            name="email" required email #email="ngModel" />
+                        <div *ngIf="email.invalid && email.touched" class="text-red-400 text-xs mt-1">
+                            Introduce un email válido.
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400">Nombre</label>
+                        <input class="w-full rounded px-3 py-2 bg-[#232823] text-white" [(ngModel)]="usuario.nombre"
+                            name="nombre" required minlength="2" #nombre="ngModel" />
+                        <div *ngIf="nombre.invalid && nombre.touched" class="text-red-400 text-xs mt-1">
+                            El nombre es obligatorio y debe tener al menos 2 caracteres.
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400">Apellidos</label>
+                        <input class="w-full rounded px-3 py-2 bg-[#232823] text-white" [(ngModel)]="usuario.apellidos"
+                            name="apellidos" required minlength="2" #apellidos="ngModel" />
+                        <div *ngIf="apellidos.invalid && apellidos.touched" class="text-red-400 text-xs mt-1">
+                            Los apellidos son obligatorios y deben tener al menos 2 caracteres.
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400">Contraseña</label>
+                        <div class="relative">
+                            <input class="w-full rounded px-3 py-2 bg-[#232823] text-white pr-10"
+                                [(ngModel)]="usuario.password" name="password"
+                                [type]="showPassword ? 'text' : 'password'" minlength="6" placeholder="Nueva contraseña"
+                                #password="ngModel" />
+                            <button type="button" (click)="showPassword = !showPassword"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 focus:outline-none">
+                                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                        <div *ngIf="password.invalid && password.touched" class="text-red-400 text-xs mt-1">
+                            La contraseña debe tener al menos 6 caracteres.
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-4">
+                        <button type="submit" class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full"
+                            [disabled]="form.invalid">Guardar</button>
+                        <button type="button" class="bg-gray-600 text-white px-4 py-2 rounded-full"
+                            (click)="cancelarEdicion()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+            <div *ngSwitchCase="'favoritos'">
+                <h2 class="text-2xl font-bold mb-4">Mis Favoritos</h2>
+                <div *ngIf="favoritos.length === 0" class="flex flex-col items-center justify-center py-12">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="Caja vacía"
+                        class="w-24 h-24 mb-4 opacity-70" />
+                    <div class="text-lg text-gray-300 font-semibold mb-1 text-center">
+                        Aún no tienes productos favoritos registrados
+                    </div>
+                    <div class="text-sm text-gray-400 text-center max-w-xs">
+                        Guarda los productos que te interesen para encontrarlos fácilmente aquí.
+                    </div>
+                </div>
+                <div *ngIf="favoritos.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <app-card-product *ngFor="let producto of favoritos" [producto]="producto"></app-card-product>
+                </div>
+            </div>
+            <div *ngSwitchCase="'productos'">
+                <h2 class="text-2xl font-bold mb-4">Mis Productos</h2>
+                <div *ngIf="misProductos.length === 0" class="flex flex-col items-center justify-center py-12">
+                    <div class="text-gray-400 text-center mb-4">
+                        No tienes productos publicados.
+                    </div>
+                    <button (click)="router.navigate(['/vender'])"
+                        class="mt-2 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200">
+                        <i class="bi bi-plus-circle text-xl"></i>
+                        ¡Publica tu primer producto!
+                    </button>
+                </div>
+                <div *ngIf="misProductos.length > 0" class="overflow-x-auto">
+                    <table class="min-w-full bg-[#181c15] rounded-lg shadow-lg">
+                        <thead>
+                            <tr class="bg-[#232823] text-gray-300">
+                                <th class="px-4 py-3 text-left rounded-tl-lg">Imagen</th>
+                                <th class="px-4 py-3 text-left">Nombre</th>
+                                <th class="px-4 py-3 text-left">Descripción</th>
+                                <th class="px-4 py-3 text-left">Precio</th>
+                                <th class="px-4 py-3 text-left">Estado</th>
+                                <th class="px-4 py-3 text-left rounded-tr-lg">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let producto of misProductos"
+                                class="border-b border-[#232823] hover:bg-[#232823]/60 transition cursor-pointer"
+                                (click)="irADetalleProducto(producto.id)">
+                                <td class="px-4 py-2">
+                                    <img [src]="producto.imagenes && producto.imagenes.length > 0
+            ? 'http://localhost:8080/uploads/' + producto.imagenes[0]
+            : 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'" alt="Imagen producto"
+                                        class="w-14 h-14 object-cover rounded shadow" />
+                                </td>
+                                <td class="px-4 py-2 font-semibold">{{ producto.nombre }}</td>
+                                <td class="px-4 py-2">{{ producto.descripcion }}</td>
+                                <td class="px-4 py-2">{{ producto.precio | currency:'EUR' }}</td>
+                                <td class="px-4 py-2">{{ producto.estado }}</td>
+                                <td class="px-4 py-2" (click)="$event.stopPropagation()">
+                                    <button (click)="abrirModalEliminar(producto)"
+                                        class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition font-semibold">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Modal eliminar producto -->
+            <div *ngIf="showDeleteModal"
+                class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+                <div class="bg-[#232823] rounded-lg p-8 shadow-lg flex flex-col items-center gap-6 w-full max-w-sm">
+                    <img [src]="productoAEliminar.imagenes && productoAEliminar.imagenes.length > 0
+      ? 'http://localhost:8080/uploads/' + productoAEliminar.imagenes[0]
+      : 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'" alt="Imagen producto"
+                        class="w-14 h-14 object-cover rounded shadow" />
+                    <h2 class="text-xl font-bold text-white text-center">¿Seguro que quieres eliminar este producto?
+                    </h2>
+                    <div class="text-gray-300 text-center mb-2">{{ productoAEliminar?.nombre }}</div>
+                    <div class="flex gap-4">
+                        <button (click)="confirmarEliminarProducto()"
+                            class="bg-red-600 text-white font-bold px-6 py-2 rounded-full hover:bg-red-700 transition">
+                            Eliminar
+                        </button>
+                        <button (click)="showDeleteModal = false" class="bg-gray-600 text-white px-4 py-2 rounded-full">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="'donaciones'">
+                <h2 class="text-2xl font-bold mb-4">Mis Donaciones</h2>
+                <div *ngIf="misDonaciones.length === 0" class="flex flex-col items-center justify-center py-12">
+                    <div class="text-gray-400 text-center mb-4">
+                        No has realizado ninguna donación.
+                    </div>
+                    <button (click)="router.navigate(['/donar'])"
+                        class="mt-2 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200">
+                        <i class="bi bi-plus-circle text-xl"></i>
+                        ¡Dona tu primer producto!
+                    </button>
+                </div>
+                <div *ngIf="misDonaciones.length > 0" class="overflow-x-auto">
+                    <table class="min-w-full bg-[#181c15] rounded-lg shadow-lg">
+                        <thead>
+                            <tr class="bg-[#232823] text-gray-300">
+                                <th class="px-4 py-3 text-left rounded-tl-lg">Imagen</th>
+                                <th class="px-4 py-3 text-left">Producto</th>
+                                <th class="px-4 py-3 text-left">Descripción</th>
+                                <th class="px-4 py-3 text-left">Organización</th>
+                                <th class="px-4 py-3 text-left">Fecha</th>
+                                <th class="px-4 py-3 text-left rounded-tr-lg">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let donacion of misDonaciones"
+                                class="border-b border-[#232823] hover:bg-[#232823]/60 transition">
+                                <td class="px-4 py-2">
+                                    <img [src]="donacion.productoDonado.imagenes && donacion.productoDonado.imagenes.length > 0
+                ? 'http://localhost:8080/uploads/' + donacion.productoDonado.imagenes[0]
+                : 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'" alt="Imagen producto"
+                                        class="w-14 h-14 object-cover rounded shadow" />
+                                </td>
+                                <td class="px-4 py-2 font-semibold">{{ donacion.productoDonado.nombre }}</td>
+                                <td class="px-4 py-2">{{ donacion.productoDonado.descripcion }}</td>
+                                <td class="px-4 py-2">{{ donacion.organizacion.nombre }}</td>
+                                <td class="px-4 py-2">{{ donacion.fechaDonacion | date:'mediumDate' }}</td>
+                                <td class="px-4 py-2">{{ donacion.productoDonado.estado }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div *ngSwitchCase="'compras'">
+                <h2 class="text-2xl font-bold mb-4">Mis Compras</h2>
+                <div *ngIf="misCompras.length === 0" class="flex flex-col items-center justify-center py-12">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Sin compras"
+                        class="w-24 h-24 mb-4 opacity-70" />
+                    <div class="text-lg text-gray-300 font-semibold mb-1 text-center">
+                        Aún no has realizado ninguna compra.
+                    </div>
+                    <button (click)="router.navigate(['/'])"
+                        class="mt-4 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200">
+                        <i class="bi bi-search text-xl"></i>
+                        ¡Explora productos!
+                    </button>
+                </div>
+                <div *ngIf="misCompras.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <a *ngFor="let compra of misCompras"
+                        class="bg-[#232823] rounded-xl shadow-lg p-6 flex flex-col gap-4 relative border-2 transition hover:scale-[1.03] hover:shadow-xl cursor-pointer"
+                        [ngClass]="{
+            'border-gray-500': compra.estadoCompra === 'CARRITO',
+            'border-yellow-400': compra.estadoCompra === 'EN_ENVIO',
+            'border-[#53d22c]': compra.estadoCompra === 'ENTREGADO',
+            'border-red-500': compra.estadoCompra === 'CANCELADO'
+        }" [routerLink]="['/carrito', compra.id]">
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 flex items-center justify-center bg-[#181c15] rounded-lg shadow">
+                                <i class="bi bi-cart text-4xl text-gray-400"
+                                    *ngIf="compra.estadoCompra === 'CARRITO'"></i>
+                                <i class="bi bi-truck text-4xl text-yellow-400"
+                                    *ngIf="compra.estadoCompra === 'EN_ENVIO'"></i>
+                                <i class="bi bi-check-circle-fill text-4xl text-[#53d22c]"
+                                    *ngIf="compra.estadoCompra === 'ENTREGADO'"></i>
+                                <i class="bi bi-x-circle-fill text-4xl text-red-500"
+                                    *ngIf="compra.estadoCompra === 'CANCELADO'"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-lg font-bold mb-1">Compra en {{ compra.provincia }}</div>
+                                <div class="text-gray-400 text-sm mb-1">
+                                    {{ compra.direccionEntrega }}, {{ compra.codigoPostal }}
+                                </div>
+                                <div class="text-[#53d22c] font-bold text-lg">
+                                    Total: {{ (compra.subTotal + compra.gastosEnvio) | currency:'EUR' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <ng-container [ngSwitch]="compra.estadoCompra">
+                                <span *ngSwitchCase="'CARRITO'"
+                                    class="flex items-center gap-1 text-gray-400 font-semibold">
+                                    <i class="bi bi-cart"></i> En carrito
+                                </span>
+                                <span *ngSwitchCase="'EN_ENVIO'"
+                                    class="flex items-center gap-1 text-yellow-400 font-semibold">
+                                    <i class="bi bi-truck"></i> En envío
+                                </span>
+                                <span *ngSwitchCase="'ENTREGADO'"
+                                    class="flex items-center gap-1 text-[#53d22c] font-semibold">
+                                    <i class="bi bi-check-circle-fill"></i> Entregado
+                                </span>
+                                <span *ngSwitchCase="'CANCELADO'"
+                                    class="flex items-center gap-1 text-red-500 font-semibold">
+                                    <i class="bi bi-x-circle-fill"></i> Cancelado
+                                </span>
+                                <span *ngSwitchDefault class="flex items-center gap-1 text-gray-400 font-semibold">
+                                    <i class="bi bi-hourglass-split"></i> {{ compra.estadoCompra }}
+                                </span>
+                            </ng-container>
+                            <div class="text-xs text-gray-400">
+                                {{ compra.fechaVenta | date:'mediumDate' }}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div *ngSwitchDefault>
+                <h2 class="text-2xl font-bold mb-4">Datos de usuario</h2>
+                <!-- Aquí los datos del usuario -->
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Menú lateral a la derecha -->
+    <div class="w-80 bg-[#1a1f16] p-10 flex flex-col gap-4 border-l border-[#232823]">
+        <h3 class="text-lg font-bold mb-6 text-left tracking-wide">Mi perfil</h3>
+        <button class="flex items-center gap-3 text-left py-2 px-4 rounded hover:bg-[#232823] transition"
+            (click)="selectedSection = 'usuario'">
+            <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
+                <i class="bi bi-person-fill text-white"></i>
+            </span>
+            Datos de usuario
+        </button>
+        <button class="flex items-center gap-3 text-left py-2 px-4 rounded hover:bg-[#232823] transition"
+            (click)="selectedSection = 'favoritos'; cargarFavoritos()">
+            <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
+                <i class="bi bi-heart-fill text-white"></i>
+            </span>
+            Mis Favoritos
+        </button>
+        <button class="flex items-center gap-3 text-left py-2 px-4 rounded hover:bg-[#232823] transition"
+            (click)="selectedSection = 'productos'; cargarMisProductos()">
+            <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
+                <i class="bi bi-box-seam text-white"></i>
+            </span>
+            Mis Productos
+        </button>
+        <button class="flex items-center gap-3 text-left py-2 px-4 rounded hover:bg-[#232823] transition"
+            (click)="selectedSection = 'donaciones'; cargarMisDonaciones()">
+            <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
+                <i class="bi bi-gift-fill text-white"></i>
+            </span>
+            Mis Donaciones
+        </button>
+        <button class="flex items-center gap-3 text-left py-2 px-4 rounded hover:bg-[#232823] transition"
+            (click)="selectedSection = 'compras'; cargarMisCompras()">
+            <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
+                <i class="bi bi-cart-fill text-white"></i>
+            </span>
+            Mis Compras
+        </button>
+        <!-- Botón cerrar sesión que abre el modal -->
+        <button class="flex items-center gap-3 text-left py-2 px-4 rounded text-red-400 hover:bg-[#232823] transition"
+            (click)="showLogoutModal = true">
+            <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
+                <i class="bi bi-box-arrow-right text-red-400"></i>
+            </span>
+            Cerrar sesión
+        </button>
+    </div>
+</div>
+
+<!-- Modal de confirmación de cierre de sesión -->
+<div *ngIf="showLogoutModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-lg p-8 shadow-lg flex flex-col items-center gap-6 w-full max-w-sm">
+        <h2 class="text-xl font-bold text-white">¿Seguro que quieres cerrar sesión?</h2>
+        <div class="flex gap-4">
+            <button (click)="logout()"
+                class="bg-red-600 text-white font-bold px-6 py-2 rounded-full hover:bg-red-700 transition">
+                Confirmar
+            </button>
+            <button (click)="showLogoutModal = false" class="bg-gray-600 text-white px-4 py-2 rounded-full">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
