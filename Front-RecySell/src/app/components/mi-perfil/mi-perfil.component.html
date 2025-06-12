@@ -175,6 +175,46 @@
             </div>
             <div *ngSwitchCase="'donaciones'">
                 <h2 class="text-2xl font-bold mb-4">Mis Donaciones</h2>
+                <div *ngIf="misDonaciones.length === 0" class="flex flex-col items-center justify-center py-12">
+                    <div class="text-gray-400 text-center mb-4">
+                        No has realizado ninguna donación.
+                    </div>
+                    <button (click)="router.navigate(['/donar'])"
+                        class="mt-2 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200">
+                        <i class="bi bi-plus-circle text-xl"></i>
+                        ¡Dona tu primer producto!
+                    </button>
+                </div>
+                <div *ngIf="misDonaciones.length > 0" class="overflow-x-auto">
+                    <table class="min-w-full bg-[#181c15] rounded-lg shadow-lg">
+                        <thead>
+                            <tr class="bg-[#232823] text-gray-300">
+                                <th class="px-4 py-3 text-left rounded-tl-lg">Imagen</th>
+                                <th class="px-4 py-3 text-left">Producto</th>
+                                <th class="px-4 py-3 text-left">Descripción</th>
+                                <th class="px-4 py-3 text-left">Organización</th>
+                                <th class="px-4 py-3 text-left">Fecha</th>
+                                <th class="px-4 py-3 text-left rounded-tr-lg">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let donacion of misDonaciones"
+                                class="border-b border-[#232823] hover:bg-[#232823]/60 transition">
+                                <td class="px-4 py-2">
+                                    <img [src]="donacion.productoDonado.imagenes && donacion.productoDonado.imagenes.length > 0
+                ? 'http://localhost:8080/uploads/' + donacion.productoDonado.imagenes[0]
+                : 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'" alt="Imagen producto"
+                                        class="w-14 h-14 object-cover rounded shadow" />
+                                </td>
+                                <td class="px-4 py-2 font-semibold">{{ donacion.productoDonado.nombre }}</td>
+                                <td class="px-4 py-2">{{ donacion.productoDonado.descripcion }}</td>
+                                <td class="px-4 py-2">{{ donacion.organizacion.nombre }}</td>
+                                <td class="px-4 py-2">{{ donacion.fechaDonacion | date:'mediumDate' }}</td>
+                                <td class="px-4 py-2">{{ donacion.productoDonado.estado }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div *ngSwitchCase="'compras'">
                 <h2 class="text-2xl font-bold mb-4">Mis Compras</h2>
@@ -211,7 +251,7 @@
             Mis Productos
         </button>
         <button class="flex items-center gap-3 text-left py-2 px-4 rounded hover:bg-[#232823] transition"
-            (click)="selectedSection = 'donaciones'">
+            (click)="selectedSection = 'donaciones'; cargarMisDonaciones()">
             <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
                 <i class="bi bi-gift-fill text-white"></i>
             </span>
