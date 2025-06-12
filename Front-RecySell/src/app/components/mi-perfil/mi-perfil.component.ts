@@ -23,7 +23,7 @@ export class MiPerfilComponent implements OnInit {
   showDeleteModal = false;
   productoAEliminar: any = null;
 
-  constructor(private usuarioService: UsuarioService, private router: Router) { }
+  constructor(private usuarioService: UsuarioService, public router: Router) { }
 
   ngOnInit() {
     this.cargarUsuario();
