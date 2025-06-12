@@ -184,6 +184,16 @@ public class Producto {
         };
     }
 
+    // Filtro por estado
+    public static Specification<Producto> byEstado(SearchCriteria criteria) {
+        return (root, query, builder) -> {
+            if (criteria.key().equalsIgnoreCase("estado") && criteria.operation().equals(":")) {
+                return builder.equal(root.get("estado"), Estado.valueOf(criteria.value().toString()));
+            }
+            return null;
+        };
+    }
+
 
 
 }

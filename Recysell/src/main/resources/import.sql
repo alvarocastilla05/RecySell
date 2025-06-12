@@ -164,7 +164,37 @@ VALUES (14, 'Sony PlayStation 5', 'Consola de videojuegos de última generación
 INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
 VALUES (15, 'Samsung Galaxy Watch 4', 'Reloj inteligente con funciones avanzadas', 299.99, NULL, '223e4567-e89b-12d3-a456-426614174004', false, '2023-10-15 14:00:00', 'BUEN_ESTADO', 6, true);
 
-ALTER SEQUENCE producto_seq RESTART WITH 65;
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (16, 'Google Pixel 6', 'Smartphone con excelente rendimiento y cámara', 599.99, '223e4567-e89b-12d3-a456-426614174005', NULL, false, '2023-10-16 10:00:00', 'COMO_NUEVO', 1, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (17, 'Microsoft Surface Pro 7', 'Tablet convertible ideal para trabajo', 899.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-17 11:00:00', 'BUEN_ESTADO', 2, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (18, 'Sony Bravia 55"', 'Televisor 4K con HDR', 799.99, '223e4567-e89b-12d3-a456-426614174007', NULL, false, '2023-10-18 12:00:00', 'COMO_NUEVO', 5, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (19, 'Logitech MX Master 3', 'Ratón inalámbrico avanzado', 99.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-19 13:00:00', 'COMO_NUEVO', 8, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (20, 'Samsung Galaxy Buds Pro', 'Auriculares inalámbricos con cancelación de ruido', 199.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-20 14:00:00', 'BUEN_ESTADO', 7, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (21, 'Dell Inspiron 15', 'Laptop para uso diario', 499.99, '223e4567-e89b-12d3-a456-426614174005', NULL, false, '2023-10-21 15:00:00', 'ESTADO_REGULAR', 2, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (22, 'Apple AirPods Pro', 'Auriculares con cancelación de ruido', 249.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-22 16:00:00', 'COMO_NUEVO', 7, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (23, 'HP Pavilion Gaming', 'Laptop para gaming', 799.99, '223e4567-e89b-12d3-a456-426614174007', NULL, false, '2023-10-23 17:00:00', 'BUEN_ESTADO', 2, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (24, 'Fitbit Versa 3', 'Reloj inteligente para fitness', 199.99, '223e4567-e89b-12d3-a456-426614174008', NULL, false, '2023-10-24 18:00:00', 'COMO_NUEVO', 6, true);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (25, 'Nintendo Switch OLED', 'Consola portátil con pantalla mejorada', 349.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-25 19:00:00', 'COMO_NUEVO', 8, true);
+
+ALTER SEQUENCE producto_seq RESTART WITH 75;
 
 
 
