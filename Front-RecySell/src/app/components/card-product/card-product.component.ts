@@ -27,4 +27,14 @@ export class CardProductComponent {
   goToDetails() {
     this.router.navigate(['/producto', this.producto.id]);
   }
+
+  getEstadoLegible(estado: string): string {
+  switch (estado) {
+    case 'COMO_NUEVO': return 'Como nuevo';
+    case 'BUEN_ESTADO': return 'Buen estado';
+    case 'ESTADO_REGULAR': return 'Estado regular';
+    case 'CON_DANIOS': return 'Con daños';
+    default: return estado.replace(/_/g, ' ').toLowerCase();
+  }
+}
 }

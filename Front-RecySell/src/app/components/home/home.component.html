@@ -15,8 +15,7 @@
               Vende, dona o recicla tus dispositivos electrónicos usados y contribuye a un futuro más sostenible.
             </h2>
           </div>
-          <a
-            routerLink="/sobre-nosotros"
+          <a routerLink="/sobre-nosotros"
             class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#53d22c] text-[#131712] text-sm font-bold @[480px]:text-base no-underline">
             <span class="truncate">Descubre cómo</span>
           </a>
@@ -27,9 +26,8 @@
     <!-- SECCIÓN: PRODUCTOS DESTACADOS -->
     <section class="px-4 pb-3 pt-5">
       <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">NOVEDADES</h2>
-      <div class="flex flex-wrap gap-6">
-        <app-card-product *ngFor="let producto of productos" [producto]="producto">
-        </app-card-product>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <app-card-product *ngFor="let producto of productos" [producto]="producto"></app-card-product>
       </div>
     </section>
 

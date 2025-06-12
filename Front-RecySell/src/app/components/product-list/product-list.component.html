@@ -1,1 +1,91 @@
-<p>product-list works!</p>
+<app-menu-nav></app-menu-nav>
+
+<div class="min-h-screen bg-[#0e110f] text-white font-manrope flex flex-col items-center justify-start pt-20">
+    <div class="w-full max-w-7xl px-4 py-8 flex flex-col items-center">
+
+        <!-- Título arriba a la izquierda -->
+        <div class="w-full flex items-center mb-6">
+            <h2 class="text-2xl font-bold text-left">Productos en venta</h2>
+        </div>
+
+        <!-- Filtros en una tarjeta visual -->
+        <div class="w-full flex justify-center mb-8">
+            <div class="bg-[#181c15] rounded-xl shadow-lg px-8 py-6 flex flex-wrap gap-6 items-center">
+                <!-- Estado -->
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-400 mb-1">Estado</label>
+                    <select [(ngModel)]="filtroEstado" class="bg-[#232823] text-white px-4 py-2 rounded">
+                        <option value="">Todos</option>
+                        <option *ngFor="let estado of estados" [value]="estado.value">{{ estado.label }}</option>
+                    </select>
+                </div>
+                <!-- Categoría -->
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-400 mb-1">Categoría</label>
+                    <select [(ngModel)]="filtroCategoria" class="bg-[#232823] text-white px-4 py-2 rounded">
+                        <option value="">Todas</option>
+                        <option *ngFor="let categoria of categorias" [value]="categoria.nombre">{{ categoria.nombre }}
+                        </option>
+                    </select>
+                </div>
+                <!-- Precio mínimo -->
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-400 mb-1">Precio mínimo</label>
+                    <input type="number" [(ngModel)]="filtroPrecioMin" placeholder="Mínimo"
+                        class="bg-[#232823] text-white px-4 py-2 rounded w-36" min="0">
+                </div>
+                <!-- Precio máximo -->
+                <div class="flex flex-col">
+                    <label class="text-sm text-gray-400 mb-1">Precio máximo</label>
+                    <input type="number" [(ngModel)]="filtroPrecioMax" placeholder="Máximo"
+                        class="bg-[#232823] text-white px-4 py-2 rounded w-36" min="0">
+                </div>
+                <!-- Botón filtrar -->
+                <div class="flex flex-col justify-end">
+                    <button (click)="aplicarFiltros()"
+                        class="bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-2 rounded transition mt-5">
+                        Filtrar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje visual si no hay productos -->
+        <div *ngIf="productos?.length === 0" class="flex flex-col items-center justify-center py-16">
+            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="Sin resultados"
+                class="w-32 h-32 mb-6 opacity-80" />
+            <div class="text-2xl font-bold text-gray-300 mb-2">No se encontraron productos</div>
+            <div class="text-gray-400 mb-4 text-center">Prueba a cambiar los filtros o vuelve más tarde.</div>
+            <button (click)="limpiarFiltros()"
+                class="bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-2 rounded-full shadow transition">
+                Limpiar filtros
+            </button>
+        </div>
+
+        <!-- Cards de productos -->
+        <div *ngIf="productos.length > 0"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center">
+            <app-card-product *ngFor="let producto of productos" [producto]="producto">
+            </app-card-product>
+        </div>
+
+        <!-- Paginación -->
+        <div class="flex justify-center mt-8" *ngIf="totalPages > 1">
+            <button class="px-4 py-2 mx-1 rounded bg-[#232823] text-white hover:bg-[#53d22c] transition"
+                [disabled]="currentPage === 0" (click)="cambiarPagina(currentPage - 1)">
+                Anterior
+            </button>
+            <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+                <button class="px-4 py-2 mx-1 rounded"
+                    [ngClass]="currentPage === i ? 'bg-[#53d22c] text-black font-bold' : 'bg-[#232823] text-white hover:bg-[#53d22c]'"
+                    (click)="cambiarPagina(i)">
+                    {{ i + 1 }}
+                </button>
+            </ng-container>
+            <button class="px-4 py-2 mx-1 rounded bg-[#232823] text-white hover:bg-[#53d22c] transition"
+                [disabled]="currentPage === totalPages - 1" (click)="cambiarPagina(currentPage + 1)">
+                Siguiente
+            </button>
+        </div>
+    </div>
+</div>
