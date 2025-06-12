@@ -25,8 +25,13 @@ export class CardProductComponent {
   }
 
   goToDetails() {
-    this.router.navigate(['/producto', this.producto.id]);
+  const token = localStorage.getItem('token');
+  if (!token) {
+    this.router.navigate(['/login']);
+    return;
   }
+  this.router.navigate(['/producto', this.producto.id]);
+}
 
   getEstadoLegible(estado: string): string {
   switch (estado) {

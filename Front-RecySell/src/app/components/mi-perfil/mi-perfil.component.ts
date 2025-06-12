@@ -37,6 +37,7 @@ export class MiPerfilComponent implements OnInit {
 
   ngOnInit() {
     this.cargarUsuario();
+
   }
 
   cargarUsuario() {

@@ -12,6 +12,7 @@ import { SobreNosotrosComponent } from './components/sobre-nosotros/sobre-nosotr
 import { MiPerfilComponent } from './components/mi-perfil/mi-perfil.component';
 import { AniadirProductoComponent } from './components/aniadir-producto/aniadir-producto.component';
 import { CarritoComponent } from './components/carrito/carrito.component';
+import { CrearCompraComponent } from './components/crear-compra/crear-compra.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,7 +28,9 @@ const routes: Routes = [
   { path: 'reciclar', component: ReciclarComponent },
   { path: 'sobre-nosotros', component: SobreNosotrosComponent} ,
   { path: 'mi-perfil', component: MiPerfilComponent },
-  { path: 'carrito/:id', component: CarritoComponent },     // Añade este si tienes carrito
+  { path: 'carrito/:id', component: CarritoComponent },
+  { path: 'nueva-compra', component: CrearCompraComponent }
+       // Añade este si tienes carrito
 ];
 
 @NgModule({
