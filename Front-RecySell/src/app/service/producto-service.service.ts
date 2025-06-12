@@ -9,7 +9,7 @@ export class ProductoService {
 
   constructor(private http: HttpClient) {}
 
-  getProductos(): Observable<ProductoListResponse> {
-    return this.http.get<ProductoListResponse>(this.listarUrl);
-  }
+  getProductos(params?: any): Observable<ProductoListResponse> {
+  return this.http.get<ProductoListResponse>(this.listarUrl, { params });
+}
 }

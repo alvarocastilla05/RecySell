@@ -1,7 +1,10 @@
-<div class="flex flex-col gap-3 pb-3 max-w-[200px] cursor-pointer" (click)="goToDetails()">
-    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl"
-        [style.background-image]="'url(' + imageUrl + ')'"></div>
-    <div>
+<div class="flex flex-col gap-3 pb-3 max-w-[200px] min-h-[340px] h-[340px] cursor-pointer" (click)="goToDetails()">
+    <div
+        class="w-full bg-center bg-no-repeat bg-cover rounded-xl"
+        style="height: 160px;"
+        [style.background-image]="'url(' + imageUrl + ')'">
+    </div>
+    <div class="flex flex-col flex-1">
         <p class="text-white text-base font-medium leading-normal">{{ producto.nombre }}</p>
         <p class="text-[#a5b6a0] text-sm font-normal leading-normal truncate-2">
             {{ producto.estado }} | {{ producto.descripcion }}

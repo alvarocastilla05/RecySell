@@ -10,11 +10,13 @@ import { Producto } from '../../interfaces/product/product-list.inteface';
 export class HomeComponent implements OnInit {
   productos: Producto[] = [];
 
-  constructor(private productoService: ProductoService) {}
+  constructor(private productoService: ProductoService) { }
 
   ngOnInit() {
-    this.productoService.getProductos().subscribe(res => {
-      this.productos = res.content.slice(0, 4); // Solo los primeros 5
+    this.productoService.getProductos({ size: 100 }).subscribe(res => {
+      this.productos = res.content
+        .sort((a, b) => new Date(b.fechaRegistro).getTime() - new Date(a.fechaRegistro).getTime())
+        .slice(0, 4);
     });
   }
 }
