@@ -1,13 +1,31 @@
-<div class="flex flex-col gap-3 pb-3 max-w-[200px] min-h-[340px] h-[340px] cursor-pointer" (click)="goToDetails()">
-    <div
-        class="w-full bg-center bg-no-repeat bg-cover rounded-xl"
-        style="height: 160px;"
-        [style.background-image]="'url(' + imageUrl + ')'">
+<div class="flex flex-col gap-3 pb-3 w-[200px] min-h-[340px] h-[340px] cursor-pointer" (click)="goToDetails()">
+    <div class="relative w-full" style="height: 160px;">
+        <div
+            class="w-full h-full bg-center bg-no-repeat bg-cover rounded-xl"
+            [style.background-image]="'url(' + imageUrl + ')'">
+        </div>
+        <!-- Badge de estado, fuera del flujo de la imagen -->
+        <span
+            class="absolute top-2 right-2 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow z-10"
+            [ngClass]="{
+                'bg-[#53d22c] text-black': producto.estado === 'COMO_NUEVO',
+                'bg-blue-500 text-white': producto.estado === 'BUEN_ESTADO',
+                'bg-yellow-400 text-black': producto.estado === 'ESTADO_REGULAR',
+                'bg-red-500 text-white': producto.estado === 'CON_DANIOS'
+            }">
+            <ng-container [ngSwitch]="producto.estado">
+                <i *ngSwitchCase="'COMO_NUEVO'" class="bi bi-star-fill"></i>
+                <i *ngSwitchCase="'BUEN_ESTADO'" class="bi bi-emoji-smile"></i>
+                <i *ngSwitchCase="'ESTADO_REGULAR'" class="bi bi-emoji-neutral"></i>
+                <i *ngSwitchCase="'CON_DANIOS'" class="bi bi-emoji-frown"></i>
+            </ng-container>
+            {{ getEstadoLegible(producto.estado) }}
+        </span>
     </div>
     <div class="flex flex-col flex-1">
         <p class="text-white text-base font-medium leading-normal">{{ producto.nombre }}</p>
         <p class="text-[#a5b6a0] text-sm font-normal leading-normal truncate-2">
-            {{ producto.estado }} | {{ producto.descripcion }}
+            {{ producto.descripcion }}
         </p>
         <p class="text-[#53d22c] text-sm font-bold leading-normal mt-1">{{ producto.precio | currency:'EUR' }}</p>
     </div>
