@@ -12,6 +12,7 @@ export class MiPerfilComponent implements OnInit {
   editMode = false;
   usuarioId: string = '';
   showPassword = false;
+  showLogoutModal = false;
 
   constructor(private usuarioService: UsuarioService) { }
 
@@ -31,22 +32,29 @@ export class MiPerfilComponent implements OnInit {
   }
 
   guardarCambios() {
-  this.usuarioService.editarCliente(this.usuarioId, this.usuario).subscribe({
-    next: data => {
-      this.usuario = { ...data.usuario };
-      this.editMode = false;
-      setTimeout(() => this.cargarUsuario(), 500); // prueba con 500ms o más si es necesario
-    },
-    error: err => {
-      this.editMode = false;
-      // Solo muestra el alert si el error no es temporal o si realmente no se actualiza
-      // alert('Error al editar usuario: ' + (err.error?.detail || err.message));
-    }
-  });
-}
+    this.usuarioService.editarCliente(this.usuarioId, this.usuario).subscribe({
+      next: data => {
+        this.usuario = { ...data.usuario };
+        this.editMode = false;
+        setTimeout(() => this.cargarUsuario(), 500);
+      },
+      error: err => {
+        this.editMode = false;
+        // alert('Error al editar usuario: ' + (err.error?.detail || err.message));
+      }
+    });
+  }
 
   cancelarEdicion() {
     this.editMode = false;
     this.cargarUsuario();
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('tipo');
+    localStorage.removeItem('profileImage');
+    // Redirige al login o home
+    window.location.href = '/home';
   }
 }
