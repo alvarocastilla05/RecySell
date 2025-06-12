@@ -33,8 +33,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NaturalId
-    @Column(unique = true, updatable = false)
+    @NaturalId(mutable = true)
+    @Column(unique = true)
     private String username;
 
     private String password;
