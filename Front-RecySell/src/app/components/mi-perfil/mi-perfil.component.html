@@ -218,6 +218,76 @@
             </div>
             <div *ngSwitchCase="'compras'">
                 <h2 class="text-2xl font-bold mb-4">Mis Compras</h2>
+                <div *ngIf="misCompras.length === 0" class="flex flex-col items-center justify-center py-12">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Sin compras"
+                        class="w-24 h-24 mb-4 opacity-70" />
+                    <div class="text-lg text-gray-300 font-semibold mb-1 text-center">
+                        Aún no has realizado ninguna compra.
+                    </div>
+                    <button (click)="router.navigate(['/'])"
+                        class="mt-4 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200">
+                        <i class="bi bi-search text-xl"></i>
+                        ¡Explora productos!
+                    </button>
+                </div>
+                <div *ngIf="misCompras.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <a *ngFor="let compra of misCompras"
+                        class="bg-[#232823] rounded-xl shadow-lg p-6 flex flex-col gap-4 relative border-2 transition hover:scale-[1.03] hover:shadow-xl cursor-pointer"
+                        [ngClass]="{
+            'border-gray-500': compra.estadoCompra === 'CARRITO',
+            'border-yellow-400': compra.estadoCompra === 'EN_ENVIO',
+            'border-[#53d22c]': compra.estadoCompra === 'ENTREGADO',
+            'border-red-500': compra.estadoCompra === 'CANCELADO'
+        }" [routerLink]="['/carrito', compra.id]">
+                        <div class="flex items-center gap-4">
+                            <div class="w-20 h-20 flex items-center justify-center bg-[#181c15] rounded-lg shadow">
+                                <i class="bi bi-cart text-4xl text-gray-400"
+                                    *ngIf="compra.estadoCompra === 'CARRITO'"></i>
+                                <i class="bi bi-truck text-4xl text-yellow-400"
+                                    *ngIf="compra.estadoCompra === 'EN_ENVIO'"></i>
+                                <i class="bi bi-check-circle-fill text-4xl text-[#53d22c]"
+                                    *ngIf="compra.estadoCompra === 'ENTREGADO'"></i>
+                                <i class="bi bi-x-circle-fill text-4xl text-red-500"
+                                    *ngIf="compra.estadoCompra === 'CANCELADO'"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-lg font-bold mb-1">Compra en {{ compra.provincia }}</div>
+                                <div class="text-gray-400 text-sm mb-1">
+                                    {{ compra.direccionEntrega }}, {{ compra.codigoPostal }}
+                                </div>
+                                <div class="text-[#53d22c] font-bold text-lg">
+                                    Total: {{ (compra.subTotal + compra.gastosEnvio) | currency:'EUR' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <ng-container [ngSwitch]="compra.estadoCompra">
+                                <span *ngSwitchCase="'CARRITO'"
+                                    class="flex items-center gap-1 text-gray-400 font-semibold">
+                                    <i class="bi bi-cart"></i> En carrito
+                                </span>
+                                <span *ngSwitchCase="'EN_ENVIO'"
+                                    class="flex items-center gap-1 text-yellow-400 font-semibold">
+                                    <i class="bi bi-truck"></i> En envío
+                                </span>
+                                <span *ngSwitchCase="'ENTREGADO'"
+                                    class="flex items-center gap-1 text-[#53d22c] font-semibold">
+                                    <i class="bi bi-check-circle-fill"></i> Entregado
+                                </span>
+                                <span *ngSwitchCase="'CANCELADO'"
+                                    class="flex items-center gap-1 text-red-500 font-semibold">
+                                    <i class="bi bi-x-circle-fill"></i> Cancelado
+                                </span>
+                                <span *ngSwitchDefault class="flex items-center gap-1 text-gray-400 font-semibold">
+                                    <i class="bi bi-hourglass-split"></i> {{ compra.estadoCompra }}
+                                </span>
+                            </ng-container>
+                            <div class="text-xs text-gray-400">
+                                {{ compra.fechaVenta | date:'mediumDate' }}
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
             <div *ngSwitchDefault>
                 <h2 class="text-2xl font-bold mb-4">Datos de usuario</h2>
@@ -258,7 +328,7 @@
             Mis Donaciones
         </button>
         <button class="flex items-center gap-3 text-left py-2 px-4 rounded hover:bg-[#232823] transition"
-            (click)="selectedSection = 'compras'">
+            (click)="selectedSection = 'compras'; cargarMisCompras()">
             <span class="bg-[#232823] p-2 rounded-lg flex items-center justify-center">
                 <i class="bi bi-cart-fill text-white"></i>
             </span>

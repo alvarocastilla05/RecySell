@@ -3,6 +3,7 @@ import { UsuarioService } from '../../service/usuario-service.service';
 import { ProductoFavorito } from '../../interfaces/product/product-fav.interface';
 import { Router } from '@angular/router';
 import { DonacionService } from '../../service/donacion-service.service';
+import { CompraService } from '../../service/compra-service.service';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -20,15 +21,18 @@ export class MiPerfilComponent implements OnInit {
   favoritos: ProductoFavorito[] = [];
   misProductos: any[] = [];
   misDonaciones: any[] = [];
+  misCompras: any[] = [];
+
 
   // Para el modal de eliminar producto
   showDeleteModal = false;
   productoAEliminar: any = null;
 
   constructor(
-    private usuarioService: UsuarioService, 
+    private usuarioService: UsuarioService,
     public router: Router,
-    private donacionService: DonacionService
+    private donacionService: DonacionService,
+    private compraService: CompraService
   ) { }
 
   ngOnInit() {
@@ -95,14 +99,20 @@ export class MiPerfilComponent implements OnInit {
 
 
   cargarMisDonaciones() {
-  this.donacionService.getDonaciones().subscribe(resp => {
-    // Filtra solo las donaciones del usuario logueado por id
-    this.misDonaciones = (resp.content || []).filter((d: any) =>
-      d.productoDonado?.clienteDonante?.id &&
-      d.productoDonado.clienteDonante.id === this.usuarioId
-    );
-  });
-}
+    this.donacionService.getDonaciones().subscribe(resp => {
+      // Filtra solo las donaciones del usuario logueado por id
+      this.misDonaciones = (resp.content || []).filter((d: any) =>
+        d.productoDonado?.clienteDonante?.id &&
+        d.productoDonado.clienteDonante.id === this.usuarioId
+      );
+    });
+  }
+
+  cargarMisCompras() {
+    this.compraService.getComprasPorCliente(this.usuarioId).subscribe(resp => {
+      this.misCompras = resp.content || [];
+    });
+  }
 
   irADetalleProducto(id: number) {
     this.router.navigate(['/producto', id]);

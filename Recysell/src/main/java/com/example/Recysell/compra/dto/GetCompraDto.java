@@ -8,6 +8,7 @@ import com.example.Recysell.compra.model.EstadoCompra;
 import java.time.LocalDateTime;
 
 public record GetCompraDto(
+        Long id,
         double gastosEnvio,
         double subTotal,
         LocalDateTime fechaVenta,
@@ -20,6 +21,7 @@ public record GetCompraDto(
 
     public static GetCompraDto of(Compra compra) {
         return new GetCompraDto(
+                compra.getId(),
                 compra.getGastosEnvio(),
                 compra.getSubTotal(),
                 compra.getFechaVenta(),
@@ -32,6 +34,7 @@ public record GetCompraDto(
     }
 
     public GetCompraDto(
+            Long id,
             double gastosEnvio,
             double subTotal,
             LocalDateTime fechaVenta,
@@ -42,6 +45,7 @@ public record GetCompraDto(
             Cliente cliente
     ) {
         this(
+                id,
                 gastosEnvio,
                 subTotal,
                 fechaVenta,
