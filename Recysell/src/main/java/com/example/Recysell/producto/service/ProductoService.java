@@ -151,9 +151,17 @@ public class ProductoService {
     }
 
     //Lista de productos por cliente
-    public Page<GetProductoDto> findProductosByClienteVendedor(Cliente cliente, Pageable pageable){
-        return productoRepository.findProductosByClienteVendedor(cliente, pageable)
+    public Page<GetProductoDto> findProductosByClienteVendedor(Cliente cliente, Pageable pageable) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedProductoFilter");
+        filter.setParameter("isDeleted", false);
+
+        Page<GetProductoDto> result = productoRepository.findProductosByClienteVendedor(cliente, pageable)
                 .map(GetProductoDto::of);
+
+        session.disableFilter("deletedProductoFilter");
+
+        return result;
     }
 
     //Añadir categoria a producto
