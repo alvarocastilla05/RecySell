@@ -8,7 +8,7 @@ export class UsuarioService {
   private urlMe = 'http://localhost:8080/me';
   private urlCliente = 'http://localhost:8080/cliente';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUsuarioMe() {
     return this.http.get<any>(this.urlMe);
@@ -23,6 +23,14 @@ export class UsuarioService {
   }
 
   getFavoritos(): Observable<ProductoFavorito[]> {
-  return this.http.get<ProductoFavorito[]>('http://localhost:8080/cliente/producto');
-}
+    return this.http.get<ProductoFavorito[]>('http://localhost:8080/cliente/producto');
+  }
+
+  getMisProductos(idCliente: string) {
+    return this.http.get<any[]>(`http://localhost:8080/producto/cliente/${idCliente}`);
+  }
+
+  eliminarProducto(idProducto: number) {
+    return this.http.delete(`http://localhost:8080/producto/${idProducto}`);
+  }
 }

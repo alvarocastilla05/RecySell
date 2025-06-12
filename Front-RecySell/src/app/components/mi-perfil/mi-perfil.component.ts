@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../service/usuario-service.service';
 import { ProductoFavorito } from '../../interfaces/product/product-fav.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -16,9 +17,13 @@ export class MiPerfilComponent implements OnInit {
   showLogoutModal = false;
 
   favoritos: ProductoFavorito[] = [];
+  misProductos: any[] = [];
 
+  // Para el modal de eliminar producto
+  showDeleteModal = false;
+  productoAEliminar: any = null;
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService, private router: Router) { }
 
   ngOnInit() {
     this.cargarUsuario();
@@ -54,18 +59,41 @@ export class MiPerfilComponent implements OnInit {
     this.cargarUsuario();
   }
 
-
   cargarFavoritos() {
     this.usuarioService.getFavoritos().subscribe(favs => {
       this.favoritos = favs;
     });
   }
 
+  cargarMisProductos() {
+    this.usuarioService.getMisProductos(this.usuarioId).subscribe(productos => {
+      this.misProductos = productos;
+    });
+  }
+
+  // Modal de eliminar producto
+  abrirModalEliminar(producto: any) {
+    this.productoAEliminar = producto;
+    this.showDeleteModal = true;
+  }
+
+  confirmarEliminarProducto() {
+    if (!this.productoAEliminar) return;
+    this.usuarioService.eliminarProducto(this.productoAEliminar.id).subscribe(() => {
+      this.misProductos = this.misProductos.filter(p => p.id !== this.productoAEliminar.id);
+      this.showDeleteModal = false;
+      this.productoAEliminar = null;
+    });
+  }
+
+  irADetalleProducto(id: number) {
+  this.router.navigate(['/producto', id]);
+}
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('tipo');
     localStorage.removeItem('profileImage');
-    // Redirige al login o home
     window.location.href = '/home';
   }
 }
