@@ -76,6 +76,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/producto/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categoria").permitAll()
+                .requestMatchers("/uploads/**").permitAll()
 
                 // Rutas roles específicos
                 .requestMatchers("/me/admin").hasRole("ADMIN")

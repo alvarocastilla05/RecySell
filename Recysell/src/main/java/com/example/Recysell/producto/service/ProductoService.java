@@ -107,6 +107,7 @@ public class ProductoService {
                 .imagenes(nombresImagenes) // lista de strings
                 .estado(createProductoDto.estado())
                 .categoria(categoria)
+                .disponibilidad(true)
                 .clienteVendedor(authenticatedCliente)
                 .build();
 
