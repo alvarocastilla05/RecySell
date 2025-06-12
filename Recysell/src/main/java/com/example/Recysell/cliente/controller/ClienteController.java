@@ -1,13 +1,11 @@
 package com.example.Recysell.cliente.controller;
 
-import com.example.Recysell.cliente.dto.ClienteResponse;
-import com.example.Recysell.cliente.dto.CreateClienteRequest;
-import com.example.Recysell.cliente.dto.EditClienteCmd;
-import com.example.Recysell.cliente.dto.GetClienteDto;
+import com.example.Recysell.cliente.dto.*;
 import com.example.Recysell.cliente.model.Cliente;
 import com.example.Recysell.cliente.service.ClienteService;
 import com.example.Recysell.producto.dto.GetProductoDto;
 import com.example.Recysell.producto.model.Producto;
+import com.example.Recysell.security.jwt.access.JwtService;
 import com.example.Recysell.trabajador.dto.TrabajadorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,6 +39,7 @@ import java.util.stream.Collectors;
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final JwtService jwtService;
 
     @Operation(summary = "Obtiene una lista de todos los clientes.")
     @ApiResponses(value = {
@@ -214,11 +213,14 @@ public class ClienteController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    @PostAuthorize("returnObject.username == authentication.principal.username")
-    public GetClienteDto edit(@Valid @RequestBody EditClienteCmd editClienteCmd, @PathVariable UUID id){
+    @PostAuthorize("returnObject.usuario.username == authentication.principal.username")
+    public EditClienteResponseDto edit(@Valid @RequestBody EditClienteCmd editClienteCmd, @PathVariable UUID id) {
         Cliente cliente = clienteService.edit(editClienteCmd, id);
 
-        return GetClienteDto.of(cliente);
+        // Genera un nuevo token JWT para el usuario actualizado
+        String nuevoToken = jwtService.generateAccessToken(cliente);
+
+        return new EditClienteResponseDto(GetClienteDto.of(cliente), nuevoToken);
     }
 
     @Operation(summary = "Elimina un cliente.")

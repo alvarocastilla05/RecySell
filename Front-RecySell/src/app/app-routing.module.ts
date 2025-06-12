@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'reciclar', component: ReciclarComponent },
   { path: 'sobre-nosotros', component: SobreNosotrosComponent} ,
   { path: 'mi-perfil', component: MiPerfilComponent },
-  { path: 'carrito', component: CarritoComponent },     // Añade este si tienes carrito
+  { path: 'carrito/:id', component: CarritoComponent },     // Añade este si tienes carrito
 ];
 
 @NgModule({

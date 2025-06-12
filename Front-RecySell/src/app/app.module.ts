@@ -24,8 +24,10 @@ import { ListadoDonacionesComponent } from './components/listado-donaciones/list
 import { ValoracionComponent } from './components/valoracion/valoracion.component';
 import { MenuNavComponent } from './shared/menu-nav/menu-nav.component';
 import { LoadingComponent } from './shared/loading/loading.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,12 +55,13 @@ import { provideHttpClient } from '@angular/common/http';
     AppRoutingModule,
     NgbModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
 
   ],
   providers: [
     provideAnimationsAsync(),
-    provideHttpClient()
+    provideHttpClient(withInterceptors([AuthInterceptor]))
   ],
   bootstrap: [AppComponent]
 })

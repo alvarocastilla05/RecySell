@@ -32,6 +32,7 @@ export class InicioSesionComponent {
     this.authService.login(username, password).subscribe({
       next: (res) => {
         // Guarda el token y actualiza el estado de login
+        console.log('Login exitoso:', res);
         this.authService.loginSuccess(res.token);
         // Guarda el tipo de usuario para el nav
         localStorage.setItem('tipo', res.role?.toLowerCase() || 'cliente');

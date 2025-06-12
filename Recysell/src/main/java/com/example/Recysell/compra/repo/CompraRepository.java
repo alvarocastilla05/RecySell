@@ -15,6 +15,7 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
 
     @Query("""
     SELECT new com.example.Recysell.compra.dto.GetCompraDto(
+        c.id,
         c.gastosEnvio,
         c.subTotal,
         c.fechaVenta,
@@ -30,7 +31,9 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
 
 
     @Query("""
-    SELECT new com.example.Recysell.compra.dto.GetCompraDto(c.gastosEnvio,
+    SELECT new com.example.Recysell.compra.dto.GetCompraDto(
+        c.id,
+        c.gastosEnvio,
         c.subTotal,
         c.fechaVenta,
         c.provincia,

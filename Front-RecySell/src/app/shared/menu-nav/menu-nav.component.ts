@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthServiceService } from '../../service/auth-service.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-menu-nav',
@@ -9,17 +10,39 @@ import { AuthServiceService } from '../../service/auth-service.service';
 export class MenuNavComponent implements OnInit {
 
   isLoggedIn = false;
-  userProfileImage = ''; // URL de la imagen de perfil del usuario
-  esTrabajador = false; // Indica si el usuario es un trabajador
+  userProfileImage = '';
+  esTrabajador = false;
 
-  constructor(private authService: AuthServiceService) {}
+  constructor(private authService: AuthServiceService) { }
 
   ngOnInit() {
+    this.isLoggedIn = this.checkToken();
+    this.esTrabajador = localStorage.getItem('tipo') === 'trabajador';
+    this.userProfileImage = localStorage.getItem('profileImage') || '';
+
     this.authService.isLoggedIn$.subscribe(status => {
-      this.isLoggedIn = status;
-      // Lee el tipo de usuario del localStorage cada vez que cambia el estado de login
+      this.isLoggedIn = this.checkToken();
       this.esTrabajador = localStorage.getItem('tipo') === 'trabajador';
       this.userProfileImage = localStorage.getItem('profileImage') || '';
     });
+  }
+
+  checkToken(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+    try {
+      const decoded: any = jwtDecode(token);
+      // exp está en segundos desde Epoch
+      if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+        // Token expirado, lo eliminamos
+        localStorage.removeItem('token');
+        return false;
+      }
+      return true;
+    } catch (e) {
+      // Token inválido
+      localStorage.removeItem('token');
+      return false;
+    }
   }
 }

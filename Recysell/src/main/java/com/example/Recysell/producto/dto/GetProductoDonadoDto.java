@@ -10,6 +10,7 @@ import com.example.Recysell.producto.model.Producto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public record GetProductoDonadoDto(
         String nombre,
@@ -19,7 +20,7 @@ public record GetProductoDonadoDto(
         Estado estado,
         LocalDateTime fechaRegistro,
         GetCategoriaDto categoria,
-        GetClienteDto clienteDonador
+        GetClienteDto clienteDonante
 ) {
 
     public static GetProductoDonadoDto of(Producto producto) {
@@ -36,8 +37,8 @@ public record GetProductoDonadoDto(
         );
     }
 
-    public GetProductoDonadoDto(String nombre, String descripcion, double precio, List<String> imagenes, Estado estado, LocalDateTime fechaRegistro, Categoria categoria,  Cliente clienteDonante) {
-        this(nombre, descripcion, precio, imagenes, estado, fechaRegistro, GetCategoriaDto.of(categoria) , GetClienteDto.of(clienteDonante));
+    public GetProductoDonadoDto(String nombre, String descripcion, double precio, List<String> imagenes, Estado estado, LocalDateTime fechaRegistro, Categoria categoria, Cliente clienteDonante) {
+        this(nombre, descripcion, precio, imagenes, estado, fechaRegistro, GetCategoriaDto.of(categoria), GetClienteDto.of(clienteDonante));
     }
 
 

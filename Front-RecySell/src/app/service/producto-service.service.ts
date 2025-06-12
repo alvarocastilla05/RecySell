@@ -12,4 +12,6 @@ export class ProductoService {
   getProductos(params?: any): Observable<ProductoListResponse> {
   return this.http.get<ProductoListResponse>(this.listarUrl, { params });
 }
+
+
 }
