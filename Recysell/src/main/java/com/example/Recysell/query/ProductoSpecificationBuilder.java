@@ -26,6 +26,7 @@ public class ProductoSpecificationBuilder extends GenericSpecificationBuilder<Pr
                 case "categoria" -> Producto.byCategoria(criteria);
                 case "precio" -> Producto.byRangoPrecio(criteria);
                 case "usuario" -> Producto.byUsuario(criteria);
+                case "estado" -> Producto.byEstado(criteria);
                 default -> super.build(criteria);
             };
 
