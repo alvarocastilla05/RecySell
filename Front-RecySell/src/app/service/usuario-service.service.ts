@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ProductoFavorito } from '../interfaces/product/product-fav.interface';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
@@ -19,4 +21,8 @@ export class UsuarioService {
   editarCliente(id: string, usuario: any) {
     return this.http.put<any>(`${this.urlCliente}/${id}`, usuario);
   }
+
+  getFavoritos(): Observable<ProductoFavorito[]> {
+  return this.http.get<ProductoFavorito[]>('http://localhost:8080/cliente/producto');
+}
 }

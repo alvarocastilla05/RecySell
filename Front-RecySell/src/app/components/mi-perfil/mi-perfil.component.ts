@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../service/usuario-service.service';
+import { ProductoFavorito } from '../../interfaces/product/product-fav.interface';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -13,6 +14,9 @@ export class MiPerfilComponent implements OnInit {
   usuarioId: string = '';
   showPassword = false;
   showLogoutModal = false;
+
+  favoritos: ProductoFavorito[] = [];
+
 
   constructor(private usuarioService: UsuarioService) { }
 
@@ -48,6 +52,13 @@ export class MiPerfilComponent implements OnInit {
   cancelarEdicion() {
     this.editMode = false;
     this.cargarUsuario();
+  }
+
+
+  cargarFavoritos() {
+    this.usuarioService.getFavoritos().subscribe(favs => {
+      this.favoritos = favs;
+    });
   }
 
   logout() {
