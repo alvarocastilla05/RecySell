@@ -7,10 +7,23 @@ import { Observable } from 'rxjs';
 })
 export class CompraService {
 
+    private apiUrl = 'http://localhost:8080/compra';
+
     constructor(private http: HttpClient) { }
 
-
     getComprasPorCliente(idCliente: string) {
-        return this.http.get<any>(`http://localhost:8080/compra/cliente/${idCliente}`);
+        return this.http.get<any>(`${this.apiUrl}/cliente/${idCliente}`);
+    }
+
+    getCompraById(id: number) {
+        return this.http.get<any>(`${this.apiUrl}/${id}`);
+    }
+
+    confirmarCompra(id: number) {
+        return this.http.put<any>(`${this.apiUrl}/${id}/confirmar`, {});
+    }
+
+    cancelarCompra(id: number) {
+        return this.http.put<any>(`${this.apiUrl}/${id}/cancelar`, {});
     }
 }

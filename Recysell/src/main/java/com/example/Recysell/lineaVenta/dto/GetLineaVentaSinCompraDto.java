@@ -7,15 +7,17 @@ import com.example.Recysell.producto.dto.GetProductoDto;
 import com.example.Recysell.producto.model.Producto;
 
 public record GetLineaVentaSinCompraDto(
+        Long id,
         GetProductoDto productoDto
 ) {
     public static GetLineaVentaSinCompraDto of(LineaVenta lineaVenta) {
         return new GetLineaVentaSinCompraDto(
+                lineaVenta.getId(),
                 GetProductoDto.of(lineaVenta.getProductoLinea())
         );
     }
 
-    public GetLineaVentaSinCompraDto(Producto producto) {
-        this(GetProductoDto.of(producto));
+    public GetLineaVentaSinCompraDto(Long id, Producto producto) {
+        this(id, GetProductoDto.of(producto));
     }
 }

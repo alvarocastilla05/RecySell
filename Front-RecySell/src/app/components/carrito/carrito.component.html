@@ -1,1 +1,244 @@
-<p>carrito works!</p>
+<app-menu-nav></app-menu-nav>
+
+<div class="min-h-screen bg-[#0e110f] text-white font-manrope flex flex-col items-center pt-20 px-4">
+    <div class="max-w-3xl mx-auto bg-[#181c15] rounded-xl shadow-lg p-8 mt-20 text-white">
+        <h2 class="text-2xl font-bold mb-6">Detalle del carrito</h2>
+
+        <!-- Barra de progreso de estado -->
+        <div class="flex items-center justify-center mb-8">
+            <div class="flex items-center gap-0">
+                <!-- Paso 1: Carrito -->
+                <div class="flex flex-col items-center w-32">
+                    <div class="rounded-full w-8 h-8 flex items-center justify-center font-bold transition" [ngClass]="{
+                    'bg-[#53d22c] text-black ring-4 ring-[#53d22c]': compra?.estadoCompra === 'CARRITO',
+                    'bg-blue-500 text-white ring-4 ring-blue-500': compra?.estadoCompra === 'EN_ENVIO',
+                    'bg-yellow-400 text-black ring-4 ring-yellow-400': compra?.estadoCompra === 'ENTREGADA',
+                    'bg-gray-400 text-black ring-4 ring-gray-400': compra?.estadoCompra === 'CANCELADO',
+                    'bg-gray-700 text-gray-400': !compra?.estadoCompra
+                }">1</div>
+                    <span class="mt-2 text-xs" [ngClass]="{
+                    'text-[#53d22c] font-bold': compra?.estadoCompra === 'CARRITO',
+                    'text-blue-400 font-bold': compra?.estadoCompra === 'EN_ENVIO',
+                    'text-yellow-400 font-bold': compra?.estadoCompra === 'ENTREGADA',
+                    'text-gray-400 font-bold': compra?.estadoCompra === 'CANCELADO' || !compra?.estadoCompra
+                }">
+                        Carrito
+                    </span>
+                </div>
+                <div class="h-1 w-10" [ngClass]="{
+                'bg-[#53d22c]': compra?.estadoCompra === 'CARRITO',
+                'bg-blue-500': compra?.estadoCompra === 'EN_ENVIO',
+                'bg-yellow-400': compra?.estadoCompra === 'ENTREGADA',
+                'bg-gray-400': compra?.estadoCompra === 'CANCELADO',
+                'bg-gray-600': !compra?.estadoCompra
+            }">
+                </div>
+                <!-- Paso 2: Envío -->
+                <div class="flex flex-col items-center w-32">
+                    <div class="rounded-full w-8 h-8 flex items-center justify-center font-bold transition" [ngClass]="{
+                    'bg-blue-500 text-white ring-4 ring-blue-500': compra?.estadoCompra === 'EN_ENVIO',
+                    'bg-yellow-400 text-black ring-4 ring-yellow-400': compra?.estadoCompra === 'ENTREGADA',
+                    'bg-gray-400 text-black ring-4 ring-gray-400': compra?.estadoCompra === 'CANCELADO',
+                    'bg-gray-700 text-gray-400': compra?.estadoCompra === 'CARRITO' || !compra?.estadoCompra
+                }">2</div>
+                    <span class="mt-2 text-xs" [ngClass]="{
+                    'text-blue-400 font-bold': compra?.estadoCompra === 'EN_ENVIO',
+                    'text-yellow-400 font-bold': compra?.estadoCompra === 'ENTREGADA',
+                    'text-gray-400 font-bold': compra?.estadoCompra === 'CARRITO' || compra?.estadoCompra === 'CANCELADO' || !compra?.estadoCompra
+                }">
+                        Envío
+                    </span>
+                </div>
+                <div class="h-1 w-10" [ngClass]="{
+                'bg-blue-500': compra?.estadoCompra === 'EN_ENVIO',
+                'bg-yellow-400': compra?.estadoCompra === 'ENTREGADA',
+                'bg-gray-400': compra?.estadoCompra === 'CANCELADO',
+                'bg-gray-600': compra?.estadoCompra === 'CARRITO' || !compra?.estadoCompra
+            }">
+                </div>
+                <!-- Paso 3: Entregada o Cancelada -->
+                <div class="flex flex-col items-center w-32">
+                    <div class="rounded-full w-8 h-8 flex items-center justify-center font-bold transition" [ngClass]="{
+                    'bg-yellow-400 text-black ring-4 ring-yellow-400': compra?.estadoCompra === 'ENTREGADA',
+                    'bg-gray-400 text-black ring-4 ring-gray-400': compra?.estadoCompra === 'CANCELADO',
+                    'bg-gray-700 text-gray-400': compra?.estadoCompra !== 'ENTREGADA' && compra?.estadoCompra !== 'CANCELADO'
+                }">
+                        <ng-container *ngIf="compra?.estadoCompra === 'CANCELADO'; else noCancelada">✖</ng-container>
+                        <ng-template #noCancelada>3</ng-template>
+                    </div>
+                    <span class="mt-2 text-xs" [ngClass]="{
+                    'text-yellow-400 font-bold': compra?.estadoCompra === 'ENTREGADA',
+                    'text-gray-400 font-bold': compra?.estadoCompra === 'CANCELADO' || compra?.estadoCompra !== 'ENTREGADA'
+                }">
+                        {{ compra?.estadoCompra === 'CANCELADO' ? 'Cancelada' : 'Entregada' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos en el carrito -->
+        <div *ngIf="compra?.lineasVenta?.length; else vacio">
+            <div *ngFor="let linea of compra.lineasVenta"
+                class="flex items-center gap-4 border-b border-[#232823] py-4">
+                <div class="w-20 h-20 bg-[#232823] rounded-lg flex items-center justify-center">
+                    <img *ngIf="linea.productoDto.imagenes?.length"
+                        [src]="'http://localhost:8080/uploads/' + linea.productoDto.imagenes[0]"
+                        class="object-cover w-full h-full rounded-lg" alt="Imagen producto">
+                    <span *ngIf="!linea.productoDto.imagenes?.length" class="text-gray-400 text-2xl">📦</span>
+                </div>
+                <div class="flex-1">
+                    <div class="font-bold">{{ linea.productoDto.nombre }}</div>
+                    <div class="text-sm text-gray-400">{{ linea.productoDto.descripcion }}</div>
+                    <div class="text-xs text-gray-500">Vendedor: {{ linea.productoDto.clienteVendedor.nombre }} {{
+                        linea.productoDto.clienteVendedor.apellidos }}</div>
+                </div>
+                <div class="font-bold text-[#53d22c] min-w-[90px] text-right">
+                    {{ linea.productoDto.precio | currency:'EUR' }}
+                </div>
+                <!-- Botón eliminar solo si está en CARRITO -->
+                <button *ngIf="compra?.estadoCompra === 'CARRITO'"
+                    class="ml-4 px-4 py-2 rounded bg-red-600 text-white font-bold hover:bg-red-700 transition flex items-center"
+                    (click)="abrirModalEliminarLinea(linea)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 6h18M9 6v12a2 2 0 002 2h2a2 2 0 002-2V6m-6 0V4a2 2 0 012-2h2a2 2 0 012 2v2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ng-template #vacio>
+            <div class="text-center text-gray-400 py-8">No hay productos en este carrito.</div>
+        </ng-template>
+
+        <!-- ...el resto de tu código permanece igual... -->
+
+        <!-- Información de la compra -->
+        <div class="mt-8 bg-[#232823] rounded-xl p-6 flex flex-col gap-2">
+            <div class="flex justify-between">
+                <span class="text-gray-400">Subtotal:</span>
+                <span>{{ compra?.subTotal | currency:'EUR' }}</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-gray-400">Gastos de envío:</span>
+                <span>{{ compra?.gastosEnvio | currency:'EUR' }}</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg">
+                <span>Total:</span>
+                <span>{{ (compra?.subTotal + compra?.gastosEnvio) | currency:'EUR' }}</span>
+            </div>
+            <div class="mt-4 text-sm text-gray-400">
+                <div><span class="font-bold text-white">Dirección:</span> {{ compra?.direccionEntrega }}</div>
+                <div><span class="font-bold text-white">Provincia:</span> {{ compra?.provincia }}</div>
+                <div><span class="font-bold text-white">Código Postal:</span> {{ compra?.codigoPostal }}</div>
+            </div>
+        </div>
+
+        <!-- Botón finalizar compra -->
+        <!-- Botones de acción según estado -->
+        <div class="flex justify-end mt-8">
+            <button *ngIf="compra?.estadoCompra === 'CARRITO'"
+                class="bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-8 py-3 rounded transition"
+                [disabled]="!compra?.lineasVenta?.length"
+                [ngClass]="{'opacity-50 cursor-not-allowed': !compra?.lineasVenta?.length}"
+                (click)="abrirModalConfirmarCompra()">
+                Finalizar compra
+            </button>
+            <button *ngIf="compra?.estadoCompra === 'EN_ENVIO'"
+                class="bg-gray-500 hover:bg-gray-600 text-white font-bold px-8 py-3 rounded transition"
+                (click)="abrirModalCancelarCompra()">
+                Cancelar compra
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal eliminar línea de venta -->
+<div *ngIf="showEliminarLineaModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+        <div class="text-xl font-bold text-red-500 text-center">¿Eliminar este producto del carrito?</div>
+        <div class="flex gap-4">
+            <button (click)="confirmarEliminarLinea()"
+                class="px-6 py-2 rounded bg-red-600 text-white font-bold hover:bg-red-700 transition">
+                Sí, eliminar
+            </button>
+            <button (click)="showEliminarLineaModal = false"
+                class="px-6 py-2 rounded bg-gray-400 text-black font-bold hover:bg-gray-500 transition">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal confirmar compra -->
+<div *ngIf="showConfirmarCompraModal"
+    class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+        <div class="text-xl font-bold text-[#53d22c] text-center">¿Estás seguro de que quieres finalizar la compra?
+        </div>
+        <div class="flex gap-4">
+            <button (click)="confirmarFinalizarCompra()"
+                class="px-6 py-2 rounded bg-[#53d22c] text-black font-bold hover:bg-[#3bb31c] transition">
+                Sí, comprar
+            </button>
+            <button (click)="showConfirmarCompraModal = false"
+                class="px-6 py-2 rounded bg-gray-400 text-black font-bold hover:bg-gray-500 transition">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal cancelar compra -->
+<div *ngIf="showCancelarCompraModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+        <div class="text-xl font-bold text-gray-300 text-center">¿Seguro que quieres cancelar la compra?</div>
+        <div class="flex gap-4">
+            <button (click)="confirmarCancelarCompra()"
+                class="px-6 py-2 rounded bg-gray-500 text-white font-bold hover:bg-gray-600 transition">
+                Sí, cancelar
+            </button>
+            <button (click)="showCancelarCompraModal = false"
+                class="px-6 py-2 rounded bg-gray-400 text-black font-bold hover:bg-gray-500 transition">
+                No
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de éxito tras finalizar compra -->
+<div *ngIf="showCompraFinalizadaModal"
+    class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+        <svg class="text-[#53d22c]" width="48" height="48" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="12" fill="#53d22c" fill-opacity="0.15" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" stroke="#53d22c" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+        <div class="text-xl font-bold text-[#53d22c] text-center">¡Compra finalizada! Tu pedido está en envío.</div>
+        <button (click)="showCompraFinalizadaModal = false"
+            class="px-6 py-2 rounded bg-[#53d22c] text-black font-bold hover:bg-[#3bb31c] transition">
+            Cerrar
+        </button>
+    </div>
+</div>
+
+<!-- Modal de éxito tras cancelar compra -->
+<div *ngIf="showCompraCanceladaModal"
+    class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-[#232823] rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+        <svg class="text-gray-400" width="48" height="48" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="12" fill="#a1a1aa" fill-opacity="0.15" />
+            <path d="M6 12l6 6 6-6" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="text-xl font-bold text-gray-400 text-center">Compra cancelada</div>
+        <button (click)="showCompraCanceladaModal = false"
+            class="px-6 py-2 rounded bg-gray-400 text-black font-bold hover:bg-gray-500 transition">
+            Cerrar
+        </button>
+    </div>
+</div>

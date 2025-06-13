@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../service/usuario-service.service';
 import { ProductoFavorito } from '../../interfaces/product/product-fav.interface';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // <-- Importa ActivatedRoute
 import { DonacionService } from '../../service/donacion-service.service';
 import { CompraService } from '../../service/compra-service.service';
 
@@ -23,7 +23,6 @@ export class MiPerfilComponent implements OnInit {
   misDonaciones: any[] = [];
   misCompras: any[] = [];
 
-
   // Para el modal de eliminar producto
   showDeleteModal = false;
   productoAEliminar: any = null;
@@ -31,14 +30,39 @@ export class MiPerfilComponent implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
     public router: Router,
+    private route: ActivatedRoute, // <-- Añade esto
     private donacionService: DonacionService,
     private compraService: CompraService
   ) { }
 
   ngOnInit() {
-    this.cargarUsuario();
+  // 1. Carga el usuario primero
+  this.usuarioService.getUsuarioMe().subscribe(me => {
+    this.usuarioId = me.id;
+    this.usuarioService.getClienteById(this.usuarioId).subscribe(cliente => {
+      this.usuario = { ...cliente };
 
-  }
+      // 2. Ahora lee los query params y carga la sección correcta
+      this.route.queryParams.subscribe(params => {
+        if (params['apartado']) {
+          this.selectedSection = params['apartado'];
+          if (params['apartado'] === 'compras') {
+            this.cargarMisCompras();
+          }
+          if (params['apartado'] === 'favoritos') {
+            this.cargarFavoritos();
+          }
+          if (params['apartado'] === 'productos') {
+            this.cargarMisProductos();
+          }
+          if (params['apartado'] === 'donaciones') {
+            this.cargarMisDonaciones();
+          }
+        }
+      });
+    });
+  });
+}
 
   cargarUsuario() {
     // 1. Obtener el UUID del usuario logeado
@@ -60,7 +84,6 @@ export class MiPerfilComponent implements OnInit {
       },
       error: err => {
         this.editMode = false;
-        // alert('Error al editar usuario: ' + (err.error?.detail || err.message));
       }
     });
   }
@@ -97,11 +120,8 @@ export class MiPerfilComponent implements OnInit {
     });
   }
 
-
-
   cargarMisDonaciones() {
     this.donacionService.getDonaciones().subscribe(resp => {
-      // Filtra solo las donaciones del usuario logueado por id
       this.misDonaciones = (resp.content || []).filter((d: any) =>
         d.productoDonado?.clienteDonante?.id &&
         d.productoDonado.clienteDonante.id === this.usuarioId
@@ -110,10 +130,10 @@ export class MiPerfilComponent implements OnInit {
   }
 
   cargarMisCompras() {
-    this.compraService.getComprasPorCliente(this.usuarioId).subscribe(resp => {
-      this.misCompras = resp.content || [];
-    });
-  }
+  this.compraService.getComprasPorCliente(this.usuarioId).subscribe(resp => {
+    this.misCompras = (resp.content || []).sort((a: any, b: any) => b.id - a.id);
+  });
+}
 
   irADetalleProducto(id: number) {
     this.router.navigate(['/producto', id]);

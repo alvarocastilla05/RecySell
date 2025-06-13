@@ -19,7 +19,8 @@
         <!-- Botones usuario -->
         <div style="display: flex; align-items: center; gap: 1rem;">
             <ng-container *ngIf="isLoggedIn; else notLogged">
-                <a routerLink="/carrito" class="icon-btn" title="Carrito" style="margin-right: 0.5rem;">
+                <a [routerLink]="['/mi-perfil']" [queryParams]="{ apartado: 'compras' }" class="icon-btn"
+                    title="Carrito" style="margin-right: 0.5rem;">
                     <i class="bi bi-cart-fill" style="font-size: 1.5rem; color: #53d22c;"></i>
                 </a>
                 <a routerLink="/mi-perfil" class="profile-btn" title="Mi perfil"
@@ -30,7 +31,8 @@
                             : (esTrabajador
                                 ? 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=facearea&w=256&h=256'
                                 : 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=facearea&w=256&h=256')
-                        " alt="Perfil" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #53d22c;">
+                        " alt="Perfil"
+                        style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #53d22c;">
                 </a>
             </ng-container>
             <ng-template #notLogged>
