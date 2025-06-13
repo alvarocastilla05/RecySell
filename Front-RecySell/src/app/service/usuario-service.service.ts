@@ -26,7 +26,7 @@ export class UsuarioService {
     return this.http.get<ProductoFavorito[]>('http://localhost:8080/cliente/producto');
   }
 
-  getMisProductos(idCliente: string) {
+  getMisProductos(idCliente: string | null): Observable<any[]> {
     return this.http.get<any[]>(`http://localhost:8080/producto/cliente/${idCliente}`);
   }
 

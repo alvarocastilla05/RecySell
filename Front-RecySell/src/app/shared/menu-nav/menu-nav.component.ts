@@ -56,4 +56,14 @@ export class MenuNavComponent implements OnInit {
       }
     }).unsubscribe();
   }
+
+  irADonar() {
+    this.authService.isLoggedIn$.subscribe(isLogged => {
+      if (isLogged) {
+        this.router.navigate(['/donar']);
+      } else {
+        this.router.navigate(['/login']);
+      }
+    }).unsubscribe();
+  }
 }
