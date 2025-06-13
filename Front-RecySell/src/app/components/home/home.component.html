@@ -43,7 +43,10 @@
           <h3 class="text-lg font-semibold mb-2">Vender</h3>
           <p class="text-sm mb-4">Recibe dinero por tu dispositivo usado. Nosotros nos encargamos de encontrarle un
             nuevo dueño.</p>
-          <a routerLink="/vender" class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full">Vender ahora</a>
+          <a [routerLink]="(authService.isLoggedIn$ | async) ? '/vender' : '/login'"
+            class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full" style="cursor:pointer">
+            Vender ahora
+          </a>
         </div>
 
         <!-- Tarjeta Donar -->
