@@ -25,7 +25,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long>, JpaSp
     Page<Producto> findProductosByClienteVendedor(Cliente cliente, Pageable pageable);
 
     @Query("""
-    SELECT new com.example.Recysell.categoria.dto.GetCategoriaDto(c.nombre, c.imagen)
+    SELECT new com.example.Recysell.categoria.dto.GetCategoriaDto(c.id, c.nombre, c.imagen)
     FROM Categoria c
     JOIN c.listaProductos p 
     WHERE c.id = :id

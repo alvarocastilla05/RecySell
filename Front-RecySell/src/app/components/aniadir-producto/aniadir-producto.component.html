@@ -1,1 +1,111 @@
-<p>aniadir-producto works!</p>
+<app-menu-nav></app-menu-nav>
+<div class="min-h-screen bg-[#0e110f] text-white font-manrope flex flex-col items-center pt-20 px-4">
+  <div class="w-full max-w-2xl mx-auto bg-[#181c15] rounded-xl shadow-lg p-8 mt-10 mb-16 space-y-8">
+    <h2 class="text-3xl font-bold text-[#53d22c] mb-2 text-center">
+      {{ editMode ? 'Editar dispositivo' : '¿Qué dispositivo quieres vender?' }}
+    </h2>
+    <p class="mb-6 text-gray-400 text-center">
+      {{ editMode ? 'Modifica los datos del dispositivo que quieres editar.' : 'Selecciona la categoría de tu dispositivo para comenzar el proceso de venta.' }}
+    </p>
+
+    <!-- Categorías con scroll horizontal -->
+    <div class="flex gap-4 overflow-x-auto pb-2 mb-6">
+      <div *ngFor="let category of categorias"
+           (click)="selectCategory(category)"
+           [ngClass]="{
+             'border-4 border-[#53d22c] bg-white text-black': selectedCategory?.id === category.id,
+             'border-2 border-gray-600 bg-[#232823] text-white': selectedCategory?.id !== category.id
+           }"
+           class="cursor-pointer rounded-xl flex flex-col items-center p-3 shadow transition-all hover:scale-105 min-w-[110px]"
+           style="width: 110px;">
+        <img [src]="category.imagen ? 'http://localhost:8080/uploads/' + category.imagen : defaultCategoryImg"
+             [alt]="category.nombre" class="h-12 w-12 object-contain mb-2 rounded bg-[#181c15]"
+             (error)="onImgError($event)" />
+        <span class="text-xs font-semibold text-center">{{ category.nombre }}</span>
+      </div>
+    </div>
+
+    <!-- Mensaje de error de categoría -->
+    <div *ngIf="error" class="text-red-500 text-center font-semibold mb-2">{{ error }}</div>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="guardar()" #productoForm="ngForm" class="space-y-6">
+
+      <!-- Nombre -->
+      <div>
+        <label class="block mb-1 text-gray-300 font-medium">Nombre</label>
+        <input type="text" name="nombre" [(ngModel)]="producto.nombre" required
+               placeholder="Introduzca dispositivo"
+               class="w-full p-3 rounded-md bg-[#232823] text-white border border-gray-600 focus:border-[#53d22c] outline-none" />
+      </div>
+
+      <!-- Precio -->
+      <div>
+        <label class="block mb-1 text-gray-300 font-medium">Precio (€)</label>
+        <input type="number" name="precio" [(ngModel)]="producto.precio" required min="0" step="0.01"
+               placeholder="Precio del producto"
+               class="w-full p-3 rounded-md bg-[#232823] text-white border border-gray-600 focus:border-[#53d22c] outline-none" />
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label class="block mb-1 text-gray-300 font-medium">Descripción</label>
+        <textarea name="descripcion" [(ngModel)]="producto.descripcion" placeholder="Descripción" rows="3"
+                  class="w-full p-3 rounded-md bg-[#232823] text-white border border-gray-600 focus:border-[#53d22c] outline-none"></textarea>
+      </div>
+
+      <!-- Subida de fotos -->
+      <div class="border-2 border-dashed border-gray-600 p-6 rounded-md text-center bg-[#232823]">
+        <label class="block mb-3 font-medium text-gray-300">Subir fotos del dispositivo</label>
+        <p class="text-sm text-gray-400 mb-4">Arrastra y suelta las fotos aquí o haz clic para seleccionar archivos</p>
+        <input type="file" (change)="onFileSelected($event)" multiple class="hidden" #fileInput />
+        <button type="button" (click)="fileInput.click()"
+                class="px-4 py-2 bg-[#181c15] text-white rounded hover:bg-[#53d22c] hover:text-black transition">
+          Subir fotos
+        </button>
+        <div *ngIf="imagenesError" class="text-red-500 font-semibold mt-2">{{ imagenesError }}</div>
+        <!-- Previsualización de imágenes mejorada -->
+        <div class="flex flex-wrap gap-2 mt-4 justify-center" *ngIf="imagenesPreview?.length">
+          <ng-container *ngFor="let img of imagenesPreview.slice(0,3); let i = index">
+            <div class="relative group">
+              <img [src]="img" class="h-16 w-16 rounded shadow border border-gray-700 bg-[#181c15] object-cover" />
+              <button type="button"
+                      (click)="eliminarImagen(i)"
+                      class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-red-800 transition z-10"
+                      title="Eliminar imagen">
+                &times;
+              </button>
+              <span *ngIf="i === 2 && imagenesPreview.length > 3"
+                    class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center text-white text-lg font-bold rounded">
+                +{{ imagenesPreview.length - 2 }}
+              </span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Estado del dispositivo -->
+      <div>
+        <label class="block mb-2 text-gray-300 font-medium">¿Cuál es el estado del dispositivo?</label>
+        <div class="space-y-2">
+          <label *ngFor="let estado of estados"
+                 class="block p-3 rounded-md border border-gray-600 cursor-pointer hover:bg-[#232823] transition">
+            <input type="radio" name="estado" [(ngModel)]="producto.estado" [value]="estado.valor"
+                   class="mr-2 accent-[#53d22c]" required />
+            <span class="font-medium">{{ estado.label }}</span>
+            <p class="text-sm text-gray-400">{{ estado.descripcion }}</p>
+          </label>
+        </div>
+      </div>
+
+      <!-- Botón de acción -->
+      <div class="text-right">
+        <button type="submit"
+                [disabled]="!productoForm.form.valid || !selectedCategory"
+                class="bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-2 rounded-full shadow-lg transition-all duration-200 text-lg">
+          {{ editMode ? 'Editar' : 'Añadir' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

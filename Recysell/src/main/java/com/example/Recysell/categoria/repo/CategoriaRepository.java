@@ -16,7 +16,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     @Query("""
     SELECT new com.example.Recysell.categoria.dto.GetCategoriaDto(
-    c.nombre, c.imagen
+    c.id, c.nombre, c.imagen
     )
     FROM Categoria c
     """)

@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: 'producto/:id', component: ProductDetailsComponent},
   { path: 'productos-venta', component: ProductListComponent},
   { path: 'vender', component: AniadirProductoComponent },
+  { path: 'editar-producto/:id', component: AniadirProductoComponent },
   { path: 'donar', component: HacerDonacionComponent},
   { path: 'reciclar', component: ReciclarComponent },
   { path: 'sobre-nosotros', component: SobreNosotrosComponent} ,
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'carrito/:id', component: CarritoComponent },
   { path: 'nueva-compra', component: CrearCompraComponent },
   { path: 'editar-compra/:id', component: CrearCompraComponent }
+  
 
 ];
 

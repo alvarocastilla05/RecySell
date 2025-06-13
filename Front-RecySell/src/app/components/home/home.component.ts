@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../service/producto-service.service';
 import { Producto } from '../../interfaces/product/product-list.inteface';
+import { AuthServiceService } from '../../service/auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +12,11 @@ import { Producto } from '../../interfaces/product/product-list.inteface';
 export class HomeComponent implements OnInit {
   productos: Producto[] = [];
 
-  constructor(private productoService: ProductoService) { }
+  constructor(
+    private productoService: ProductoService,
+    public authService: AuthServiceService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.productoService.getProductos({ size: 100 }).subscribe(res => {
@@ -19,4 +25,6 @@ export class HomeComponent implements OnInit {
         .slice(0, 4);
     });
   }
+
+
 }
