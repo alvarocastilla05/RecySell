@@ -288,6 +288,12 @@
                         </div>
                     </a>
                 </div>
+                <button (click)="router.navigate(['/nueva-compra'])"
+                    class="fixed bottom-8 right-8 lg:right-96 z-50 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-4 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200 text-lg"
+                    style="box-shadow: 0 4px 24px 0 #53d22c55;">
+                    <i class="bi bi-plus-circle text-2xl"></i>
+                    Nueva compra
+                </button>
             </div>
             <div *ngSwitchDefault>
                 <h2 class="text-2xl font-bold mb-4">Datos de usuario</h2>

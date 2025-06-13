@@ -255,21 +255,25 @@ INSERT INTO donacion (producto_id, organizacion_id, fecha_donacion) VALUES (14, 
 
 -- Insertar datos en compra
 INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
-VALUES (1, 10.0, 90.0, '2023-10-01 10:00:00', 'Madrid', '28001', 'Calle Gran Vía, 1', '223e4567-e89b-12d3-a456-426614174004', false, 'CARRITO');
+VALUES (1, 10.0, 0, '2023-10-01 10:00:00', 'Madrid', '28001', 'Calle Gran Vía, 1', '223e4567-e89b-12d3-a456-426614174004', false, 'CARRITO');
 
 INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
-VALUES (2, 15.0, 120.0, '2023-10-02 11:00:00', 'Barcelona', '08002', 'Avenida Diagonal, 45', '223e4567-e89b-12d3-a456-426614174005', false, 'CARRITO');
+VALUES (2, 15.0, 0, '2023-10-02 11:00:00', 'Barcelona', '08002', 'Avenida Diagonal, 45', '223e4567-e89b-12d3-a456-426614174005', false, 'CARRITO');
 
 INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
-VALUES (3, 8.0, 75.0, '2023-10-03 12:00:00', 'Sevilla', '41001', 'Plaza Nueva, 10', '223e4567-e89b-12d3-a456-426614174006', false, 'CARRITO');
+VALUES (3, 8.0, 0, '2023-10-03 12:00:00', 'Sevilla', '41001', 'Plaza Nueva, 10', '223e4567-e89b-12d3-a456-426614174006', false, 'CARRITO');
 
 INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
-VALUES (4, 12.0, 110.0, '2023-10-04 13:00:00', 'Valencia', '46001', 'Calle Colón, 20', '223e4567-e89b-12d3-a456-426614174007', false, 'CARRITO');
+VALUES (4, 12.0, 0, '2023-10-04 13:00:00', 'Valencia', '46001', 'Calle Colón, 20', '223e4567-e89b-12d3-a456-426614174007', false, 'CARRITO');
 
 INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
-VALUES (5, 20.0, 150.0, '2023-10-05 14:00:00', 'Bilbao', '48001', 'Gran Vía, 30', '223e4567-e89b-12d3-a456-426614174008', false, 'CARRITO');
+VALUES (5, 20.0, 0, '2023-10-05 14:00:00', 'Bilbao', '48001', 'Gran Vía, 30', '223e4567-e89b-12d3-a456-426614174008', false, 'CARRITO');
+
+INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
+VALUES (6, 5.0, 50.0, '2023-10-06 10:00:00', 'Madrid', '28002', 'Calle Alcalá, 10', '223e4567-e89b-12d3-a456-426614174004', false, 'ENTREGADO');
+
 -- Reiniciar la secuencia de compra
-ALTER SEQUENCE compra_seq RESTART WITH 55;
+ALTER SEQUENCE compra_seq RESTART WITH 56;
 
 -- Insertar datos en lineaVenta
 INSERT INTO linea_venta (id ,deleted, compra_id, producto_id_linea_venta)

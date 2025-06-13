@@ -105,6 +105,12 @@ public class LineaVentaService {
         if (compra != null) {
             Producto producto = lineaVenta.getProductoLinea();
             compra.setSubTotal(compra.getSubTotal() - producto.getPrecio());
+
+            if (compra.getSubTotal() < 0) {
+                compra.setSubTotal(0);
+            }
+
+
             compra.removeLineaVenta(lineaVenta); // Limpieza bidireccional
             compraRepository.save(compra);
         }
