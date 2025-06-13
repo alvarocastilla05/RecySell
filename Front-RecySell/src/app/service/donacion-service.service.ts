@@ -13,4 +13,12 @@ export class DonacionService {
     getDonaciones(): Observable<any> {
         return this.http.get<any>('http://localhost:8080/donacion');
     }
+
+    crearDonacion(donacion: { productoId: number, organizacionId: number }): Observable<any> {
+        return this.http.post('http://localhost:8080/donacion', donacion);
+    }
+
+    getOrganizaciones(): Observable<any> {
+        return this.http.get<any>('http://localhost:8080/organizacion');
+    }
 }

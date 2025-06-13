@@ -43,8 +43,8 @@
           <h3 class="text-lg font-semibold mb-2">Vender</h3>
           <p class="text-sm mb-4">Recibe dinero por tu dispositivo usado. Nosotros nos encargamos de encontrarle un
             nuevo dueño.</p>
-          <a [routerLink]="(authService.isLoggedIn$ | async) ? '/vender' : '/login'"
-            class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full" style="cursor:pointer">
+          <a [routerLink]="(authService.isLoggedIn$ | async) ? '/vender' : '/login'" class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full"
+            style="cursor:pointer">
             Vender ahora
           </a>
         </div>
@@ -56,7 +56,10 @@
           <h3 class="text-lg font-semibold mb-2">Donar</h3>
           <p class="text-sm mb-4">Haz que tu dispositivo siga ayudando a otros. Dona a escuelas u organizaciones sin
             fines de lucro.</p>
-          <a routerLink="/donar" class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full">Donar ahora</a>
+          <a [routerLink]="(authService.isLoggedIn$ | async) ? '/donar' : '/login'"
+            class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded-full">
+            Donar ahora
+          </a>
         </div>
 
         <!-- Tarjeta Reciclar -->
