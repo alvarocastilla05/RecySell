@@ -13,6 +13,7 @@ public interface OrganizacionRepository extends JpaRepository<Organizacion, Long
 
     @Query("""
         SELECT new com.example.Recysell.organizacion.dto.GetOrganizacionDto(
+            o.id,
             o.nombre,
             o.descripcion,
             o.direccion

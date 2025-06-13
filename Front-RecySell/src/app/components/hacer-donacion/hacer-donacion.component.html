@@ -1,1 +1,125 @@
-<p>hacer-donacion works!</p>
+<app-menu-nav></app-menu-nav>
+
+<div class="min-h-screen bg-gradient-to-br from-[#0e110f] via-[#232823] to-[#53d22c]/20 flex flex-col items-center pt-20 px-4 font-manrope">
+  <div class="w-full max-w-4xl mx-auto bg-[#181c15]/90 rounded-3xl shadow-2xl p-10 mt-10 mb-16 space-y-10 border border-[#53d22c]/30 backdrop-blur-md">
+    <h2 class="text-4xl font-extrabold text-[#53d22c] mb-2 text-center flex items-center justify-center gap-2 animate-fade-in">
+      <svg class="w-10 h-10 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      Dona y cambia el mundo
+    </h2>
+    <p class="mb-8 text-lg text-gray-300 text-center animate-fade-in-slow">
+      Selecciona la organización y el producto que deseas donar. ¡Tu gesto puede marcar la diferencia!
+    </p>
+
+    <!-- Organizaciones -->
+    <h3 class="text-2xl font-bold mb-3 text-[#53d22c] flex items-center gap-2">
+      <svg class="w-7 h-7 text-[#53d22c] animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m13-3.13V7a4 4 0 00-3-3.87M7 4.13A4 4 0 004 7v6m16 0a4 4 0 01-3 3.87M4 13a4 4 0 013-3.87"/>
+      </svg>
+      Organizaciones
+    </h3>
+    <div class="flex gap-6 overflow-x-auto pb-2 mb-8">
+      <div *ngFor="let org of organizaciones" (click)="selectOrganizacion(org)"
+        [ngClass]="{
+          'border-4 border-[#53d22c] bg-white text-black scale-105 shadow-xl': selectedOrganizacion?.nombre === org.nombre,
+          'border-2 border-gray-600 bg-[#232823] text-white opacity-80 hover:opacity-100': selectedOrganizacion?.nombre !== org.nombre
+        }"
+        class="cursor-pointer rounded-2xl flex flex-col items-start p-6 shadow transition-all duration-200 hover:scale-105 min-w-[260px] w-[260px] relative group animate-fade-in"
+        style="transition: box-shadow 0.3s;">
+        <div class="absolute top-2 right-2">
+          <svg *ngIf="selectedOrganizacion?.nombre === org.nombre" class="w-6 h-6 text-[#53d22c] animate-bounce" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <span class="text-xl font-bold mb-1">{{ org.nombre }}</span>
+        <span class="text-xs text-gray-400 mb-2">{{ org.direccion }}</span>
+        <span class="text-sm">{{ org.descripcion }}</span>
+      </div>
+    </div>
+
+    <!-- Productos -->
+    <h3 class="text-2xl font-bold mb-3 text-[#53d22c] flex items-center gap-2">
+      <svg class="w-7 h-7 text-[#53d22c] animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v4a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7m-1-4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+      </svg>
+      Tus productos
+    </h3>
+    <div class="flex gap-6 overflow-x-auto pb-2 mb-8">
+      <div *ngFor="let prod of productos" (click)="selectProducto(prod)"
+        [ngClass]="{
+          'border-4 border-[#53d22c] bg-white text-black scale-105 shadow-xl': selectedProducto?.id === prod.id,
+          'border-2 border-gray-600 bg-[#232823] text-white opacity-80 hover:opacity-100': selectedProducto?.id !== prod.id
+        }"
+        class="cursor-pointer rounded-2xl flex flex-col items-center p-6 shadow transition-all duration-200 hover:scale-105 min-w-[220px] w-[220px] relative group animate-fade-in"
+        style="transition: box-shadow 0.3s;">
+        <div class="absolute top-2 right-2">
+          <svg *ngIf="selectedProducto?.id === prod.id" class="w-6 h-6 text-[#53d22c] animate-bounce" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <img *ngIf="prod.imagenes?.length" [src]="'http://localhost:8080/uploads/' + prod.imagenes[0]"
+          class="h-20 w-20 object-contain mb-2 rounded-xl bg-[#181c15] shadow-lg animate-fade-in-slow" />
+        <span class="text-lg font-semibold text-center">{{ prod.nombre }}</span>
+        <span class="text-xs text-gray-400 text-center">{{ prod.descripcion }}</span>
+      </div>
+    </div>
+
+    <!-- Resumen de donación -->
+    <div class="bg-[#232823] rounded-2xl p-8 mt-6 shadow-xl border border-[#53d22c]/40 animate-fade-in-slow">
+      <h4 class="text-2xl font-bold mb-4 text-[#53d22c] flex items-center gap-2">
+        <svg class="w-6 h-6 animate-spin text-[#53d22c]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v4m0 8v4m8-8h-4M4 12H0"/>
+        </svg>
+        Resumen de la donación
+      </h4>
+      <div *ngIf="selectedOrganizacion && selectedProducto; else selecciona" class="flex flex-col md:flex-row gap-8 items-center justify-center">
+        <div class="flex flex-col items-center">
+          <span class="font-semibold text-[#53d22c] text-lg">Organización</span>
+          <span class="text-xl">{{ selectedOrganizacion.nombre }}</span>
+          <span class="text-xs text-gray-400">{{ selectedOrganizacion.direccion }}</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="font-semibold text-[#53d22c] text-lg">Producto</span>
+          <img *ngIf="selectedProducto.imagenes?.length" [src]="'http://localhost:8080/uploads/' + selectedProducto.imagenes[0]"
+            class="h-20 w-20 object-contain mb-2 rounded-xl bg-[#181c15] shadow-lg" />
+          <span class="text-xl">{{ selectedProducto.nombre }}</span>
+          <span class="text-xs text-gray-400">{{ selectedProducto.descripcion }}</span>
+        </div>
+      </div>
+      <ng-template #selecciona>
+        <div class="text-gray-400 text-center text-lg py-4 animate-pulse">Selecciona una organización y un producto para ver el resumen.</div>
+      </ng-template>
+    </div>
+
+    <!-- Mensajes -->
+    <div *ngIf="mensaje" class="text-green-400 text-center font-semibold mt-4 animate-fade-in">{{ mensaje }}</div>
+    <div *ngIf="error" class="text-red-500 text-center font-semibold mt-4 animate-fade-in">{{ error }}</div>
+
+    <!-- Botón de confirmar -->
+    <div class="text-center mt-10">
+      <button (click)="confirmarDonacion()"
+        [disabled]="!selectedOrganizacion || !selectedProducto"
+        class="bg-gradient-to-r from-[#53d22c] to-[#3bb31c] hover:from-[#3bb31c] hover:to-[#53d22c] text-black font-extrabold px-12 py-4 rounded-full shadow-2xl transition-all duration-200 text-2xl tracking-wide animate-bounce">
+        <svg class="w-7 h-7 inline-block mr-2 -mt-1 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+        Confirmar donación
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Animaciones CSS (puedes ponerlas en tu global.css o en el .component.css) -->
+<style>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: none;}
+}
+@keyframes fade-in-slow {
+  from { opacity: 0; transform: scale(0.95);}
+  to { opacity: 1; transform: scale(1);}
+}
+.animate-fade-in { animation: fade-in 0.7s both; }
+.animate-fade-in-slow { animation: fade-in-slow 1.2s both; }
+</style>
