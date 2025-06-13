@@ -1,1 +1,53 @@
-<p>crear-compra works!</p>
+<app-menu-nav></app-menu-nav>
+
+<div class="min-h-screen bg-[#0e110f] text-white font-manrope flex flex-col items-center pt-20 px-4">
+  <div class="w-full max-w-xl mx-auto bg-[#181c15] rounded-xl shadow-lg p-8 mt-10 mb-16 space-y-8">
+    <h2 class="text-3xl font-bold text-[#53d22c] mb-6 text-center">
+      {{ esEdicion ? 'Editar compra' : 'Crear nueva compra' }}
+    </h2>
+    <form #compraForm="ngForm" (ngSubmit)="esEdicion ? actualizarCompra() : crearCompra()" class="space-y-6">
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Dirección de entrega</label>
+        <input
+          class="w-full rounded px-3 py-2 bg-[#232823] text-white"
+          name="direccionEntrega"
+          [(ngModel)]="compra.direccionEntrega"
+          required
+        />
+      </div>
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Provincia</label>
+        <input
+          class="w-full rounded px-3 py-2 bg-[#232823] text-white"
+          name="provincia"
+          [(ngModel)]="compra.provincia"
+          required
+        />
+      </div>
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Código Postal</label>
+        <input
+          class="w-full rounded px-3 py-2 bg-[#232823] text-white"
+          name="codigoPostal"
+          [(ngModel)]="compra.codigoPostal"
+          required
+          maxlength="10"
+        />
+      </div>
+      <button
+        type="submit"
+        [disabled]="compraForm.invalid"
+        class="w-full bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-3 rounded-full shadow-lg transition-all duration-200 text-lg mt-4"
+      >
+        <i class="bi" [ngClass]="esEdicion ? 'bi-check-circle' : 'bi-cart-plus'" class="mr-2"></i>
+        {{ esEdicion ? 'Confirmar cambios' : 'Crear compra' }}
+      </button>
+    </form>
+    <div *ngIf="mensaje" class="text-center mt-4 text-[#53d22c] font-bold">
+      {{ mensaje }}
+    </div>
+    <div *ngIf="error" class="text-center mt-4 text-red-400 font-bold">
+      {{ error }}
+    </div>
+  </div>
+</div>
