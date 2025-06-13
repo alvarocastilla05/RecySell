@@ -230,32 +230,32 @@
                         ¡Explora productos!
                     </button>
                 </div>
-                <div *ngIf="misCompras.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <a *ngFor="let compra of misCompras"
-                        class="bg-[#232823] rounded-xl shadow-lg p-6 flex flex-col gap-4 relative border-2 transition hover:scale-[1.03] hover:shadow-xl cursor-pointer"
+                <div *ngIf="misCompras.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div *ngFor="let compra of misCompras"
+                        class="bg-[#232823] rounded-xl shadow-lg p-4 flex flex-col gap-2 relative border-2 transition hover:scale-[1.03] hover:shadow-xl cursor-pointer min-h-[180px]"
                         [ngClass]="{
-            'border-gray-500': compra.estadoCompra === 'CARRITO',
-            'border-yellow-400': compra.estadoCompra === 'EN_ENVIO',
-            'border-[#53d22c]': compra.estadoCompra === 'ENTREGADO',
-            'border-red-500': compra.estadoCompra === 'CANCELADO'
-        }" [routerLink]="['/carrito', compra.id]">
+      'border-gray-500': compra.estadoCompra === 'CARRITO',
+      'border-yellow-400': compra.estadoCompra === 'EN_ENVIO',
+      'border-[#53d22c]': compra.estadoCompra === 'ENTREGADO',
+      'border-red-500': compra.estadoCompra === 'CANCELADO'
+    }" (click)="router.navigate(['/carrito', compra.id])">
                         <div class="flex items-center gap-4">
-                            <div class="w-20 h-20 flex items-center justify-center bg-[#181c15] rounded-lg shadow">
-                                <i class="bi bi-cart text-4xl text-gray-400"
+                            <div class="w-16 h-16 flex items-center justify-center bg-[#181c15] rounded-lg shadow">
+                                <i class="bi bi-cart text-3xl text-gray-400"
                                     *ngIf="compra.estadoCompra === 'CARRITO'"></i>
-                                <i class="bi bi-truck text-4xl text-yellow-400"
+                                <i class="bi bi-truck text-3xl text-yellow-400"
                                     *ngIf="compra.estadoCompra === 'EN_ENVIO'"></i>
-                                <i class="bi bi-check-circle-fill text-4xl text-[#53d22c]"
+                                <i class="bi bi-check-circle-fill text-3xl text-[#53d22c]"
                                     *ngIf="compra.estadoCompra === 'ENTREGADO'"></i>
-                                <i class="bi bi-x-circle-fill text-4xl text-red-500"
+                                <i class="bi bi-x-circle-fill text-3xl text-red-500"
                                     *ngIf="compra.estadoCompra === 'CANCELADO'"></i>
                             </div>
                             <div class="flex-1">
-                                <div class="text-lg font-bold mb-1">Compra en {{ compra.provincia }}</div>
-                                <div class="text-gray-400 text-sm mb-1">
+                                <div class="text-base font-bold mb-1">Compra en {{ compra.provincia }}</div>
+                                <div class="text-gray-400 text-xs mb-1">
                                     {{ compra.direccionEntrega }}, {{ compra.codigoPostal }}
                                 </div>
-                                <div class="text-[#53d22c] font-bold text-lg">
+                                <div class="text-[#53d22c] font-bold text-base">
                                     Total: {{ (compra.subTotal + compra.gastosEnvio) | currency:'EUR' }}
                                 </div>
                             </div>
@@ -263,22 +263,23 @@
                         <div class="flex items-center justify-between mt-2">
                             <ng-container [ngSwitch]="compra.estadoCompra">
                                 <span *ngSwitchCase="'CARRITO'"
-                                    class="flex items-center gap-1 text-gray-400 font-semibold">
+                                    class="flex items-center gap-1 text-gray-400 font-semibold text-xs">
                                     <i class="bi bi-cart"></i> En carrito
                                 </span>
                                 <span *ngSwitchCase="'EN_ENVIO'"
-                                    class="flex items-center gap-1 text-yellow-400 font-semibold">
+                                    class="flex items-center gap-1 text-yellow-400 font-semibold text-xs">
                                     <i class="bi bi-truck"></i> En envío
                                 </span>
                                 <span *ngSwitchCase="'ENTREGADO'"
-                                    class="flex items-center gap-1 text-[#53d22c] font-semibold">
+                                    class="flex items-center gap-1 text-[#53d22c] font-semibold text-xs">
                                     <i class="bi bi-check-circle-fill"></i> Entregado
                                 </span>
                                 <span *ngSwitchCase="'CANCELADO'"
-                                    class="flex items-center gap-1 text-red-500 font-semibold">
+                                    class="flex items-center gap-1 text-red-500 font-semibold text-xs">
                                     <i class="bi bi-x-circle-fill"></i> Cancelado
                                 </span>
-                                <span *ngSwitchDefault class="flex items-center gap-1 text-gray-400 font-semibold">
+                                <span *ngSwitchDefault
+                                    class="flex items-center gap-1 text-gray-400 font-semibold text-xs">
                                     <i class="bi bi-hourglass-split"></i> {{ compra.estadoCompra }}
                                 </span>
                             </ng-container>
@@ -286,7 +287,15 @@
                                 {{ compra.fechaVenta | date:'mediumDate' }}
                             </div>
                         </div>
-                    </a>
+                       
+                        <button *ngIf="compra.estadoCompra === 'CARRITO'" (click)="editarCompra($event, compra.id)"
+                            class="absolute bottom-3 right-3 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-2 py-1 rounded-full shadow transition text-xs flex items-center gap-1 z-10"
+                            (mousedown)="$event.stopPropagation()"
+                            (click)="$event.stopPropagation(); editarCompra($event, compra.id)">
+                            <i class="bi bi-pencil-fill"></i>
+                            <span class="hidden md:inline">Editar</span>
+                        </button>
+                    </div>
                 </div>
                 <button (click)="router.navigate(['/nueva-compra'])"
                     class="fixed bottom-8 right-8 lg:right-96 z-50 bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-6 py-4 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200 text-lg"

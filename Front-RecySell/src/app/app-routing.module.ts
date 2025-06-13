@@ -29,8 +29,9 @@ const routes: Routes = [
   { path: 'sobre-nosotros', component: SobreNosotrosComponent} ,
   { path: 'mi-perfil', component: MiPerfilComponent },
   { path: 'carrito/:id', component: CarritoComponent },
-  { path: 'nueva-compra', component: CrearCompraComponent }
-       // Añade este si tienes carrito
+  { path: 'nueva-compra', component: CrearCompraComponent },
+  { path: 'editar-compra/:id', component: CrearCompraComponent }
+
 ];
 
 @NgModule({
