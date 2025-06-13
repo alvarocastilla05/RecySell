@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthServiceService } from '../../service/auth-service.service';
 import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-nav',
@@ -13,7 +14,7 @@ export class MenuNavComponent implements OnInit {
   userProfileImage = '';
   esTrabajador = false;
 
-  constructor(private authService: AuthServiceService) { }
+  constructor(private authService: AuthServiceService, private router: Router) { }
 
   ngOnInit() {
     this.isLoggedIn = this.checkToken();
@@ -44,5 +45,15 @@ export class MenuNavComponent implements OnInit {
       localStorage.removeItem('token');
       return false;
     }
+  }
+
+  irAVender() {
+    this.authService.isLoggedIn$.subscribe(isLogged => {
+      if (isLogged) {
+        this.router.navigate(['/vender']);
+      } else {
+        this.router.navigate(['/login']);
+      }
+    }).unsubscribe();
   }
 }

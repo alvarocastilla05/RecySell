@@ -31,7 +31,15 @@ export class ProductoService {
   }
 
   eliminarProducto(idProducto: number) {
-  return this.http.delete(`http://localhost:8080/producto/${idProducto}`);
+    return this.http.delete(`http://localhost:8080/producto/${idProducto}`);
+  }
+
+  anadirProducto(producto: any) {
+    return this.http.post('http://localhost:8080/producto', producto);
+  }
+
+  editarProducto(id: number, producto: any) {
+  return this.http.put(`http://localhost:8080/producto/${id}`, producto);
 }
 
 

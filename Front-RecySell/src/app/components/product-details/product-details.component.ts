@@ -202,10 +202,15 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 
-  editarProducto() {
-    this.router.navigate(['/vender']);
+  irAEditarProducto() {
+  const idProducto = this.producto?.id || this.route.snapshot.paramMap.get('id');
+  if (idProducto) {
+    this.router.navigate(['/editar-producto', idProducto]);
+  } else {
+    console.error('El producto o su id no están definidos');
   }
- 
+}
+
   confirmarEliminarProducto() {
     const idProducto = this.producto?.id || this.route.snapshot.paramMap.get('id');
     if (!idProducto) return;
