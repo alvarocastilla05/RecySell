@@ -1,1 +1,130 @@
-<p>reciclar works!</p>
+<app-menu-nav></app-menu-nav>
+
+<div class="min-h-screen bg-[#0e110f] text-white font-manrope flex flex-col items-center pt-20 px-4">
+    <div class="w-full max-w-4xl mx-auto bg-[#181c15] rounded-xl shadow-lg p-8 mt-10 mb-10 space-y-12">
+
+        <!-- Título principal -->
+        <section class="text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-[#53d22c] drop-shadow-lg">♻️ Recicla tus
+                dispositivos electrónicos</h1>
+            <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+                En <span class="font-bold text-[#53d22c]">RecySell</span> nos comprometemos con el reciclaje responsable
+                de dispositivos electrónicos para reducir los residuos tecnológicos.<br>
+                Reciclar con nosotros es fácil y contribuye a un futuro más sostenible.<br>
+                <span class="font-semibold text-[#53d22c]">¡Visita nuestra tienda física y dale una segunda vida a tus
+                    dispositivos!</span>
+            </p>
+        </section>
+
+        <!-- Pasos para reciclar -->
+        <section>
+            <h2 class="text-2xl font-bold mb-8 text-center text-[#53d22c]">¿Cómo reciclar en nuestra tienda?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Paso 1 -->
+                <div
+                    class="flex flex-col items-center bg-[#232823] rounded-xl p-6 shadow-lg hover:scale-105 transition">
+                    <div class="bg-[#53d22c] bg-opacity-20 p-4 rounded-full mb-4">
+                        <i class="bi bi-gear-fill text-4xl text-[#53d22c]"></i>
+                    </div>
+                    <p class="font-bold text-lg mb-2">1. Prepara tu dispositivo</p>
+                    <p class="text-gray-400 text-center text-sm">
+                        <i class="bi bi-shield-lock-fill text-[#53d22c] mr-1"></i>
+                        Elimina tus datos personales y restaura la configuración de fábrica para proteger tu privacidad.
+                    </p>
+                </div>
+                <!-- Paso 2 -->
+                <div
+                    class="flex flex-col items-center bg-[#232823] rounded-xl p-6 shadow-lg hover:scale-105 transition">
+                    <div class="bg-[#53d22c] bg-opacity-20 p-4 rounded-full mb-4">
+                        <i class="bi bi-geo-alt-fill text-4xl text-[#53d22c]"></i>
+                    </div>
+                    <p class="font-bold text-lg mb-2">2. Encuentra tu tienda</p>
+                    <p class="text-gray-400 text-center text-sm">
+                        <i class="bi bi-geo-alt-fill text-[#53d22c] mr-1"></i>
+                        Consulta la ubicación de nuestras tiendas o
+                        <a href="tel:675314070"
+                            class="text-[#53d22c] underline hover:text-[#3bb31c] font-semibold transition">
+                            <i class="bi bi-telephone-fill mr-1"></i>
+                            contáctanos
+                        </a>
+                        para más información.
+                    </p>
+                </div>
+                <!-- Paso 3 -->
+                <div
+                    class="flex flex-col items-center bg-[#232823] rounded-xl p-6 shadow-lg hover:scale-105 transition">
+                    <div class="bg-[#53d22c] bg-opacity-20 p-4 rounded-full mb-4">
+                        <i class="bi bi-arrow-repeat text-4xl text-[#53d22c]"></i>
+                    </div>
+                    <p class="font-bold text-lg mb-2">3. Recicla en tienda</p>
+                    <p class="text-gray-400 text-center text-sm">
+                        <i class="bi bi-arrow-repeat text-[#53d22c] mr-1"></i>
+                        Lleva tu dispositivo y entrégalo a nuestro equipo. ¡Nos encargamos del reciclaje responsable!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tipos de dispositivos aceptados -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 text-[#53d22c] text-center">¿Qué dispositivos puedes reciclar?</h2>
+            <div class="flex flex-wrap justify-center gap-6 mt-4">
+                <div class="flex flex-col items-center bg-[#232823] rounded-lg p-4 w-36 shadow">
+                    <i class="bi bi-phone-fill text-3xl text-[#53d22c] mb-2"></i>
+                    <span class="font-semibold">Móviles</span>
+                </div>
+                <div class="flex flex-col items-center bg-[#232823] rounded-lg p-4 w-36 shadow">
+                    <i class="bi bi-tablet-fill text-3xl text-[#53d22c] mb-2"></i>
+                    <span class="font-semibold">Tablets</span>
+                </div>
+                <div class="flex flex-col items-center bg-[#232823] rounded-lg p-4 w-36 shadow">
+                    <i class="bi bi-laptop-fill text-3xl text-[#53d22c] mb-2"></i>
+                    <span class="font-semibold">Portátiles</span>
+                </div>
+                <div class="flex flex-col items-center bg-[#232823] rounded-lg p-4 w-36 shadow">
+                    <i class="bi bi-pc-display-horizontal text-3xl text-[#53d22c] mb-2"></i>
+                    <span class="font-semibold">Sobremesa</span>
+                </div>
+                <div class="flex flex-col items-center bg-[#232823] rounded-lg p-4 w-36 shadow">
+                    <i class="bi bi-printer-fill text-3xl text-[#53d22c] mb-2"></i>
+                    <span class="font-semibold">Impresoras</span>
+                </div>
+                <div class="flex flex-col items-center bg-[#232823] rounded-lg p-4 w-36 shadow">
+                    <i class="bi bi-headphones text-3xl text-[#53d22c] mb-2"></i>
+                    <span class="font-semibold">Accesorios</span>
+                </div>
+                <!-- Muchos más -->
+                <div class="flex flex-col items-center bg-[#232823] rounded-lg p-4 w-36 shadow text-center">
+                    <i class="bi bi-three-dots text-3xl text-[#53d22c] mb-2"></i>
+                    <span class="font-semibold">¡Y muchos más!</span>
+                </div>
+            </div>
+            <p class="text-gray-300 text-center mt-6">
+                <i class="bi bi-question-circle-fill text-[#53d22c] mr-1"></i>
+                ¿Tienes dudas sobre un dispositivo?
+                <a href="tel:675314070" class="text-[#53d22c] underline hover:text-[#3bb31c] font-semibold transition">
+                    <i class="bi bi-telephone-fill mr-1"></i>
+                    ¡Consúltanos!
+                </a>
+            </p>
+        </section>
+
+        <!-- Cierre -->
+        <section class="text-center">
+            <h2 class="text-2xl font-bold mb-2 text-[#53d22c]">
+                <i class="bi bi-shop-window mr-2"></i>
+                Encuentra tu tienda RecySell
+            </h2>
+            <p class="text-gray-300 mb-4">
+                <i class="bi bi-recycle text-[#53d22c] mr-1"></i>
+                Visita nuestra tienda para reciclar tus dispositivos y contribuir a un futuro más sostenible.<br>
+                <span class="font-bold text-[#53d22c]">¡Gracias por tu compromiso con el medio ambiente!</span>
+            </p>
+            <a href="tel:675314070"
+                class="inline-block bg-[#53d22c] hover:bg-[#3bb31c] text-black font-bold px-8 py-3 rounded-full shadow-lg transition-all duration-200 mt-2">
+                <i class="bi bi-telephone-fill mr-2"></i>
+                Contactar tienda
+            </a>
+        </section>
+    </div>
+</div>
