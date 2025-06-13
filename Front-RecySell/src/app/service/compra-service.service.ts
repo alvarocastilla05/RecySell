@@ -26,4 +26,12 @@ export class CompraService {
     cancelarCompra(id: number) {
         return this.http.put<any>(`${this.apiUrl}/${id}/cancelar`, {});
     }
+
+    crearCompra(compra: any) {
+        return this.http.post(`${this.apiUrl}`, compra);
+    }
+
+    editarCompra(id: number, compra: any) {
+        return this.http.put(`${this.apiUrl}/${id}`, compra);
+    }
 }

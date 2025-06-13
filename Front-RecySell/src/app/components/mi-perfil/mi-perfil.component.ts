@@ -139,6 +139,12 @@ export class MiPerfilComponent implements OnInit {
     this.router.navigate(['/producto', id]);
   }
 
+  editarCompra(event: MouseEvent, id: number) {
+  event.preventDefault();
+  event.stopPropagation();
+  this.router.navigate(['/editar-compra', id]);
+}
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('tipo');
