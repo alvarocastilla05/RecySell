@@ -30,7 +30,6 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { CrearCompraComponent } from './components/crear-compra/crear-compra.component';
 import { HomeTrabajadorComponent } from './components/home-trabajador/home-trabajador.component';
 import { DonacionTrabajadorComponent } from './components/donacion-trabajador/donacion-trabajador.component';
-import { ComprasTrabajadorComponent } from './components/compras-trabajador/compras-trabajador.component';
 import { CategoriasTrabajadorComponent } from './components/categorias-trabajador/categorias-trabajador.component';
 import { OrganizacionTrabajadorComponent } from './components/organizacion-trabajador/organizacion-trabajador.component';
 import { UsuariosTrabajadorComponent } from './components/usuarios-trabajador/usuarios-trabajador.component';
@@ -59,7 +58,6 @@ import { UsuariosTrabajadorComponent } from './components/usuarios-trabajador/us
     CrearCompraComponent,
     HomeTrabajadorComponent,
     DonacionTrabajadorComponent,
-    ComprasTrabajadorComponent,
     CategoriasTrabajadorComponent,
     OrganizacionTrabajadorComponent,
     UsuariosTrabajadorComponent
