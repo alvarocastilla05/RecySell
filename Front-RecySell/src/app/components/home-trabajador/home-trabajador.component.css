@@ -1,0 +1,26 @@
+.menu-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.menu-link:hover,
+li.active .menu-link {
+  background: linear-gradient(90deg, #53d22c 0%, #3bb31c 100%);
+  color: #181c15;
+  box-shadow: 0 2px 12px #53d22c44;
+}
+
+.sidebar {
+  width: 260px;
+  background: #181c15;
+  border-right: 1px solid #53d22c44;
+  box-shadow: 2px 0 16px #53d22c22;
+  z-index: 10;
+}

@@ -36,7 +36,14 @@ export class InicioSesionComponent {
         this.authService.loginSuccess(res.token);
         // Guarda el tipo de usuario para el nav
         localStorage.setItem('tipo', res.role?.toLowerCase() || 'cliente');
-        this.router.navigate(['/home']);
+        // Redirección según el rol recibido
+        if (res.role === 'CLIENTE') {
+          this.router.navigate(['/hora-creada']);
+        } else if (res.role === 'TRABAJADOR') {
+          this.router.navigate(['/home-trabajador']); // Cambia la ruta según tu app
+        } else {
+          this.router.navigate(['/home']);
+        }
       },
       error: (err) => {
         this.errorMsg = 'Usuario o contraseña incorrectos';
