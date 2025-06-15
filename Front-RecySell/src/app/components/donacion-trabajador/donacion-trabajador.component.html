@@ -1,0 +1,54 @@
+<div class="bg-[#232823] rounded-2xl shadow-xl p-8 text-white max-w-6xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-[#53d22c] mb-6 flex items-center gap-2">
+    <i class="fas fa-hand-holding-heart"></i>
+    Donaciones realizadas
+  </h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse">
+      <thead>
+        <tr class="bg-[#181c15] text-[#53d22c]">
+          <th class="px-4 py-2">Fecha</th>
+          <th class="px-4 py-2">Organización</th>
+          <th class="px-4 py-2">Producto</th>
+          <th class="px-4 py-2">Categoría</th>
+          <th class="px-4 py-2">Donante</th>
+          <th class="px-4 py-2">Precio (€)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let don of donaciones" class="hover:bg-[#181c15]/60 transition">
+          <td class="px-4 py-2">{{ don.fechaDonacion | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td class="px-4 py-2">
+            <div class="font-semibold">{{ don.organizacion.nombre }}</div>
+            <div class="text-xs text-gray-400">{{ don.organizacion.direccion }}</div>
+          </td>
+          <td class="px-4 py-2">
+            <div class="font-semibold">{{ don.productoDonado.nombre }}</div>
+            <div class="text-xs text-gray-400">{{ don.productoDonado.descripcion }}</div>
+          </td>
+          <td class="px-4 py-2">{{ don.productoDonado.categoria.nombre }}</td>
+          <td class="px-4 py-2">
+            <div *ngIf="don.productoDonado.clienteDonante?.nombre">
+              <span class="font-semibold">{{ don.productoDonado.clienteDonante.nombre }} {{ don.productoDonado.clienteDonante.apellidos }}</span>
+              <div class="text-xs text-gray-400">{{ don.productoDonado.clienteDonante.email }}</div>
+            </div>
+            <div *ngIf="!don.productoDonado.clienteDonante?.nombre" class="text-xs text-gray-400">Anónimo</div>
+          </td>
+          <td class="px-4 py-2">{{ don.productoDonado.precio | number:'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Paginación -->
+  <div class="flex justify-between items-center mt-6">
+    <button (click)="anteriorPagina()" [disabled]="page === 0"
+      class="px-4 py-2 rounded bg-[#181c15] text-[#53d22c] font-bold hover:bg-[#53d22c] hover:text-black transition disabled:opacity-50">
+      <i class="fas fa-chevron-left"></i> Anterior
+    </button>
+    <span class="text-gray-300">Página {{ page + 1 }} de {{ totalPages }}</span>
+    <button (click)="siguientePagina()" [disabled]="page >= totalPages - 1"
+      class="px-4 py-2 rounded bg-[#181c15] text-[#53d22c] font-bold hover:bg-[#53d22c] hover:text-black transition disabled:opacity-50">
+      Siguiente <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
