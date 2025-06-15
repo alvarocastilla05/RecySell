@@ -1,12 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home-trabajador',
   templateUrl: './home-trabajador.component.html',
   styleUrl: './home-trabajador.component.css'
 })
-export class HomeTrabajadorComponent {
+export class HomeTrabajadorComponent implements OnInit {
+  
+  usuarioRol: string = '';
   mostrarModalLogout = false;
+
+  ngOnInit(): void {
+    this.usuarioRol = (localStorage.getItem('tipo') || '').toUpperCase();
+    
+  }
+
 
   cerrarSesion() {
     this.mostrarModalLogout = true;
