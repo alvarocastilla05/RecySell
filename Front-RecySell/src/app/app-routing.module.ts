@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'nueva-compra', component: CrearCompraComponent },
   { path: 'editar-compra/:id', component: CrearCompraComponent },
   {
-    path: 'home-trabajador',
+    path: 'trabajador',
     component: HomeTrabajadorComponent,
     children: [
       { path: 'donaciones', component: DonacionTrabajadorComponent },

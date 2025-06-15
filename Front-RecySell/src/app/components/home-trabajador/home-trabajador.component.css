@@ -1,3 +1,18 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0e110f 0%, #232823 60%, #53d22c22 100%);
+  font-family: 'Manrope', sans-serif;
+}
+
+.sidebar {
+  width: 260px;
+  background: #181c15;
+  border-right: 1px solid #53d22c44;
+  box-shadow: 2px 0 16px #53d22c22;
+  z-index: 10;
+}
+
 .menu-link {
   display: flex;
   align-items: center;
@@ -17,10 +32,15 @@ li.active .menu-link {
   box-shadow: 0 2px 12px #53d22c44;
 }
 
-.sidebar {
-  width: 260px;
-  background: #181c15;
-  border-right: 1px solid #53d22c44;
-  box-shadow: 2px 0 16px #53d22c22;
-  z-index: 10;
+.main-content {
+  flex: 1;
+  padding: 2.5rem;
+  background: transparent;
+  min-height: 100vh;
+  animation: fade-in 0.7s both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: none;}
 }

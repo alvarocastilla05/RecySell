@@ -40,7 +40,7 @@ export class InicioSesionComponent {
         if (res.role === 'CLIENTE') {
           this.router.navigate(['/hora-creada']);
         } else if (res.role === 'TRABAJADOR') {
-          this.router.navigate(['/home-trabajador']); // Cambia la ruta según tu app
+          this.router.navigate(['/trabajador']); // Cambia la ruta según tu app
         } else {
           this.router.navigate(['/home']);
         }
