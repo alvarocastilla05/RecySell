@@ -168,7 +168,6 @@ public class ProductoController {
                     content = @Content),
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CLIENTE')")
     public GetProductoConAsociaciones findById(@PathVariable Long id) {
 
 

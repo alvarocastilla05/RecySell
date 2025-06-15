@@ -1,1 +1,110 @@
-<p>valoracion works!</p>
+<div class="bg-[#232823] rounded-2xl shadow-xl p-8 text-white max-w-4xl mx-auto mt-10">
+  <h2 class="text-3xl font-bold text-[#53d22c] mb-6 flex items-center gap-2">
+    <i class="fas fa-star"></i>
+    Productos
+  </h2>
+
+  <!-- Desplegable de filtro -->
+  <div class="mb-6 flex gap-4 items-center">
+    <label class="font-bold text-[#53d22c]">Mostrar:</label>
+    <select [(ngModel)]="filtro" (change)="aplicarFiltro()"
+      class="bg-[#181c15] text-white border border-[#53d22c] rounded px-4 py-2">
+      <option value="todos">Todos</option>
+      <option value="valorados">Mis Valorados</option>
+      <option value="noValorados">No valorados</option>
+    </select>
+  </div>
+
+  <div *ngIf="cargando" class="text-center text-[#53d22c] py-8">
+    <i class="fas fa-spinner fa-spin"></i> Cargando productos...
+  </div>
+  <div *ngIf="!cargando && productosFiltrados.length === 0" class="text-center text-gray-400 py-8">
+    No hay productos para mostrar.
+  </div>
+  <div *ngIf="!cargando && productosFiltrados.length > 0" class="overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse">
+      <thead>
+        <tr class="bg-[#181c15] text-[#53d22c]">
+          <th class="px-4 py-2">Nombre</th>
+          <th class="px-4 py-2">Descripción</th>
+          <th class="px-4 py-2">Categoría</th>
+          <th class="px-4 py-2">Fecha registro</th>
+          <th class="px-4 py-2">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prod of productosPagina" class="hover:bg-[#181c15]/60 transition">
+          <td class="px-4 py-2 font-semibold">{{ prod.nombre }}</td>
+          <td class="px-4 py-2">{{ prod.descripcion }}</td>
+          <td class="px-4 py-2">{{ prod.categoria?.nombre }}</td>
+          <td class="px-4 py-2">{{ prod.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+          <td class="px-4 py-2">
+            <button class="bg-[#53d22c] text-black font-bold px-4 py-2 rounded hover:bg-[#3bb31c] transition"
+              (click)="abrirModalValoracion(prod)">
+              {{ prod.valora ? 'Editar valoración' : 'Valorar' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Paginación -->
+    <div class="flex justify-between items-center mt-6">
+      <button (click)="anteriorPagina()" [disabled]="page === 0"
+        class="px-4 py-2 rounded bg-[#181c15] text-[#53d22c] font-bold hover:bg-[#53d22c] hover:text-black transition disabled:opacity-50">
+        <i class="fas fa-chevron-left"></i> Anterior
+      </button>
+      <span class="text-gray-300">Página {{ page + 1 }} de {{ totalPages }}</span>
+      <button (click)="siguientePagina()" [disabled]="page >= totalPages - 1"
+        class="px-4 py-2 rounded bg-[#181c15] text-[#53d22c] font-bold hover:bg-[#53d22c] hover:text-black transition disabled:opacity-50">
+        Siguiente <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VALORACIÓN/EDICIÓN -->
+<div *ngIf="mostrarModalValoracion" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+  <div class="relative w-full max-w-lg bg-[#181c15] rounded-2xl shadow-2xl p-8 flex flex-col gap-6 border-2 border-[#53d22c]">
+    <!-- Botón cerrar -->
+    <button (click)="cerrarModalValoracion()"
+      class="absolute top-4 right-4 bg-[#232823] text-[#53d22c] font-bold px-3 py-1 rounded-full hover:bg-[#53d22c] hover:text-black transition">
+      <i class="fas fa-times"></i>
+    </button>
+    <!-- Imagen y nombre del producto -->
+    <div class="flex flex-col items-center gap-2">
+      <img
+        [src]="productoAValorar?.imagenes?.length ? 'http://localhost:8080/uploads/' + productoAValorar.imagenes[0] : 'https://cdn-icons-png.flaticon.com/512/2748/2748558.png'"
+        alt="Imagen producto"
+        class="rounded-xl w-40 h-40 object-cover border-2 border-[#53d22c] shadow-lg mb-2"
+      />
+      <h2 class="text-2xl font-extrabold text-[#53d22c] text-center">{{ productoAValorar?.nombre }}</h2>
+      <p class="text-gray-300 text-center">{{ productoAValorar?.descripcion }}</p>
+    </div>
+    <!-- Formulario de valoración -->
+    <form (ngSubmit)="valorarProductoModal()" #valoracionForm="ngForm" class="w-full flex flex-col gap-4 mt-2">
+      <div>
+        <label class="block mb-2 font-semibold text-[#53d22c]">Puntuación:</label>
+        <div class="flex gap-2 justify-center">
+          <ng-container *ngFor="let p of [1,2,3,4,5]">
+            <input type="radio" [(ngModel)]="puntuacion" [value]="p" name="puntuacion" id="starModal{{p}}" required class="hidden" />
+            <label [for]="'starModal'+p" class="cursor-pointer text-4xl transition"
+              [ngClass]="p <= puntuacion ? 'text-yellow-400 scale-110' : 'text-gray-500'">
+              ★
+            </label>
+          </ng-container>
+        </div>
+      </div>
+      <div>
+        <label class="block mb-2 font-semibold text-[#53d22c]">Comentario:</label>
+        <textarea [(ngModel)]="comentario" name="comentario" required rows="3"
+          class="w-full px-4 py-2 rounded-lg bg-[#232823] text-white border border-[#53d22c] focus:outline-none focus:ring-2 focus:ring-[#53d22c] transition"></textarea>
+      </div>
+      <button type="submit"
+        class="w-full bg-gradient-to-r from-[#53d22c] to-[#3bb31c] text-black font-bold px-6 py-3 rounded-lg hover:from-[#3bb31c] hover:to-[#53d22c] transition text-lg shadow-lg">
+        {{ editandoValoracion ? 'Editar valoración' : 'Enviar valoración' }}
+      </button>
+    </form>
+    <div *ngIf="mensaje" class="text-green-400 mt-2 text-center font-semibold">{{ mensaje }}</div>
+    <div *ngIf="error" class="text-red-400 mt-2 text-center font-semibold">{{ error }}</div>
+  </div>
+</div>

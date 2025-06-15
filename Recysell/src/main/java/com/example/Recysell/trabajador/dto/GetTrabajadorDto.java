@@ -2,7 +2,10 @@ package com.example.Recysell.trabajador.dto;
 
 import com.example.Recysell.trabajador.model.Trabajador;
 
+import java.util.UUID;
+
 public record GetTrabajadorDto(
+        UUID id,
         String username,
         String email,
         String nombre,
@@ -12,6 +15,7 @@ public record GetTrabajadorDto(
 
     public static GetTrabajadorDto of(Trabajador trabajador){
         return new GetTrabajadorDto(
+                trabajador.getId(),
                 trabajador.getUsername(),
                 trabajador.getEmail(),
                 trabajador.getNombre(),
