@@ -212,7 +212,6 @@ public class TrabajadorController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    @PostAuthorize("returnObject.username == authentication.principal.username")
     public GetTrabajadorDto edit(@Valid @RequestBody EditTrabajadorCmd editTrabajadorCmd, @PathVariable("id") UUID id) {
         Trabajador trabajador = trabajadorService.edit(editTrabajadorCmd, id);
 

@@ -80,7 +80,7 @@ public class SecurityConfig {
 
                 // Rutas roles específicos
                 .requestMatchers("/me/admin").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/trabajador/**").hasRole("TRABAJADOR")
+                .requestMatchers(HttpMethod.PUT, "/trabajador/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/cliente/**").hasRole("CLIENTE")
 
 

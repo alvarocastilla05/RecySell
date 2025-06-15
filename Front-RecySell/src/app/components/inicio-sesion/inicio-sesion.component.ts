@@ -39,7 +39,7 @@ export class InicioSesionComponent {
         // Redirección según el rol recibido
         if (res.role === 'CLIENTE') {
           this.router.navigate(['/hora-creada']);
-        } else if (res.role === 'TRABAJADOR') {
+        } else if (res.role === 'TRABAJADOR' || res.role === 'ADMIN') {
           this.router.navigate(['/trabajador']); // Cambia la ruta según tu app
         } else {
           this.router.navigate(['/home']);
