@@ -14,6 +14,10 @@ export class DonacionService {
         return this.http.get<any>('http://localhost:8080/donacion');
     }
 
+    getDonacionesTrabajador(page: number = 0, size: number = 10): Observable<any> {
+        return this.http.get<any>(`http://localhost:8080/donacion?page=${page}&size=${size}`);
+    }
+
     crearDonacion(donacion: { productoId: number, organizacionId: number }): Observable<any> {
         return this.http.post('http://localhost:8080/donacion', donacion);
     }
