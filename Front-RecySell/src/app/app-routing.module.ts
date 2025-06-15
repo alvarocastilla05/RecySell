@@ -19,6 +19,7 @@ import { CategoriasTrabajadorComponent } from './components/categorias-trabajado
 import { OrganizacionTrabajadorComponent } from './components/organizacion-trabajador/organizacion-trabajador.component';
 import { UsuariosTrabajadorComponent } from './components/usuarios-trabajador/usuarios-trabajador.component';
 import { ListadoComprasComponent } from './components/listado-compras/listado-compras.component';
+import { ValoracionComponent } from './components/valoracion/valoracion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -47,6 +48,7 @@ const routes: Routes = [
       { path: 'categorias', component: CategoriasTrabajadorComponent },
       { path: 'organizaciones', component: OrganizacionTrabajadorComponent },
       { path: 'usuario', component: UsuariosTrabajadorComponent },
+      { path: 'valoracion', component: ValoracionComponent },
       { path: '', redirectTo: 'donaciones', pathMatch: 'full' }
     ]
   },

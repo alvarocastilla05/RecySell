@@ -12,4 +12,12 @@ export class CategoriaService {
   getCategorias(): Observable<CategoriaListResponse> {
     return this.http.get<CategoriaListResponse>(this.url);
   }
+
+  listarCategorias(page = 0, size = 8): Observable<CategoriaListResponse> {
+    return this.http.get<CategoriaListResponse>(`${this.url}?page=${page}&size=${size}`);
+  }
+
+  crearCategoria(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.url, formData);
+  }
 }

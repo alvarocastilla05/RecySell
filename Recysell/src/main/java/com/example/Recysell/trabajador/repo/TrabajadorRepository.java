@@ -14,7 +14,7 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador, UUID> {
 
     @Query("""
         SELECT new com.example.Recysell.trabajador.dto.GetTrabajadorDto(
-        t.username, t.email, t.nombre, t.apellidos, t.puesto
+        t.id, t.username, t.email, t.nombre, t.apellidos, t.puesto
         )
         FROM Trabajador t
     """)

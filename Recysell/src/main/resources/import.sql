@@ -107,14 +107,14 @@ INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174020');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174021');
 
 -- Insertar en categoria
-INSERT INTO categoria (id, nombre, deleted) VALUES (1, 'Smartphones', false);
-INSERT INTO categoria (id, nombre, deleted) VALUES (2, 'Laptops', false);
-INSERT INTO categoria (id, nombre, deleted) VALUES (3, 'Tablets', false);
-INSERT INTO categoria (id, nombre, deleted) VALUES (4, 'Accesorios', false);
-INSERT INTO categoria (id, nombre, deleted) VALUES (5, 'Televisores', false);
-INSERT INTO categoria (id, nombre, deleted) VALUES (6, 'Wearables', false);
-INSERT INTO categoria (id, nombre, deleted) VALUES (7, 'Audio', false);
-INSERT INTO categoria (id, nombre, deleted) VALUES (8, 'Gaming', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (1, 'Smartphones', 'ordenador.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (2, 'Laptops','ordenador.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (3, 'Tablets','ordenador.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (4, 'Accesorios','ordenador.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (5, 'Televisores','ordenador.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (6, 'Wearables','ordenador.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (7, 'Audio', 'ordenador.jpg',false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (8, 'Gaming', 'ordenador.jpg',false);
 
 ALTER SEQUENCE categoria_seq RESTART WITH 58;
 
