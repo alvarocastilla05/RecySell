@@ -15,10 +15,10 @@ import { CarritoComponent } from './components/carrito/carrito.component';
 import { CrearCompraComponent } from './components/crear-compra/crear-compra.component';
 import { HomeTrabajadorComponent } from './components/home-trabajador/home-trabajador.component';
 import { DonacionTrabajadorComponent } from './components/donacion-trabajador/donacion-trabajador.component';
-import { ComprasTrabajadorComponent } from './components/compras-trabajador/compras-trabajador.component';
 import { CategoriasTrabajadorComponent } from './components/categorias-trabajador/categorias-trabajador.component';
 import { OrganizacionTrabajadorComponent } from './components/organizacion-trabajador/organizacion-trabajador.component';
 import { UsuariosTrabajadorComponent } from './components/usuarios-trabajador/usuarios-trabajador.component';
+import { ListadoComprasComponent } from './components/listado-compras/listado-compras.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -43,7 +43,7 @@ const routes: Routes = [
     component: HomeTrabajadorComponent,
     children: [
       { path: 'donaciones', component: DonacionTrabajadorComponent },
-      { path: 'compras', component: ComprasTrabajadorComponent },
+      { path: 'compras', component: ListadoComprasComponent },
       { path: 'categorias', component: CategoriasTrabajadorComponent },
       { path: 'organizaciones', component: OrganizacionTrabajadorComponent },
       { path: 'usuario', component: UsuariosTrabajadorComponent },

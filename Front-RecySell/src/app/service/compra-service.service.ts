@@ -11,6 +11,10 @@ export class CompraService {
 
     constructor(private http: HttpClient) { }
 
+    getCompras(page: number = 0, size: number = 10): Observable<any> {
+        return this.http.get<any>(`http://localhost:8080/compra?page=${page}&size=${size}`);
+    }
+
     getComprasPorCliente(idCliente: string) {
         return this.http.get<any>(`${this.apiUrl}/cliente/${idCliente}`);
     }
