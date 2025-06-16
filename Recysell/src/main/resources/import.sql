@@ -22,17 +22,6 @@ VALUES ('123e4567-e89b-12d3-a456-426614174003', 'agomez', 'agomez@recycell.com',
         '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
         'Alejandro', 'Gómez Sánchez', false);
 
--- Insertar roles para TRABAJADORES
-INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174001', 'TRABAJADOR');
-INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174002', 'TRABAJADOR');
-INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174003', 'TRABAJADOR');
-
--- Insertar en trabajador
-INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174001', 'Técnico en reacondicionamiento');
-INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174002', 'Técnico en pruebas');
-INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174003', 'Técnico en ventas');
-
--- Insertar más TRABAJADORES
 INSERT INTO user_entity (id, username, email, password, enabled, nombre, apellidos, deleted)
 VALUES ('123e4567-e89b-12d3-a456-426614174010', 'sruiz', 'sruiz@recycell.com',
         '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
@@ -43,13 +32,29 @@ VALUES ('123e4567-e89b-12d3-a456-426614174011', 'jperez', 'jperez@recycell.com',
         '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
         'Javier', 'Pérez López', false);
 
--- Insertar roles para los nuevos TRABAJADORES
+INSERT INTO user_entity (id, username, email, password, enabled, nombre, apellidos, deleted)
+VALUES ('123e4567-e89b-12d3-a456-426614174012', 'trabajador', 'jperez@recycell.com',
+        '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
+        'Trabajador', 'Trabajador', false);
+
+-- Insertar roles para TRABAJADORES
+INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174001', 'TRABAJADOR');
+INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174002', 'TRABAJADOR');
+INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174003', 'TRABAJADOR');
 INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174010', 'TRABAJADOR');
 INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174011', 'TRABAJADOR');
+INSERT INTO user_roles (user_id, roles) VALUES ('123e4567-e89b-12d3-a456-426614174012', 'TRABAJADOR');
+
 
 -- Insertar en trabajador
+INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174001', 'Técnico en reacondicionamiento');
+INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174002', 'Técnico en pruebas');
+INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174003', 'Técnico en ventas');
 INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174010', 'Técnico en logística');
 INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174011', 'Técnico en atención al cliente');
+INSERT INTO trabajador (id, puesto) VALUES ('123e4567-e89b-12d3-a456-426614174012', 'Técnico en reacondicionamiento');
+
+
 
 -- Insertar en user_entity CLIENTES
 INSERT INTO user_entity (id, username, email, password, enabled, nombre, apellidos, deleted)
@@ -77,7 +82,6 @@ VALUES ('223e4567-e89b-12d3-a456-426614174008', 'fernandor', 'fernandor@recycell
         '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
         'Fernando', 'Ramírez Ortega', false);
 
--- Insertar más CLIENTES
 INSERT INTO user_entity (id, username, email, password, enabled, nombre, apellidos, deleted)
 VALUES ('223e4567-e89b-12d3-a456-426614174020', 'mariag', 'mariag@recycell.com',
         '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
@@ -88,6 +92,11 @@ VALUES ('223e4567-e89b-12d3-a456-426614174021', 'pedrol', 'pedrol@recycell.com',
         '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
         'Pedro', 'López Martínez', false);
 
+INSERT INTO user_entity (id, username, email, password, enabled, nombre, apellidos, deleted)
+VALUES ('223e4567-e89b-12d3-a456-426614174022', 'user', 'user@gmail.com',
+        '{bcrypt}$2y$10$ORcen3QQGVAYlE5kQ3ytG.v7dXqF4.7dpQX043x/rFPvzysNiugLe', true,
+        'user', 'user user', false);
+
 -- Insertar roles para CLIENTES
 INSERT INTO user_roles (user_id, roles) VALUES ('223e4567-e89b-12d3-a456-426614174004', 'CLIENTE');
 INSERT INTO user_roles (user_id, roles) VALUES ('223e4567-e89b-12d3-a456-426614174005', 'CLIENTE');
@@ -96,6 +105,8 @@ INSERT INTO user_roles (user_id, roles) VALUES ('223e4567-e89b-12d3-a456-4266141
 INSERT INTO user_roles (user_id, roles) VALUES ('223e4567-e89b-12d3-a456-426614174008', 'CLIENTE');
 INSERT INTO user_roles (user_id, roles) VALUES ('223e4567-e89b-12d3-a456-426614174020', 'CLIENTE');
 INSERT INTO user_roles (user_id, roles) VALUES ('223e4567-e89b-12d3-a456-426614174021', 'CLIENTE');
+INSERT INTO user_roles (user_id, roles) VALUES ('223e4567-e89b-12d3-a456-426614174022', 'CLIENTE');
+
 
 -- Insertar en cliente
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174004');
@@ -105,16 +116,18 @@ INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174007');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174008');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174020');
 INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174021');
+INSERT INTO cliente (id) VALUES ('223e4567-e89b-12d3-a456-426614174022');
+
+
 
 -- Insertar en categoria
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (1, 'Smartphones', 'ordenador.jpg', false);
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (2, 'Laptops','ordenador.jpg', false);
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (3, 'Tablets','ordenador.jpg', false);
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (4, 'Accesorios','ordenador.jpg', false);
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (5, 'Televisores','ordenador.jpg', false);
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (6, 'Wearables','ordenador.jpg', false);
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (7, 'Audio', 'ordenador.jpg',false);
-INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (8, 'Gaming', 'ordenador.jpg',false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (1, 'Smartphones', 'movil.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (2, 'Laptops','ordenadorLogo.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (3, 'Tablets','tablet.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (5, 'Televisores','televisor.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (6, 'Wearables','wearables.jpg', false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (7, 'Audio', 'audio.jpg',false);
+INSERT INTO categoria (id, nombre, imagen, deleted) VALUES (8, 'Gaming', 'gaming.jpg',false);
 
 ALTER SEQUENCE categoria_seq RESTART WITH 58;
 
@@ -194,7 +207,43 @@ VALUES (24, 'Fitbit Versa 3', 'Reloj inteligente para fitness', 199.99, '223e456
 INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
 VALUES (25, 'Nintendo Switch OLED', 'Consola portátil con pantalla mejorada', 349.99, '223e4567-e89b-12d3-a456-426614174004', NULL, false, '2023-10-25 19:00:00', 'COMO_NUEVO', 8, true);
 
-ALTER SEQUENCE producto_seq RESTART WITH 75;
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (26, 'HP EliteBook 840', 'Laptop empresarial con diseño compacto', 899.99, '223e4567-e89b-12d3-a456-426614174005', NULL, false, '2023-10-26 10:00:00', 'BUEN_ESTADO', 2, false);
+
+INSERT INTO producto (id, nombre, descripcion, precio, cliente_id_vendedor, cliente_id_donante, deleted, fecha_registro, estado, categoria_id, disponibilidad)
+VALUES (27, 'Asus ROG Zephyrus G14', 'Laptop gaming de alto rendimiento', 1499.99, '223e4567-e89b-12d3-a456-426614174006', NULL, false, '2023-10-27 11:00:00', 'COMO_NUEVO', 2, false);
+
+ALTER SEQUENCE producto_seq RESTART WITH 77;
+
+-- Insert images for products
+INSERT INTO producto_imagenes (producto_id, imagen_url)
+VALUES
+    ( 1, 'movilProducto.jpg'), -- iPhone 12
+    ( 4, 'televisorProducto.jpeg'), -- Monitor LG 4K
+    ( 3, 'ordenadorProducto.jpg'), -- MacBook Pro 13"
+    ( 9, 'ordenadorProducto.jpg'), -- Dell XPS 15
+    ( 26, 'ordenadorProducto.jpg'),
+    (6, 'tabletProducto.jpg'),
+    (7, 'tabletProducto.jpg'),
+    (8, 'reloj.jpg'),
+    (15, 'reloj.jpg'),
+    (24, 'reloj.jpg'),
+    (25, 'nintendo.jpg'),
+    (10, 'audioProducto.jpeg'), -- Sony WH-1000XM4
+    (11, 'movilProducto.jpg'), -- Huawei P30
+    (12, 'ordenadorProducto.jpg'), -- Lenovo ThinkPad X1
+    (13, 'audioProducto.jpeg'), -- Amazon Echo Dot
+    (16, 'movilProducto.jpg'), -- Google Pixel 6
+    (17, 'ordenadorProducto.jpg'), -- Microsoft Surface Pro 7
+    (18, 'televisorProducto.jpeg'), -- Sony Bravia 55"
+    (19, 'audioProducto.jpeg'), -- Logitech MX Master 3
+    (20, 'audioProducto.jpeg'), -- Samsung Galaxy Buds Pro
+    (21, 'ordenadorProducto.jpg'), -- Dell Inspiron 15
+    (22, 'audioProducto.jpeg'), -- Apple AirPods Pro
+    (23, 'ordenadorProducto.jpg'), -- HP Pavilion Gaming
+    (24, 'reloj.jpg'), -- Fitbit Versa 3
+    (25, 'gamingProducto.jpg'), -- Nintendo Switch OLED
+    ( 27, 'ordenadorProducto.jpg');
 
 
 
@@ -270,7 +319,7 @@ INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_
 VALUES (5, 20.0, 0, '2023-10-05 14:00:00', 'Bilbao', '48001', 'Gran Vía, 30', '223e4567-e89b-12d3-a456-426614174008', false, 'CARRITO');
 
 INSERT INTO compra (id, gastos_envio, sub_total, fecha_venta, provincia, codigo_postal, direccion_entrega, cliente_id, deleted, estado_compra)
-VALUES (6, 5.0, 50.0, '2023-10-06 10:00:00', 'Madrid', '28002', 'Calle Alcalá, 10', '223e4567-e89b-12d3-a456-426614174004', false, 'ENTREGADO');
+VALUES (6, 5.0, 2399.98, '2023-10-06 10:00:00', 'Madrid', '28002', 'Calle Alcalá, 10', '223e4567-e89b-12d3-a456-426614174004', false, 'ENTREGADO');
 
 -- Reiniciar la secuencia de compra
 ALTER SEQUENCE compra_seq RESTART WITH 56;
@@ -287,6 +336,12 @@ VALUES (3, false, 2, 9);
 
 INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
 VALUES (4, false, 2, 10);
+
+INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
+VALUES (5, false, 6, 26);
+
+INSERT INTO linea_venta (id, deleted, compra_id, producto_id_linea_venta)
+VALUES (6, false, 6, 27);
 
 
 
