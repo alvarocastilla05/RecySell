@@ -20,38 +20,109 @@ import { OrganizacionTrabajadorComponent } from './components/organizacion-traba
 import { UsuariosTrabajadorComponent } from './components/usuarios-trabajador/usuarios-trabajador.component';
 import { ListadoComprasComponent } from './components/listado-compras/listado-compras.component';
 import { ValoracionComponent } from './components/valoracion/valoracion.component';
+import { RoleGuard } from './guards/role.guard';
+import { AccesoDenegadoComponent } from './components/acceso-denegado/acceso-denegado.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'login', component: InicioSesionComponent },
-  { path: 'home', component: HomeComponent},
-  { path: 'registro', component: RegistroComponent },
-  { path: 'registro-trabajador', component: RegistroComponent },
-  { path: 'verificacion', component: VerificacionComponent },
-  { path: 'producto/:id', component: ProductDetailsComponent},
-  { path: 'productos-venta', component: ProductListComponent},
-  { path: 'vender', component: AniadirProductoComponent },
-  { path: 'editar-producto/:id', component: AniadirProductoComponent },
-  { path: 'donar', component: HacerDonacionComponent},
-  { path: 'reciclar', component: ReciclarComponent },
-  { path: 'sobre-nosotros', component: SobreNosotrosComponent} ,
-  { path: 'mi-perfil', component: MiPerfilComponent },
-  { path: 'carrito/:id', component: CarritoComponent },
-  { path: 'nueva-compra', component: CrearCompraComponent },
-  { path: 'editar-compra/:id', component: CrearCompraComponent },
-  {
-    path: 'trabajador',
-    component: HomeTrabajadorComponent,
-    children: [
-      { path: 'donaciones', component: DonacionTrabajadorComponent },
-      { path: 'compras', component: ListadoComprasComponent },
-      { path: 'categorias', component: CategoriasTrabajadorComponent },
-      { path: 'organizaciones', component: OrganizacionTrabajadorComponent },
-      { path: 'usuario', component: UsuariosTrabajadorComponent },
-      { path: 'valoracion', component: ValoracionComponent },
-      { path: '', redirectTo: 'donaciones', pathMatch: 'full' }
-    ]
+{
+  path: '', redirectTo: 'home', pathMatch: 'full'
+},
+{
+  path: 'login', component: InicioSesionComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+{
+  path: 'home', component: HomeComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+{
+  path: 'registro', component: RegistroComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+{
+  path: 'registro-trabajador', component: RegistroComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+{
+  path: 'verificacion', component: VerificacionComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+{
+  path: 'reciclar', component: ReciclarComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+{
+  path: 'productos-venta', component: ProductListComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+{
+  path: 'sobre-nosotros', component: SobreNosotrosComponent,
+  canActivate: [RoleGuard], data: { roles: ['CLIENTE'] }
+},
+  { 
+    path: 'producto/:id', 
+    component: ProductDetailsComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
   },
+  { 
+    path: 'vender', 
+    component: AniadirProductoComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
+  },
+  { 
+    path: 'editar-producto/:id', 
+    component: AniadirProductoComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
+  },
+  { 
+    path: 'donar', 
+    component: HacerDonacionComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
+  },
+  { 
+    path: 'mi-perfil', 
+    component: MiPerfilComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
+  },
+  { 
+    path: 'carrito/:id', 
+    component: CarritoComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
+  },
+  { 
+    path: 'nueva-compra', 
+    component: CrearCompraComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
+  },
+  { 
+    path: 'editar-compra/:id', 
+    component: CrearCompraComponent, 
+    canActivate: [RoleGuard], 
+    data: { roles: ['CLIENTE'] } 
+  },
+{
+  path: 'trabajador',
+  component: HomeTrabajadorComponent,
+  canActivate: [RoleGuard],
+  data: { roles: ['TRABAJADOR', 'ADMIN'] },
+  children: [
+    { path: 'donaciones', component: DonacionTrabajadorComponent },
+    { path: 'compras', component: ListadoComprasComponent },
+    { path: 'categorias', component: CategoriasTrabajadorComponent },
+    { path: 'organizaciones', component: OrganizacionTrabajadorComponent },
+    { path: 'usuario', component: UsuariosTrabajadorComponent },
+    { path: 'valoracion', component: ValoracionComponent },
+    { path: '', redirectTo: 'donaciones', pathMatch: 'full' }
+  ]
+},
+  { path: 'acceso-denegado', component: AccesoDenegadoComponent },
   { path: '**', redirectTo: 'home' } // Redirige a home para rutas no encontradas
   
 
