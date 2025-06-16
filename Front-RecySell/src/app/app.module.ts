@@ -33,6 +33,7 @@ import { DonacionTrabajadorComponent } from './components/donacion-trabajador/do
 import { CategoriasTrabajadorComponent } from './components/categorias-trabajador/categorias-trabajador.component';
 import { OrganizacionTrabajadorComponent } from './components/organizacion-trabajador/organizacion-trabajador.component';
 import { UsuariosTrabajadorComponent } from './components/usuarios-trabajador/usuarios-trabajador.component';
+import { AccesoDenegadoComponent } from './components/acceso-denegado/acceso-denegado.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { UsuariosTrabajadorComponent } from './components/usuarios-trabajador/us
     DonacionTrabajadorComponent,
     CategoriasTrabajadorComponent,
     OrganizacionTrabajadorComponent,
-    UsuariosTrabajadorComponent
+    UsuariosTrabajadorComponent,
+    AccesoDenegadoComponent
   ],
   imports: [
     BrowserModule,
