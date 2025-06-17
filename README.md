@@ -49,6 +49,7 @@ Antes de ejecutar el proyecto, asegúrate de configurar las siguientes variables
 $env:SECRET="mysecretkey"
 $env:USERNAME="myusername"
 $env:PASSWORD="mypassword"
+```
 
 ### Ejecución
 Después de los pasos anteriores, para ejecutar el proyecto debes hacer:
