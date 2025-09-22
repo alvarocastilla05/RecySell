@@ -1,23 +1,21 @@
-# Etapa 1: Build de Angular
+# Etapa 1: Construir frontend
 FROM node:20-alpine AS build-frontend
-WORKDIR /frontend
-COPY front-recysell/package*.json ./
+WORKDIR /app/front
+COPY Front-RecySell/package*.json ./
 RUN npm install -g @angular/cli && npm install
-COPY front-recysell/ .
+COPY Front-RecySell/ .
 RUN ng build --configuration production
 
-# Etapa 2: Build de Spring Boot
+# Etapa 2: Construir backend
 FROM maven:3.9-eclipse-temurin-17 AS build-backend
-WORKDIR /backend
-COPY recysell/pom.xml .
-COPY recysell/src ./src
-# Copiar el dist generado de Angular dentro de static/
-COPY --from=build-frontend /frontend/dist/* ./src/main/resources/static/
+WORKDIR /app
+COPY Recysell/ .
 RUN mvn clean package -DskipTests
 
 # Etapa 3: Imagen final
 FROM eclipse-temurin:17
 WORKDIR /app
-COPY --from=build-backend /backend/target/*.jar app.jar
+COPY --from=build-backend /app/target/*.jar app.jar
+COPY --from=build-frontend /app/front/dist/Front-RecySell/ /app/static/
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
