@@ -40,6 +40,9 @@ services:
       - SECRET=${SECRET}
       - USERNAME=${USERNAME}
       - PASSWORD=${PASSWORD}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg:5432/Recysell-V1
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=12345678
     depends_on:
       pg:
         condition: service_healthy
